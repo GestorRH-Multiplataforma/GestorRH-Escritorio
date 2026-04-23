@@ -2,16 +2,21 @@ package com.gestorrh.escritorio.core.di;
 
 import com.gestorrh.escritorio.config.ConfigManager;
 import com.gestorrh.escritorio.data.network.*;
+import com.gestorrh.escritorio.data.network.interceptor.AuthInterceptor;
+import com.gestorrh.escritorio.data.network.interceptor.ErrorInterceptor;
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Fábrica centralizada para los servicios de red (Retrofit).
- * Implementa el patrón Singleton para garantizar una única conexión HTTP base
- * y reutilizar las interfaces generadas, optimizando el uso de memoria.
+ * Implementa el patrón Singleton e inyecta la seguridad (JWT) y el
+ * manejo global de errores mediante OkHttpClient.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class ServiceFactory {
 
@@ -27,8 +32,8 @@ public class ServiceFactory {
     private EstadisticasService estadisticasService;
 
     /**
-     * Constructor privado. Inicializa el cliente Retrofit con la configuración global
-     * obtenida desde el ConfigManager.
+     * Constructor privado. Inicializa el cliente Retrofit con la configuración global,
+     * interceptores de seguridad y control de errores.
      */
     private ServiceFactory() {
         String baseUrl = ConfigManager.getInstance().getBaseUrl();
@@ -36,16 +41,22 @@ public class ServiceFactory {
             baseUrl += "/";
         }
 
+        OkHttpClient customHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(new AuthInterceptor())
+                .addInterceptor(new ErrorInterceptor())
+                .build();
+
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
+                .client(customHttpClient) //
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }
 
     /**
-     * Devuelve la instancia única de ServiceFactory.
-     *
-     * @return Instancia Singleton.
+     * @return Instancia Singleton de ServiceFactory.
      */
     public static synchronized ServiceFactory getInstance() {
         if (instance == null) {
