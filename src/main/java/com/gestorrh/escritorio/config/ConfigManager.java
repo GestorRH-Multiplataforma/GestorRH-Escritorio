@@ -25,10 +25,7 @@ public class ConfigManager {
     private ConfigManager() {
         properties = new Properties();
 
-        String env = System.getenv("GESTORRH_ENV");
-        if (env == null || env.isBlank()) {
-            env = System.getProperty("env", "dev");
-        }
+        String env = resolverEntorno();
 
         String propFileName = "config/application-" + env + ".properties";
 
@@ -93,5 +90,30 @@ public class ConfigManager {
      */
     public String getPdfOutputDir() {
         return properties.getProperty("pdf.output.dir", "reportes_pdf");
+    }
+
+    /**
+     * Resuelve el entorno activo leyendo primero la variable de entorno
+     * GESTORRH_ENV y, si no está definida, la propiedad del sistema 'env'.
+     * Por defecto retorna 'dev'.
+     *
+     * @return Nombre del entorno activo ('dev' o 'prod').
+     */
+    private String resolverEntorno() {
+        String env = System.getenv("GESTORRH_ENV");
+        if (env == null || env.isBlank()) {
+            env = System.getProperty("env", "dev");
+        }
+        return env;
+    }
+
+    /**
+     * Indica si la aplicación se está ejecutando en entorno de desarrollo.
+     * Usado para activar herramientas de depuración como el logging HTTP.
+     *
+     * @return true si el entorno activo es 'dev', false en caso contrario.
+     */
+    public boolean isDev() {
+        return "dev".equalsIgnoreCase(resolverEntorno());
     }
 }
