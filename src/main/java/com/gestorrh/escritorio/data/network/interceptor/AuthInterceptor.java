@@ -16,12 +16,16 @@ import java.io.IOException;
  */
 public class AuthInterceptor implements Interceptor {
 
+    private static final java.util.Set<String> RUTAS_PUBLICAS = java.util.Set.of(
+            "/api/auth/login-empresa",
+            "/api/empresas/registro"
+    );
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         String path = request.url().encodedPath();
 
-        if (path.contains("/api/auth/login-empresa") || path.contains("/api/empresas/registro")) {
+        if (RUTAS_PUBLICAS.stream().anyMatch(path::equals)) {
             return chain.proceed(request);
         }
 
