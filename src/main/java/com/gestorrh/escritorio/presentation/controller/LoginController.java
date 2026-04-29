@@ -20,7 +20,9 @@ import java.io.IOException;
  */
 public class LoginController {
 
-    @FXML private Label titleLabel, emailLabel, passwordLabel;
+    @FXML private Label titleLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label passwordLabel;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
