@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import com.gestorrh.escritorio.core.security.SessionManager;
 
 import java.io.IOException;
 
@@ -43,6 +44,10 @@ public class ErrorInterceptor implements Interceptor {
                     errorMsg = "Error en el servidor: " + response.message();
                 }
             }
+        }
+
+        if (statusCode == 401) {
+            SessionManager.getInstance().clearSession();
         }
 
         throw new ApiException(errorMsg, statusCode);
