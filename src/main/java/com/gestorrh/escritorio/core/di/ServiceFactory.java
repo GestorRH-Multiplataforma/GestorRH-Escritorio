@@ -30,6 +30,7 @@ public class ServiceFactory {
     private FichajeService fichajeService;
     private AsignacionTurnoService asignacionTurnoService;
     private EstadisticasService estadisticasService;
+    private AutenticacionService autenticacionService;
 
     /**
      * Constructor privado. Inicializa el cliente Retrofit con la configuración global,
@@ -112,5 +113,12 @@ public class ServiceFactory {
             estadisticasService = retrofit.create(EstadisticasService.class);
         }
         return estadisticasService;
+    }
+
+    public AutenticacionService getAutenticacionService() {
+        if (autenticacionService == null) {
+            autenticacionService = retrofit.create(AutenticacionService.class);
+        }
+        return autenticacionService;
     }
 }

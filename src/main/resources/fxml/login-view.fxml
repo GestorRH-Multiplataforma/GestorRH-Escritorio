@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.gestorrh.escritorio.presentation.controller.LoginController"
+           stylesheets="@../css/styles.css"
+           prefWidth="900.0" prefHeight="600.0">
+
+    <VBox alignment="CENTER" maxWidth="400.0" maxHeight="450.0" styleClass="login-card">
+
+        <Label fx:id="titleLabel" styleClass="title-label" text="Iniciar Sesión" />
+
+        <VBox spacing="8.0">
+            <Label fx:id="emailLabel" styleClass="input-label" text="Correo electrónico" />
+            <TextField fx:id="emailField" promptText="empresa@gestorrh.com" />
+        </VBox>
+
+        <VBox spacing="8.0">
+            <Label fx:id="passwordLabel" styleClass="input-label" text="Contraseña" />
+            <PasswordField fx:id="passwordField" promptText="••••••••" />
+        </VBox>
+
+        <StackPane>
+            <Button fx:id="loginButton" styleClass="primary-button" maxWidth="Infinity" text="Entrar" onAction="#handleLoginAction" />
+            <ProgressIndicator fx:id="loadingIndicator" visible="false" maxWidth="24.0" maxHeight="24.0" />
+        </StackPane>
+
+    </VBox>
+
+</StackPane>

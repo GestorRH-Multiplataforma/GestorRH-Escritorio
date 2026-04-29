@@ -21,6 +21,7 @@ public class RepositoryFactory {
     private FichajeRepository fichajeRepository;
     private AsignacionTurnoRepository asignacionTurnoRepository;
     private EstadisticasRepository estadisticasRepository;
+    private AuthRepository authRepository;
 
     private RepositoryFactory() {}
 
@@ -81,5 +82,12 @@ public class RepositoryFactory {
             estadisticasRepository = new EstadisticasRepository(ServiceFactory.getInstance().getEstadisticasService());
         }
         return estadisticasRepository;
+    }
+
+    public AuthRepository getAuthRepository() {
+        if (authRepository == null) {
+            authRepository = new AuthRepository(ServiceFactory.getInstance().getAutenticacionService());
+        }
+        return authRepository;
     }
 }

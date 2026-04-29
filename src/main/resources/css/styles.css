@@ -1,0 +1,59 @@
+/* GESTORRH - HOJA DE ESTILOS PRINCIPAL */
+
+.root {
+    -fx-background-color: #F4F6F9;
+    -fx-font-family: "Open Sans", "Segoe UI", sans-serif;
+}
+
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);
+    -fx-padding: 40;
+    -fx-spacing: 25;
+}
+
+.title-label {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 26px;
+    -fx-text-fill: #2C3E50;
+}
+
+.input-label {
+    -fx-text-fill: #34495E;
+    -fx-font-size: 14px;
+}
+
+.text-field, .password-field {
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #BDC3C7;
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 10 12;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-border-width: 2;
+}
+
+.primary-button {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+    -fx-font-family: "Montserrat", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-background-radius: 8;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #2980B9;
+}
+
+.primary-button:disabled {
+    -fx-background-color: #95A5A6;
+    -fx-opacity: 0.8;
+}

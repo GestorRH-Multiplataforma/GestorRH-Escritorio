@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.core.di;
 
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
+import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
 
 /**
  * Fábrica centralizada para la creación de ViewModels.
@@ -45,5 +46,7 @@ public class ViewModelFactory {
         return new EmpleadoViewModel(RepositoryFactory.getInstance().getEmpleadoRepository());
     }
 
-    // Aquí añadiremos createTurnoViewModel(), createAusenciaViewModel() más adelante.
+    public LoginViewModel createLoginViewModel() {
+        return new LoginViewModel(RepositoryFactory.getInstance().getAuthRepository());
+    }
 }
