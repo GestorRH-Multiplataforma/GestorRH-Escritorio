@@ -21,7 +21,7 @@ public class AuthInterceptor implements Interceptor {
         Request request = chain.request();
         String path = request.url().encodedPath();
 
-        if (path.contains("/auth/login/empresa") || path.contains("/auth/registro/empresa")) {
+        if (path.contains("/api/auth/login-empresa") || path.contains("/api/empresas/registro")) {
             return chain.proceed(request);
         }
 

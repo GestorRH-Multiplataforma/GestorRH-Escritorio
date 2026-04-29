@@ -38,7 +38,7 @@ public class LanguageManager {
         this.prefs = Preferences.userNodeForPackage(LanguageManager.class);
 
         String savedLang = prefs.get(PREF_LANG_KEY, "es");
-        setLocale(new Locale(savedLang));
+        setLocale(Locale.of(savedLang));
     }
 
     /**

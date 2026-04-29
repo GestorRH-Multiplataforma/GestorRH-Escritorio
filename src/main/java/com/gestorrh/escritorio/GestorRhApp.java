@@ -1,10 +1,13 @@
 package com.gestorrh.escritorio;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 /**
  * Clase principal de la aplicación GestorRH - Cliente de Escritorio.
@@ -21,13 +24,13 @@ public class GestorRhApp extends Application {
      * @param stage Escenario principal proporcionado por JavaFX.
      */
     @Override
-    public void start(Stage stage) {
-        Label label = new Label("¡GestorRH - Entorno configurado correctamente!");
-        StackPane root = new StackPane(label);
-        Scene scene = new Scene(root, 800, 600);
+    public void start(Stage stage) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(GestorRhApp.class.getResource("/fxml/login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
 
         stage.setTitle("GestorRH - Panel de Administración");
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
