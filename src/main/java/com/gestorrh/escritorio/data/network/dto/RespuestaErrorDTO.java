@@ -1,5 +1,7 @@
 package com.gestorrh.escritorio.data.network.dto;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Objeto de Transferencia de Datos (DTO) que mapea exactamente la estructura
  * de errores que devuelve la API REST de GestorRH.
@@ -9,6 +11,7 @@ package com.gestorrh.escritorio.data.network.dto;
  */
 public class RespuestaErrorDTO {
 
+    @SerializedName("message")
     private String mensaje;
     private int status;
     private String timestamp;
