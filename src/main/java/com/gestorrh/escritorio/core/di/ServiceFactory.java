@@ -9,6 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.concurrent.TimeUnit;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Fábrica centralizada para los servicios de red (Retrofit).
@@ -42,12 +43,19 @@ public class ServiceFactory {
             baseUrl += "/";
         }
 
-        OkHttpClient customHttpClient = new OkHttpClient.Builder()
+        OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(new AuthInterceptor())
-                .addInterceptor(new ErrorInterceptor())
-                .build();
+                .addInterceptor(new ErrorInterceptor());
+
+        if (ConfigManager.getInstance().isDev()) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            httpClientBuilder.addInterceptor(loggingInterceptor);
+        }
+
+        OkHttpClient customHttpClient = httpClientBuilder.build();
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

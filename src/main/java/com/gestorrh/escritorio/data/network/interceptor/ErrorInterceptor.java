@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import okhttp3.Interceptor;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import com.gestorrh.escritorio.core.security.SessionManager;
 
 import java.io.IOException;
 
@@ -31,19 +32,22 @@ public class ErrorInterceptor implements Interceptor {
         String errorMsg = "Error desconocido de comunicación con el servidor.";
         int statusCode = response.code();
 
-        ResponseBody body = response.body();
-        if (body != null) {
-            try {
-                String errorJson = body.string();
-
-                RespuestaErrorDTO errorDTO = gson.fromJson(errorJson, RespuestaErrorDTO.class);
-
-                if (errorDTO != null && errorDTO.getMensaje() != null) {
-                    errorMsg = errorDTO.getMensaje();
+        try (ResponseBody body = response.body()) {
+            if (body != null) {
+                try {
+                    String errorJson = body.string();
+                    RespuestaErrorDTO errorDTO = gson.fromJson(errorJson, RespuestaErrorDTO.class);
+                    if (errorDTO != null && errorDTO.getMensaje() != null) {
+                        errorMsg = errorDTO.getMensaje();
+                    }
+                } catch (Exception e) {
+                    errorMsg = "Error en el servidor: " + response.message();
                 }
-            } catch (Exception e) {
-                errorMsg = "Error en el servidor: " + response.message();
             }
+        }
+
+        if (statusCode == 401) {
+            SessionManager.getInstance().clearSession();
         }
 
         throw new ApiException(errorMsg, statusCode);
