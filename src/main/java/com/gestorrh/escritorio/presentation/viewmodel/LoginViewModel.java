@@ -55,4 +55,12 @@ public class LoginViewModel {
     public StringProperty emailProperty() { return email; }
     public StringProperty passwordProperty() { return password; }
     public BooleanProperty loadingProperty() { return loading; }
+
+    /**
+     * Limpia la contraseña de memoria por seguridad.
+     * Debe llamarse tras login exitoso y tras login fallido.
+     */
+    public void clearPassword() {
+        password.set("");
+    }
 }

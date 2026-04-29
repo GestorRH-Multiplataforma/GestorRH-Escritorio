@@ -59,13 +59,16 @@ public class LoginController {
      */
     @FXML
     private void handleLoginAction() {
-        viewModel.login().thenRun(() -> {
-            Platform.runLater(this::navigateToDashboard);
-        }).exceptionally(ex -> {
-            Throwable cause = (ex.getCause() != null) ? ex.getCause() : ex;
-
-            Platform.runLater(() -> showError(cause));
-            return null;
+        viewModel.login().whenComplete((res, ex) -> {
+            Platform.runLater(() -> {
+                viewModel.clearPassword();
+                if (ex != null) {
+                    Throwable cause = (ex.getCause() != null) ? ex.getCause() : ex;
+                    showError(cause);
+                } else {
+                    navigateToDashboard();
+                }
+            });
         });
     }
 
