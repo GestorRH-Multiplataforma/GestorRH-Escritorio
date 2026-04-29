@@ -16,7 +16,7 @@ import java.io.IOException;
  * Gestiona la interacción del usuario y el flujo de navegación.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class LoginController {
 
@@ -27,6 +27,7 @@ public class LoginController {
     @FXML private ProgressIndicator loadingIndicator;
 
     private final LoginViewModel viewModel;
+    private final Runnable textUpdater = this::updateTexts;
 
     public LoginController() {
         this.viewModel = ViewModelFactory.getInstance().createLoginViewModel();
@@ -41,7 +42,16 @@ public class LoginController {
         loadingIndicator.visibleProperty().bind(viewModel.loadingProperty());
 
         updateTexts();
-        LanguageManager.getInstance().addListener(this::updateTexts);
+        LanguageManager.getInstance().addListener(textUpdater);
+    }
+
+    /**
+     * Libera los recursos del controlador.
+     * Debe llamarse cuando la vista se destruye para evitar memory leaks
+     * en el sistema de listeners de LanguageManager.
+     */
+    public void cleanup() {
+        LanguageManager.getInstance().removeListener(textUpdater);
     }
 
     /**
