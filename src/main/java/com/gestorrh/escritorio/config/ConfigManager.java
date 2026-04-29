@@ -13,7 +13,6 @@ import java.util.Properties;
  */
 public class ConfigManager {
 
-    private static ConfigManager instance;
     private final Properties properties;
 
     /**
@@ -44,11 +43,16 @@ public class ConfigManager {
     /**
      * @return Instancia única del gestor de configuración.
      */
-    public static synchronized ConfigManager getInstance() {
-        if (instance == null) {
-            instance = new ConfigManager();
-        }
-        return instance;
+    public static ConfigManager getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final ConfigManager INSTANCE = new ConfigManager();
     }
 
     /**
