@@ -53,9 +53,8 @@ public class LoginController {
             Platform.runLater(this::navigateToDashboard);
         }).exceptionally(ex -> {
             Throwable cause = (ex.getCause() != null) ? ex.getCause() : ex;
-            String errorMessage = cause.getMessage();
 
-            Platform.runLater(() -> showError(errorMessage));
+            Platform.runLater(() -> showError(cause));
             return null;
         });
     }
@@ -69,17 +68,20 @@ public class LoginController {
         emailField.setPromptText(lang.getString("login.email"));
     }
 
-    private void showError(String errorContent) {
+    private void showError(Throwable cause) {
+        LanguageManager lang = LanguageManager.getInstance();
         String finalMessage;
 
-        if (errorContent != null && errorContent.startsWith("login.error")) {
-            finalMessage = LanguageManager.getInstance().getString(errorContent);
+        if (cause instanceof com.gestorrh.escritorio.core.exception.ApiException apiEx && apiEx.hasI18nKey()) {
+            finalMessage = lang.getString(apiEx.getI18nKey());
         } else {
-            finalMessage = (errorContent != null) ? errorContent : "Error desconocido";
+            finalMessage = (cause != null && cause.getMessage() != null)
+                    ? cause.getMessage()
+                    : lang.getString("error.unknown");
         }
 
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(LanguageManager.getInstance().getString("dialog.confirm.title"));
+        alert.setTitle(lang.getString("dialog.error.title"));
         alert.setHeaderText(null);
         alert.setContentText(finalMessage);
         alert.showAndWait();
@@ -94,7 +96,7 @@ public class LoginController {
             stage.setScene(scene);
             stage.centerOnScreen();
         } catch (IOException e) {
-            showError("Error al cargar el panel principal: " + e.getMessage());
+            showError(e);
         }
     }
 }

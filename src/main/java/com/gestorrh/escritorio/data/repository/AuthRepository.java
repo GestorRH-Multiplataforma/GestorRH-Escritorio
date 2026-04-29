@@ -41,11 +41,11 @@ public class AuthRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     return response.body();
                 }
-                throw new ApiException("error.unknown", response.code());
+                throw new ApiException("error.unknown", response.code(), "error.unknown");
             } catch (ApiException e) {
                 throw e;
             } catch (IOException e) {
-                throw new ApiException("error.timeout", 0);
+                throw new ApiException("error.timeout", 0, "error.timeout");
             }
         });
     }
