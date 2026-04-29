@@ -90,6 +90,8 @@ public class LoginController {
 
         if (cause instanceof com.gestorrh.escritorio.core.exception.ApiException apiEx && apiEx.hasI18nKey()) {
             finalMessage = lang.getString(apiEx.getI18nKey());
+        } else if (cause instanceof IllegalArgumentException && cause.getMessage() != null) {
+            finalMessage = lang.getString(cause.getMessage());
         } else {
             finalMessage = (cause != null && cause.getMessage() != null)
                     ? cause.getMessage()
