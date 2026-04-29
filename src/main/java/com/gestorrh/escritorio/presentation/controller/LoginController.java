@@ -16,17 +16,20 @@ import java.io.IOException;
  * Gestiona la interacción del usuario y el flujo de navegación.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class LoginController {
 
-    @FXML private Label titleLabel, emailLabel, passwordLabel;
+    @FXML private Label titleLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label passwordLabel;
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private ProgressIndicator loadingIndicator;
 
     private final LoginViewModel viewModel;
+    private final Runnable textUpdater = this::updateTexts;
 
     public LoginController() {
         this.viewModel = ViewModelFactory.getInstance().createLoginViewModel();
@@ -41,7 +44,16 @@ public class LoginController {
         loadingIndicator.visibleProperty().bind(viewModel.loadingProperty());
 
         updateTexts();
-        LanguageManager.getInstance().addListener(this::updateTexts);
+        LanguageManager.getInstance().addListener(textUpdater);
+    }
+
+    /**
+     * Libera los recursos del controlador.
+     * Debe llamarse cuando la vista se destruye para evitar memory leaks
+     * en el sistema de listeners de LanguageManager.
+     */
+    public void cleanup() {
+        LanguageManager.getInstance().removeListener(textUpdater);
     }
 
     /**
@@ -49,13 +61,16 @@ public class LoginController {
      */
     @FXML
     private void handleLoginAction() {
-        viewModel.login().thenRun(() -> {
-            Platform.runLater(this::navigateToDashboard);
-        }).exceptionally(ex -> {
-            Throwable cause = (ex.getCause() != null) ? ex.getCause() : ex;
-
-            Platform.runLater(() -> showError(cause));
-            return null;
+        viewModel.login().whenComplete((res, ex) -> {
+            Platform.runLater(() -> {
+                viewModel.clearPassword();
+                if (ex != null) {
+                    Throwable cause = (ex.getCause() != null) ? ex.getCause() : ex;
+                    showError(cause);
+                } else {
+                    navigateToDashboard();
+                }
+            });
         });
     }
 
@@ -65,7 +80,8 @@ public class LoginController {
         emailLabel.setText(lang.getString("login.email"));
         passwordLabel.setText(lang.getString("login.password"));
         loginButton.setText(lang.getString("login.button"));
-        emailField.setPromptText(lang.getString("login.email"));
+        emailField.setPromptText(lang.getString("login.email.placeholder"));
+        passwordField.setPromptText(lang.getString("login.password.placeholder"));
     }
 
     private void showError(Throwable cause) {
@@ -74,6 +90,8 @@ public class LoginController {
 
         if (cause instanceof com.gestorrh.escritorio.core.exception.ApiException apiEx && apiEx.hasI18nKey()) {
             finalMessage = lang.getString(apiEx.getI18nKey());
+        } else if (cause instanceof IllegalArgumentException && cause.getMessage() != null) {
+            finalMessage = lang.getString(cause.getMessage());
         } else {
             finalMessage = (cause != null && cause.getMessage() != null)
                     ? cause.getMessage()
