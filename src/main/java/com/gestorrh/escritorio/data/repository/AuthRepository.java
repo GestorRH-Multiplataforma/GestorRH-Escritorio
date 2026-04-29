@@ -6,6 +6,7 @@ import com.gestorrh.escritorio.data.network.dto.PeticionLoginDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaLoginDTO;
 import retrofit2.Response;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -39,17 +40,12 @@ public class AuthRepository {
 
                 if (response.isSuccessful() && response.body() != null) {
                     return response.body();
-                } else {
-                    throw new ApiException("Error en la autenticación", response.code());
                 }
-            } catch (Exception e) {
-                if (e.getCause() instanceof ApiException) {
-                    throw (ApiException) e.getCause();
-                }
-                if (e instanceof ApiException) {
-                    throw (ApiException) e;
-                }
-                throw new RuntimeException("Error de conexión: " + e.getMessage(), e);
+                throw new ApiException("error.unknown", response.code());
+            } catch (ApiException e) {
+                throw e;
+            } catch (IOException e) {
+                throw new ApiException("error.timeout", 0);
             }
         });
     }
