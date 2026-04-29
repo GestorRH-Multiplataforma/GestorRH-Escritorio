@@ -1,12 +1,8 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.core.exception.ApiException;
 import com.gestorrh.escritorio.data.network.AutenticacionService;
 import com.gestorrh.escritorio.data.network.dto.PeticionLoginDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaLoginDTO;
-import retrofit2.Response;
-
-import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -16,7 +12,7 @@ import java.util.concurrent.CompletableFuture;
  * @author Fco Javier García Cañero
  * @version 1.0
  */
-public class AuthRepository {
+public class AuthRepository extends BaseRepository{
 
     private final AutenticacionService service;
 
@@ -32,21 +28,7 @@ public class AuthRepository {
      * @return Un CompletableFuture con la respuesta del servidor.
      */
     public CompletableFuture<RespuestaLoginDTO> login(String email, String password) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                PeticionLoginDTO peticion = new PeticionLoginDTO(email, password);
-
-                Response<RespuestaLoginDTO> response = service.loginEmpresa(peticion).execute();
-
-                if (response.isSuccessful() && response.body() != null) {
-                    return response.body();
-                }
-                throw new ApiException("error.unknown", response.code(), "error.unknown");
-            } catch (ApiException e) {
-                throw e;
-            } catch (IOException e) {
-                throw new ApiException("error.timeout", 0, "error.timeout");
-            }
-        });
+        PeticionLoginDTO peticion = new PeticionLoginDTO(email, password);
+        return executeAsync(service.loginEmpresa(peticion));
     }
 }
