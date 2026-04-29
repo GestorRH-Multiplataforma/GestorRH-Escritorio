@@ -78,7 +78,8 @@ public class LoginController {
         emailLabel.setText(lang.getString("login.email"));
         passwordLabel.setText(lang.getString("login.password"));
         loginButton.setText(lang.getString("login.button"));
-        emailField.setPromptText(lang.getString("login.email"));
+        emailField.setPromptText(lang.getString("login.email.placeholder"));
+        passwordField.setPromptText(lang.getString("login.password.placeholder"));
     }
 
     private void showError(Throwable cause) {
