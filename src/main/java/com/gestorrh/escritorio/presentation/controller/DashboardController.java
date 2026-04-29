@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.scene.control.ComboBox;
 
 import java.io.IOException;
 
@@ -37,11 +38,23 @@ public class DashboardController {
     @FXML private Button menuReportsBtn;
     @FXML private Button menuSettingsBtn;
     @FXML private Button logoutBtn;
+    @FXML private ComboBox<String> languageSelector;
 
     private final Runnable textUpdater = this::updateTexts;
 
     @FXML
     public void initialize() {
+        languageSelector.getItems().addAll("ES", "EN");
+        languageSelector.setValue(
+                LanguageManager.getInstance().getCurrentLocale().getLanguage().toUpperCase()
+        );
+        languageSelector.setOnAction(e -> {
+            String selected = languageSelector.getValue();
+            if (selected != null) {
+                LanguageManager.getInstance().setLocale(java.util.Locale.of(selected.toLowerCase()));
+            }
+        });
+
         updateTexts();
         LanguageManager.getInstance().addListener(textUpdater);
     }

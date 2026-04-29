@@ -37,6 +37,8 @@
             <HBox styleClass="content-header">
                 <Label fx:id="welcomeLabel" styleClass="welcome-label"/>
                 <Label fx:id="companyNameLabel" styleClass="company-name-label"/>
+                <HBox HBox.hgrow="ALWAYS"/>
+                <ComboBox fx:id="languageSelector" styleClass="language-selector"/>
             </HBox>
 
             <HBox styleClass="kpi-container" spacing="20">
