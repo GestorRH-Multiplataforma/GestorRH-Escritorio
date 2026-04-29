@@ -1,6 +1,5 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.core.exception.ApiException;
 import com.gestorrh.escritorio.core.security.SessionManager;
 import com.gestorrh.escritorio.data.repository.AuthRepository;
 import javafx.beans.property.BooleanProperty;
@@ -9,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.concurrent.CompletableFuture;
+import javafx.application.Platform;
 
 /**
  * ViewModel para la pantalla de Login.
@@ -49,7 +49,7 @@ public class LoginViewModel {
                             respuesta.nombre()
                     );
                 })
-                .whenComplete((res, ex) -> loading.set(false));
+                .whenComplete((res, ex) -> Platform.runLater(() -> loading.set(false)));
     }
 
     public StringProperty emailProperty() { return email; }
