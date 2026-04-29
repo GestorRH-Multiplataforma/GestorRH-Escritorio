@@ -111,8 +111,10 @@ public class LoginController {
             Scene scene = new Scene(loader.load());
 
             Stage stage = (Stage) loginButton.getScene().getWindow();
+            cleanup();
+            stage.setResizable(true);
             stage.setScene(scene);
-            stage.centerOnScreen();
+            stage.setMaximized(true);
         } catch (IOException e) {
             showError(e);
         }
