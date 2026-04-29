@@ -13,7 +13,6 @@ import java.util.Properties;
  */
 public class ConfigManager {
 
-    private static ConfigManager instance;
     private final Properties properties;
 
     /**
@@ -44,19 +43,26 @@ public class ConfigManager {
     /**
      * @return Instancia única del gestor de configuración.
      */
-    public static synchronized ConfigManager getInstance() {
-        if (instance == null) {
-            instance = new ConfigManager();
-        }
-        return instance;
+    public static ConfigManager getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final ConfigManager INSTANCE = new ConfigManager();
     }
 
     /**
      * Valida que la configuración esencial para arrancar la app esté presente.
      */
     private void validarPropiedadesObligatorias() {
-        if (getBaseUrl() == null || getBaseUrl().isBlank()) {
-            throw new IllegalStateException("CRÍTICO: La propiedad 'gestorrh.api.url' es obligatoria y no está definida.");
+        if (isDev() && (properties.getProperty("gestorrh.api.url") == null
+                || properties.getProperty("gestorrh.api.url").isBlank())) {
+            throw new IllegalStateException(
+                    "CRÍTICO: La propiedad 'gestorrh.api.url' es obligatoria en dev y no está definida.");
         }
     }
 
@@ -67,8 +73,12 @@ public class ConfigManager {
      * @return URL base del servidor REST.
      */
     public String getBaseUrl() {
-        String envUrl = System.getenv("GESTORRH_API_URL");
-        if (envUrl != null && !envUrl.isBlank()) {
+        if (!isDev()) {
+            String envUrl = System.getenv("GESTORRH_API_URL");
+            if (envUrl == null || envUrl.isBlank()) {
+                throw new IllegalStateException(
+                        "CRÍTICO: La variable de entorno 'GESTORRH_API_URL' es obligatoria en producción y no está definida.");
+            }
             return envUrl;
         }
         return properties.getProperty("gestorrh.api.url");
