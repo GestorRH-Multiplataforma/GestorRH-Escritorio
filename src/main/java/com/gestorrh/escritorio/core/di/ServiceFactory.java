@@ -20,17 +20,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class ServiceFactory {
 
-    private static ServiceFactory instance;
     private final Retrofit retrofit;
 
-    private EmpleadoService empleadoService;
-    private EmpresaService empresaService;
-    private AusenciaService ausenciaService;
-    private TurnoService turnoService;
-    private FichajeService fichajeService;
-    private AsignacionTurnoService asignacionTurnoService;
-    private EstadisticasService estadisticasService;
-    private AutenticacionService autenticacionService;
+    private final EmpleadoService empleadoService;
+    private final EmpresaService empresaService;
+    private final AusenciaService ausenciaService;
+    private final TurnoService turnoService;
+    private final FichajeService fichajeService;
+    private final AsignacionTurnoService asignacionTurnoService;
+    private final EstadisticasService estadisticasService;
+    private final AutenticacionService autenticacionService;
 
     /**
      * Constructor privado. Inicializa el cliente Retrofit con la configuración global,
@@ -66,74 +65,41 @@ public class ServiceFactory {
 
         this.retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
-                .client(customHttpClient) //
+                .client(customHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        this.empleadoService = retrofit.create(EmpleadoService.class);
+        this.empresaService = retrofit.create(EmpresaService.class);
+        this.ausenciaService = retrofit.create(AusenciaService.class);
+        this.turnoService = retrofit.create(TurnoService.class);
+        this.fichajeService = retrofit.create(FichajeService.class);
+        this.asignacionTurnoService = retrofit.create(AsignacionTurnoService.class);
+        this.estadisticasService = retrofit.create(EstadisticasService.class);
+        this.autenticacionService = retrofit.create(AutenticacionService.class);
     }
 
     /**
      * @return Instancia Singleton de ServiceFactory.
      */
-    public static synchronized ServiceFactory getInstance() {
-        if (instance == null) {
-            instance = new ServiceFactory();
-        }
-        return instance;
+    public static ServiceFactory getInstance() {
+        return Holder.INSTANCE;
     }
 
-    public EmpleadoService getEmpleadoService() {
-        if (empleadoService == null) {
-            empleadoService = retrofit.create(EmpleadoService.class);
-        }
-        return empleadoService;
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final ServiceFactory INSTANCE = new ServiceFactory();
     }
 
-    public EmpresaService getEmpresaService() {
-        if (empresaService == null) {
-            empresaService = retrofit.create(EmpresaService.class);
-        }
-        return empresaService;
-    }
-
-    public AusenciaService getAusenciaService() {
-        if (ausenciaService == null) {
-            ausenciaService = retrofit.create(AusenciaService.class);
-        }
-        return ausenciaService;
-    }
-
-    public TurnoService getTurnoService() {
-        if (turnoService == null) {
-            turnoService = retrofit.create(TurnoService.class);
-        }
-        return turnoService;
-    }
-
-    public FichajeService getFichajeService() {
-        if (fichajeService == null) {
-            fichajeService = retrofit.create(FichajeService.class);
-        }
-        return fichajeService;
-    }
-
-    public AsignacionTurnoService getAsignacionTurnoService() {
-        if (asignacionTurnoService == null) {
-            asignacionTurnoService = retrofit.create(AsignacionTurnoService.class);
-        }
-        return asignacionTurnoService;
-    }
-
-    public EstadisticasService getEstadisticasService() {
-        if (estadisticasService == null) {
-            estadisticasService = retrofit.create(EstadisticasService.class);
-        }
-        return estadisticasService;
-    }
-
-    public AutenticacionService getAutenticacionService() {
-        if (autenticacionService == null) {
-            autenticacionService = retrofit.create(AutenticacionService.class);
-        }
-        return autenticacionService;
-    }
+    public EmpleadoService getEmpleadoService() { return empleadoService; }
+    public EmpresaService getEmpresaService() { return empresaService; }
+    public AusenciaService getAusenciaService() { return ausenciaService; }
+    public TurnoService getTurnoService() { return turnoService; }
+    public FichajeService getFichajeService() { return fichajeService; }
+    public AsignacionTurnoService getAsignacionTurnoService() { return asignacionTurnoService; }
+    public EstadisticasService getEstadisticasService() { return estadisticasService; }
+    public AutenticacionService getAutenticacionService() { return autenticacionService; }
 }
