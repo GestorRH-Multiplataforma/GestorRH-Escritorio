@@ -7,15 +7,13 @@ package com.gestorrh.escritorio.core.security;
  * Cumple con el requisito de volatilidad: los datos no se persisten en disco.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class SessionManager {
 
-    private static SessionManager instance;
-
-    private String token;
-    private Long empresaId;
-    private String nombreEmpresa;
+    private volatile String token;
+    private volatile Long empresaId;
+    private volatile String nombreEmpresa;
 
     /**
      * Constructor privado para evitar instanciación directa (Singleton).
@@ -29,11 +27,16 @@ public class SessionManager {
      *
      * @return Instancia Singleton de SessionManager.
      */
-    public static synchronized SessionManager getInstance() {
-        if (instance == null) {
-            instance = new SessionManager();
-        }
-        return instance;
+    public static SessionManager getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final SessionManager INSTANCE = new SessionManager();
     }
 
     /**
