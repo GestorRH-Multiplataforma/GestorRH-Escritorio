@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.logging.Logger;
 
 /**
  * Gestor centralizado de internacionalización (i18n).
@@ -14,11 +15,11 @@ import java.util.prefs.Preferences;
  * Persiste la preferencia del usuario en el sistema operativo mediante java.util.prefs.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class LanguageManager {
 
-    private static LanguageManager instance;
+    private static final Logger LOGGER = Logger.getLogger(LanguageManager.class.getName());
 
     private static final String PREF_LANG_KEY = "gestorrh_language";
     private static final String BASE_NAME = "i18n/messages";
@@ -38,17 +39,22 @@ public class LanguageManager {
         this.prefs = Preferences.userNodeForPackage(LanguageManager.class);
 
         String savedLang = prefs.get(PREF_LANG_KEY, "es");
-        setLocale(Locale.of(savedLang));
+        setLocale(Locale.forLanguageTag(savedLang));
     }
 
     /**
      * @return Instancia única del gestor de idiomas.
      */
-    public static synchronized LanguageManager getInstance() {
-        if (instance == null) {
-            instance = new LanguageManager();
-        }
-        return instance;
+    public static LanguageManager getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final LanguageManager INSTANCE = new LanguageManager();
     }
 
     /**
@@ -75,7 +81,7 @@ public class LanguageManager {
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
-            System.err.println("i18n: Falta la clave '" + key + "' para el idioma '" + currentLocale.getLanguage() + "'");
+            LOGGER.warning("i18n: Falta la clave '" + key + "' para el idioma '" + currentLocale.getLanguage() + "'");
             return "!" + key + "!";
         }
     }
