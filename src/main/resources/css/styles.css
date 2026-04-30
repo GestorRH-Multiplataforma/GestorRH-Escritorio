@@ -1,59 +1,379 @@
-/* GESTORRH - HOJA DE ESTILOS PRINCIPAL */
+/* GESTORRH
+   Paleta oficial: Deep Navy #1A365D / Electric Cyan #00A8E8 */
 
 .root {
-    -fx-background-color: #F4F6F9;
-    -fx-font-family: "Open Sans", "Segoe UI", sans-serif;
+    -fx-background-color: #F8FAFC;
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
 }
 
-.login-card {
-    -fx-background-color: white;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);
-    -fx-padding: 40;
-    -fx-spacing: 25;
+/* LOGIN — PANEL IZQUIERDO (Branding) */
+
+.login-left-panel {
+    -fx-background-color: #1A365D;
+    -fx-padding: 40 0 32 0;
 }
 
-.title-label {
+.login-brand-title {
     -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
-    -fx-font-size: 26px;
-    -fx-text-fill: #2C3E50;
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
 }
 
-.input-label {
-    -fx-text-fill: #34495E;
-    -fx-font-size: 14px;
+.login-brand-claim {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 17px;
+    -fx-text-fill: rgba(255, 255, 255, 0.80);
+    -fx-text-alignment: center;
+    -fx-padding: 0 32 0 32;
 }
 
-.text-field, .password-field {
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-border-color: #BDC3C7;
+.login-separator {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Logo container */
+
+.login-logo-container {
     -fx-background-color: #FFFFFF;
-    -fx-padding: 10 12;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 0, 3);
+    -fx-pref-width: 108px;
+    -fx-pref-height: 108px;
+    -fx-max-width: 108px;
+    -fx-max-height: 108px;
+}
+
+/* Feature items */
+
+.login-feature-item {
+    -fx-padding: 0 32 20 32;
+}
+
+.login-feature-icon-container {
+    -fx-background-color: rgba(0, 168, 232, 0.15);
+    -fx-background-radius: 10;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+    -fx-max-width: 44px;
+    -fx-max-height: 44px;
+    -fx-min-width: 44px;
+    -fx-min-height: 44px;
+}
+
+.login-feature-icon {
+    -fx-icon-color: #00A8E8;
+}
+
+.login-feature-title {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
     -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
 }
 
-.text-field:focused, .password-field:focused {
-    -fx-border-color: #3498DB;
+.login-feature-desc {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255, 255, 255, 0.65);
+}
+
+/* Badge inferior */
+
+.login-brand-tag {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-color: rgba(0, 168, 232, 0.25);
+    -fx-background-radius: 20;
+    -fx-border-color: rgba(0, 168, 232, 0.50);
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+    -fx-padding: 5 14 5 14;
+}
+
+/* LOGIN — PANEL DERECHO (Formulario) */
+
+.login-right-panel {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 24 48 48 48;
+}
+
+.login-form-title {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.login-form-subtitle {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 15px;
+    -fx-text-fill: #64748B;
+}
+
+/* Toggle de idioma */
+
+.login-lang-container {
+    -fx-padding: 0 0 0 0;
+    -fx-spacing: 0;
+}
+
+.login-lang-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1;
+}
+
+.login-lang-btn:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+}
+
+.login-lang-btn-active {
+    -fx-background-color: #1A365D;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #1A365D;
+}
+
+.login-lang-btn-active:hover {
+    -fx-background-color: #1A365D;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Bordes redondeados solo en los extremos del grupo toggle */
+
+#langEsButton {
+    -fx-background-radius: 6 0 0 6;
+    -fx-border-radius: 6 0 0 6;
+}
+
+#langEnButton {
+    -fx-background-radius: 0 6 6 0;
+    -fx-border-radius: 0 6 6 0;
+}
+
+/* Error inline */
+
+.login-error-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #D32F2F;
+    -fx-background-color: rgba(211, 47, 47, 0.08);
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+}
+
+/* Campos de formulario */
+
+.login-field-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.login-text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 10 14 10 14;
+    -fx-font-size: 14px;
+    -fx-text-fill: #1A365D;
+    -fx-pref-height: 44px;
+}
+
+.login-text-field:focused {
+    -fx-border-color: #00A8E8;
     -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0, 168, 232, 0.15), 6, 0, 0, 0);
 }
 
-.primary-button {
-    -fx-background-color: #3498DB;
-    -fx-text-fill: white;
-    -fx-font-family: "Montserrat", sans-serif;
+.login-text-field:hover {
+    -fx-border-color: #94A3B8;
+}
+
+/* Botón principal */
+
+.login-primary-button {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-background-radius: 8;
-    -fx-padding: 12 20;
+    -fx-border-radius: 8;
+    -fx-padding: 12 20 12 20;
+    -fx-pref-height: 46px;
     -fx-cursor: hand;
 }
 
-.primary-button:hover {
-    -fx-background-color: #2980B9;
+.login-primary-button:hover {
+    -fx-background-color: #0090CC;
+    -fx-effect: dropshadow(gaussian, rgba(0, 168, 232, 0.30), 8, 0, 0, 2);
 }
 
-.primary-button:disabled {
-    -fx-background-color: #95A5A6;
-    -fx-opacity: 0.8;
+.login-primary-button:pressed {
+    -fx-background-color: #007AB0;
+}
+
+.login-primary-button:disabled {
+    -fx-background-color: #94A3B8;
+    -fx-opacity: 0.7;
+    -fx-cursor: default;
+}
+
+/* Hyperlinks secundarios */
+
+.login-hyperlink {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #00A8E8;
+    -fx-border-color: transparent;
+    -fx-underline: false;
+    -fx-cursor: hand;
+}
+
+.login-hyperlink:hover {
+    -fx-text-fill: #0090CC;
+    -fx-underline: true;
+}
+
+.login-hyperlink:visited {
+    -fx-text-fill: #00A8E8;
+}
+
+/* DASHBOARD */
+
+.dashboard-root {
+    -fx-background-color: #F8FAFC;
+}
+
+.sidebar {
+    -fx-background-color: #1A365D;
+    -fx-padding: 24 16 24 16;
+    -fx-pref-width: 220px;
+    -fx-spacing: 8;
+}
+
+.sidebar-title {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+    -fx-padding: 0 0 16 0;
+}
+
+.sidebar-menu {
+    -fx-spacing: 4;
+}
+
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255, 255, 255, 0.75);
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+    -fx-text-fill: #FFFFFF;
+}
+
+.sidebar-btn-active {
+    -fx-background-color: rgba(0, 168, 232, 0.20);
+    -fx-text-fill: #00A8E8;
+}
+
+.sidebar-btn-logout {
+    -fx-text-fill: rgba(255, 255, 255, 0.55);
+}
+
+.sidebar-btn-logout:hover {
+    -fx-background-color: rgba(211, 47, 47, 0.15);
+    -fx-text-fill: #EF5350;
+}
+
+.content-area {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 32;
+    -fx-spacing: 24;
+}
+
+.content-header {
+    -fx-alignment: CENTER-LEFT;
+    -fx-spacing: 8;
+}
+
+.welcome-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #64748B;
+}
+
+.company-name-label {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.kpi-container {
+    -fx-padding: 0;
+}
+
+.kpi-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+    -fx-padding: 20 24 20 24;
+    -fx-spacing: 6;
+    -fx-pref-width: 200px;
+}
+
+.kpi-title {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748B;
+}
+
+.kpi-value {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.content-placeholder {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
+}
+
+.section-title {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.language-selector {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-font-size: 12px;
+    -fx-pref-width: 80px;
 }
