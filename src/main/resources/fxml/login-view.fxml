@@ -2,31 +2,170 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.gestorrh.escritorio.presentation.controller.LoginController"
-           stylesheets="@../css/styles.css"
-           prefWidth="900.0" prefHeight="600.0">
+<HBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.LoginController"
+      stylesheets="@../css/styles.css"
+      prefWidth="1100.0"
+      prefHeight="660.0"
+      minWidth="900.0"
+      minHeight="600.0">
 
-    <VBox alignment="CENTER" maxWidth="400.0" maxHeight="450.0" styleClass="login-card">
+    <VBox styleClass="login-left-panel"
+          alignment="CENTER"
+          prefWidth="420.0"
+          minWidth="340.0"
+          spacing="0.0">
 
-        <Label fx:id="titleLabel" styleClass="title-label" text="Iniciar Sesión" />
-
-        <VBox spacing="8.0">
-            <Label fx:id="emailLabel" styleClass="input-label" text="Correo electrónico" />
-            <TextField fx:id="emailField" promptText="empresa@gestorrh.com" />
-        </VBox>
-
-        <VBox spacing="8.0">
-            <Label fx:id="passwordLabel" styleClass="input-label" text="Contraseña" />
-            <PasswordField fx:id="passwordField" promptText="••••••••" />
-        </VBox>
-
-        <StackPane>
-            <Button fx:id="loginButton" styleClass="primary-button" maxWidth="Infinity" text="Entrar" onAction="#handleLoginAction" />
-            <ProgressIndicator fx:id="loadingIndicator" visible="false" maxWidth="24.0" maxHeight="24.0" />
+        <!-- Logo -->
+        <StackPane styleClass="login-logo-container" VBox.vgrow="NEVER">
+            <ImageView fitWidth="80.0" fitHeight="80.0" preserveRatio="true">
+                <image>
+                    <Image url="@../images/icon.png"/>
+                </image>
+            </ImageView>
         </StackPane>
+
+        <!-- Nombre app -->
+        <Label text="GestorRH" styleClass="login-brand-title">
+            <VBox.margin>
+                <Insets top="20.0"/>
+            </VBox.margin>
+        </Label>
+
+        <!-- Claim principal -->
+        <Label fx:id="brandClaimLabel" styleClass="login-brand-claim"
+               wrapText="true" textAlignment="CENTER">
+            <VBox.margin>
+                <Insets top="12.0" bottom="36.0"/>
+            </VBox.margin>
+        </Label>
+
+        <!-- Tag Panel de Administración -->
+        <Label fx:id="brandTagLabel" styleClass="login-brand-tag">
+            <VBox.margin>
+                <Insets top="4.0" bottom="28.0"/>
+            </VBox.margin>
+        </Label>
+
+        <!-- Separador -->
+        <Separator styleClass="login-separator">
+            <VBox.margin>
+                <Insets bottom="32.0" left="32.0" right="32.0"/>
+            </VBox.margin>
+        </Separator>
+
+        <!-- Feature 1 -->
+        <HBox styleClass="login-feature-item" spacing="16.0" alignment="CENTER_LEFT">
+            <StackPane styleClass="login-feature-icon-container">
+                <FontIcon fx:id="feature1Icon" iconLiteral="mdi2a-account-group"
+                          iconSize="22" styleClass="login-feature-icon"/>
+            </StackPane>
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <Label fx:id="feature1TitleLabel" styleClass="login-feature-title"/>
+                <Label fx:id="feature1DescLabel" styleClass="login-feature-desc" wrapText="true"/>
+            </VBox>
+        </HBox>
+
+        <!-- Feature 2 -->
+        <HBox styleClass="login-feature-item" spacing="16.0" alignment="CENTER_LEFT">
+            <StackPane styleClass="login-feature-icon-container">
+                <FontIcon fx:id="feature2Icon" iconLiteral="mdi2c-calendar-clock"
+                          iconSize="22" styleClass="login-feature-icon"/>
+            </StackPane>
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <Label fx:id="feature2TitleLabel" styleClass="login-feature-title"/>
+                <Label fx:id="feature2DescLabel" styleClass="login-feature-desc" wrapText="true"/>
+            </VBox>
+        </HBox>
+
+        <!-- Feature 3 -->
+        <HBox styleClass="login-feature-item" spacing="16.0" alignment="CENTER_LEFT">
+            <StackPane styleClass="login-feature-icon-container">
+                <FontIcon fx:id="feature3Icon" iconLiteral="mdi2c-chart-bar"
+                          iconSize="22" styleClass="login-feature-icon"/>
+            </StackPane>
+            <VBox spacing="3.0" HBox.hgrow="ALWAYS">
+                <Label fx:id="feature3TitleLabel" styleClass="login-feature-title"/>
+                <Label fx:id="feature3DescLabel" styleClass="login-feature-desc" wrapText="true"/>
+            </VBox>
+        </HBox>
+
+        <Region VBox.vgrow="ALWAYS"/>
 
     </VBox>
 
-</StackPane>
+    <VBox styleClass="login-right-panel"
+          HBox.hgrow="ALWAYS">
+
+        <!-- Toggle de idioma arriba a la derecha -->
+        <HBox alignment="CENTER_RIGHT" styleClass="login-lang-container">
+            <Button fx:id="langEsButton" text="ES"
+                    styleClass="login-lang-btn, login-lang-btn-active"
+                    onAction="#handleLangEs"/>
+            <Button fx:id="langEnButton" text="EN"
+                    styleClass="login-lang-btn"
+                    onAction="#handleLangEn"/>
+        </HBox>
+
+        <!-- Formulario centrado verticalmente -->
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="20.0">
+            <VBox maxWidth="420.0" spacing="20.0">
+
+                <!-- Título y subtítulo -->
+                <VBox spacing="6.0">
+                    <Label fx:id="titleLabel" styleClass="login-form-title"/>
+                    <Label fx:id="subtitleLabel" styleClass="login-form-subtitle"/>
+                </VBox>
+
+                <!-- Label de error inline -->
+                <Label fx:id="errorLabel"
+                       styleClass="login-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <!-- Campo email -->
+                <VBox spacing="6.0">
+                    <Label fx:id="emailLabel" styleClass="login-field-label"/>
+                    <TextField fx:id="emailField" styleClass="login-text-field"/>
+                </VBox>
+
+                <!-- Campo contraseña -->
+                <VBox spacing="6.0">
+                    <Label fx:id="passwordLabel" styleClass="login-field-label"/>
+                    <PasswordField fx:id="passwordField" styleClass="login-text-field"/>
+                </VBox>
+
+                <!-- Botón principal + ProgressIndicator -->
+                <StackPane>
+                    <Button fx:id="loginButton"
+                            styleClass="login-primary-button"
+                            maxWidth="Infinity"
+                            onAction="#handleLoginAction"/>
+                    <ProgressIndicator fx:id="loadingIndicator"
+                                       visible="false"
+                                       maxWidth="24.0"
+                                       maxHeight="24.0"/>
+                </StackPane>
+
+                <!-- Enlaces secundarios -->
+                <VBox spacing="4.0" alignment="CENTER">
+                    <Hyperlink fx:id="registerLink"
+                               styleClass="login-hyperlink"
+                               onAction="#handleRegisterAction"/>
+                    <Hyperlink fx:id="forgotPasswordLink"
+                               styleClass="login-hyperlink"
+                               onAction="#handleForgotPasswordAction"/>
+                </VBox>
+
+            </VBox>
+        </VBox>
+
+    </VBox>
+
+</HBox>
