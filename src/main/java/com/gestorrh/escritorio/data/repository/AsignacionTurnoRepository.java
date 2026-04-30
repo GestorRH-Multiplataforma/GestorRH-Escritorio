@@ -3,7 +3,7 @@ package com.gestorrh.escritorio.data.repository;
 import com.gestorrh.escritorio.data.network.AsignacionTurnoService;
 
 /**
- * Repositorio encargado de la gestión de datos de Asinaciones de Turnos.
+ * Repositorio encargado de la gestión de datos de Asignaciones de Turnos.
  * Actúa como mediador entre la capa de red y la lógica de negocio.
  *
  * @author Fco Javier García Cañero

@@ -3,7 +3,7 @@ package com.gestorrh.escritorio.data.repository;
 import com.gestorrh.escritorio.data.network.EstadisticasService;
 
 /**
- * Repositorio encargado de la gestión de datos de Estatisticas.
+ * Repositorio encargado de la gestión de datos de Estadísticas.
  * Actúa como mediador entre la capa de red y la lógica de negocio.
  *
  * @author Fco Javier García Cañero
