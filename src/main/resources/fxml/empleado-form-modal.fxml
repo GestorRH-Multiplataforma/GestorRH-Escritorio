@@ -15,18 +15,6 @@
         <Label fx:id="modalTituloLabel" styleClass="modal-titulo"/>
     </HBox>
 
-    <!-- Error inline -->
-    <VBox>
-        <padding>
-            <Insets top="12.0" right="24.0" bottom="0.0" left="24.0"/>
-        </padding>
-        <Label fx:id="errorLabel"
-               styleClass="modal-error-label"
-               wrapText="true"
-               visible="false"
-               managed="false"/>
-    </VBox>
-
     <!-- TabPane -->
     <TabPane fx:id="tabPane"
              styleClass="modal-tab-pane"
@@ -38,34 +26,33 @@
             <VBox styleClass="modal-tab-content" spacing="14.0">
 
                 <!-- Nombre -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelNombre" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldNombre"
-                               styleClass="modal-text-field"
-                               maxLength="50"/>
+                    <TextField fx:id="fieldNombre" styleClass="modal-text-field"/>
+                    <Label fx:id="errorNombre" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
                 </VBox>
 
                 <!-- Apellidos -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelApellidos" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldApellidos"
-                               styleClass="modal-text-field"
-                               maxLength="100"/>
+                    <TextField fx:id="fieldApellidos" styleClass="modal-text-field"/>
+                    <Label fx:id="errorApellidos" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
                 </VBox>
 
                 <!-- Email -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelEmail" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldEmail"
-                               styleClass="modal-text-field"/>
+                    <TextField fx:id="fieldEmail" styleClass="modal-text-field"/>
+                    <Label fx:id="errorEmail" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
                 </VBox>
 
                 <!-- Teléfono -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelTelefono" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldTelefono"
-                               styleClass="modal-text-field"
-                               maxLength="15"/>
+                    <TextField fx:id="fieldTelefono" styleClass="modal-text-field"/>
                 </VBox>
 
             </VBox>
@@ -76,23 +63,23 @@
             <VBox styleClass="modal-tab-content" spacing="14.0">
 
                 <!-- Departamento -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelDepartamento" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldDepartamento"
-                               styleClass="modal-text-field"
-                               maxLength="100"/>
+                    <TextField fx:id="fieldDepartamento" styleClass="modal-text-field"/>
+                    <Label fx:id="errorDepartamento" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
                 </VBox>
 
                 <!-- Puesto -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelPuesto" styleClass="modal-field-label"/>
-                    <TextField fx:id="fieldPuesto"
-                               styleClass="modal-text-field"
-                               maxLength="100"/>
+                    <TextField fx:id="fieldPuesto" styleClass="modal-text-field"/>
+                    <Label fx:id="errorPuesto" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
                 </VBox>
 
                 <!-- Rol -->
-                <VBox spacing="5.0">
+                <VBox spacing="4.0">
                     <Label fx:id="labelRol" styleClass="modal-field-label"/>
                     <ComboBox fx:id="comboRol"
                               styleClass="modal-combo-box"
@@ -108,28 +95,24 @@
 
                     <Label fx:id="labelResetTitulo" styleClass="reset-password-titulo"/>
 
-                    <!-- Nueva contraseña -->
-                    <VBox spacing="5.0">
+                    <VBox spacing="4.0">
                         <Label fx:id="labelNuevaPassword" styleClass="modal-field-label"/>
                         <PasswordField fx:id="fieldNuevaPassword"
                                        styleClass="modal-text-field"/>
                     </VBox>
 
-                    <!-- Confirmar contraseña -->
-                    <VBox spacing="5.0">
+                    <VBox spacing="4.0">
                         <Label fx:id="labelConfirmarPassword" styleClass="modal-field-label"/>
                         <PasswordField fx:id="fieldConfirmarPassword"
                                        styleClass="modal-text-field"/>
                     </VBox>
 
-                    <!-- Error reset inline -->
                     <Label fx:id="errorResetLabel"
-                           styleClass="modal-error-label"
+                           styleClass="modal-field-error"
                            wrapText="true"
                            visible="false"
                            managed="false"/>
 
-                    <!-- Botón restablecer -->
                     <HBox alignment="CENTER_RIGHT">
                         <Button fx:id="btnReset"
                                 styleClass="modal-btn-reset"

@@ -973,6 +973,13 @@
     -fx-padding: 6 10 6 10;
 }
 
+.modal-field-error {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 11px;
+    -fx-text-fill: #D32F2F;
+    -fx-padding: 0 0 0 2;
+}
+
 /* Panel de reset de contraseña */
 .reset-password-panel {
     -fx-background-color: #FFFFFF;

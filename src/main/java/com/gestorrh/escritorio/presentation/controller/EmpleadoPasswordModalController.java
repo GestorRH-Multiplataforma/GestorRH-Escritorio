@@ -9,6 +9,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
 
+
 /**
  * Controlador para el modal que muestra la contraseña generada automáticamente
  * por la API tras dar de alta a un nuevo empleado.

@@ -77,6 +77,13 @@ public class EmpleadoFormController {
     @FXML private Button btnGuardar;
     @FXML private Button btnCancelar;
 
+    // Labels de error por campo
+    @FXML private Label errorNombre;
+    @FXML private Label errorApellidos;
+    @FXML private Label errorEmail;
+    @FXML private Label errorDepartamento;
+    @FXML private Label errorPuesto;
+
     private EmpleadoFormViewModel viewModel;
     private Runnable onGuardadoExitoso;
     private final Runnable actualizadorTextos = this::actualizarTextos;
@@ -88,6 +95,20 @@ public class EmpleadoFormController {
     @FXML
     public void initialize() {
         comboRol.getItems().addAll("EMPLEADO", "SUPERVISOR");
+        comboRol.setConverter(new javafx.util.StringConverter<>() {
+            @Override
+            public String toString(String rol) {
+                if (rol == null) return "";
+                LanguageManager lang = LanguageManager.getInstance();
+                return "SUPERVISOR".equals(rol)
+                        ? lang.getString("empleados.rol.supervisor")
+                        : lang.getString("empleados.rol.empleado");
+            }
+            @Override
+            public String fromString(String string) {
+                return string;
+            }
+        });
         LanguageManager.getInstance().addListener(actualizadorTextos);
     }
 
@@ -157,16 +178,22 @@ public class EmpleadoFormController {
         panelResetPassword.visibleProperty().bind(viewModel.panelResetVisibleProperty());
         panelResetPassword.managedProperty().bind(viewModel.panelResetVisibleProperty());
 
-        // Error inline principal
-        errorLabel.textProperty().bind(viewModel.mensajeErrorProperty());
-        errorLabel.visibleProperty().bind(viewModel.errorVisibleProperty());
-        errorLabel.managedProperty().bind(viewModel.errorVisibleProperty());
-
         // En edición: email no editable y panel reset visible
         if (modo == ModoFormulario.EDICION) {
             fieldEmail.setDisable(true);
             viewModel.panelResetVisibleProperty().set(true);
         }
+
+        // Validación inline del formulario principal
+        viewModel.nombreProperty().addListener((obs, o, n)       -> actualizarErrorFormulario());
+        viewModel.apellidosProperty().addListener((obs, o, n)    -> actualizarErrorFormulario());
+        viewModel.emailProperty().addListener((obs, o, n)        -> actualizarErrorFormulario());
+        viewModel.puestoProperty().addListener((obs, o, n)       -> actualizarErrorFormulario());
+        viewModel.departamentoProperty().addListener((obs, o, n) -> actualizarErrorFormulario());
+
+        // Validación inline del panel de reset
+        viewModel.nuevaPasswordProperty().addListener((obs, o, n) -> actualizarErrorReset());
+        viewModel.confirmarPasswordProperty().addListener((obs, o, n) -> actualizarErrorReset());
     }
 
     /**
@@ -190,9 +217,10 @@ public class EmpleadoFormController {
     private void ejecutarAlta() {
         viewModel.guardarAlta()
                 .thenAccept(respuesta -> Platform.runLater(() -> {
+                    String password = respuesta.passwordGenerada();
                     if (onGuardadoExitoso != null) onGuardadoExitoso.run();
                     cerrarModal();
-                    mostrarModalPasswordGenerada(respuesta.passwordGenerada());
+                    Platform.runLater(() -> mostrarModalPasswordGenerada(password));
                 }))
                 .exceptionally(ex -> {
                     Platform.runLater(() -> {
@@ -274,10 +302,12 @@ public class EmpleadoFormController {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
             stage.setTitle(LanguageManager.getInstance().getString("empleados.modal.password.titulo"));
-            stage.setScene(new Scene(root));
-            stage.setOnCloseRequest(event -> {
-                controller.limpiar();
-            });
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    getClass().getResource("/css/styles.css").toExternalForm()
+            );
+            stage.setScene(scene);
+            stage.setOnCloseRequest(event -> controller.limpiar());
             stage.showAndWait();
 
         } catch (IOException e) {
@@ -354,5 +384,130 @@ public class EmpleadoFormController {
 
         btnGuardar.setText(lang.getString("empleados.modal.btn.guardar"));
         btnCancelar.setText(lang.getString("empleados.modal.btn.cancelar"));
+    }
+
+    /**
+     * Actualiza el mensaje de error inline del panel de reset según el estado
+     * de los campos de contraseña.
+     */
+    private void actualizarErrorReset() {
+        LanguageManager lang = LanguageManager.getInstance();
+        String nueva    = viewModel.nuevaPasswordProperty().get();
+        String confirmar = viewModel.confirmarPasswordProperty().get();
+
+        if (nueva.isEmpty() && confirmar.isEmpty()) {
+            errorResetLabel.setVisible(false);
+            errorResetLabel.setManaged(false);
+            return;
+        }
+
+        if (nueva.length() < 8) {
+            errorResetLabel.setText(lang.getString("empleados.modal.reset.error.corta"));
+            errorResetLabel.setVisible(true);
+            errorResetLabel.setManaged(true);
+            return;
+        }
+
+        if (!nueva.equals(confirmar)) {
+            errorResetLabel.setText(lang.getString("empleados.modal.reset.error.no.coincide"));
+            errorResetLabel.setVisible(true);
+            errorResetLabel.setManaged(true);
+            return;
+        }
+
+        errorResetLabel.setVisible(false);
+        errorResetLabel.setManaged(false);
+    }
+
+    /**
+     * Actualiza los mensajes de error inline debajo de cada campo obligatorio.
+     */
+    private void actualizarErrorFormulario() {
+        LanguageManager lang = LanguageManager.getInstance();
+
+        // Nombre
+        boolean nombreVacio = viewModel.nombreProperty().get().isBlank();
+        mostrarErrorCampo(errorNombre,
+                nombreVacio && !fieldNombre.getText().isEmpty() || campoTocado(fieldNombre),
+                nombreVacio,
+                lang.getString("empleados.modal.error.campos.requeridos"));
+
+        // Apellidos
+        boolean apellidosVacio = viewModel.apellidosProperty().get().isBlank();
+        mostrarErrorCampo(errorApellidos,
+                campoTocado(fieldApellidos),
+                apellidosVacio,
+                lang.getString("empleados.modal.error.campos.requeridos"));
+
+        // Email (solo en alta)
+        if (viewModel.getModo() == ModoFormulario.ALTA) {
+            String emailVal = viewModel.emailProperty().get();
+            boolean emailVacio = emailVal.isBlank();
+            boolean emailInvalido = !emailVacio && !emailVal.matches(
+                    "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+            if (campoTocado(fieldEmail)) {
+                if (emailVacio) {
+                    mostrarErrorCampo(errorEmail, true, true,
+                            lang.getString("empleados.modal.error.campos.requeridos"));
+                } else if (emailInvalido) {
+                    mostrarErrorCampo(errorEmail, true, true,
+                            lang.getString("empleados.modal.error.email"));
+                } else {
+                    ocultarErrorCampo(errorEmail);
+                }
+            }
+        }
+
+        // Departamento
+        boolean departamentoVacio = viewModel.departamentoProperty().get().isBlank();
+        mostrarErrorCampo(errorDepartamento,
+                campoTocado(fieldDepartamento),
+                departamentoVacio,
+                lang.getString("empleados.modal.error.campos.requeridos"));
+
+        // Puesto
+        boolean puestoVacio = viewModel.puestoProperty().get().isBlank();
+        mostrarErrorCampo(errorPuesto,
+                campoTocado(fieldPuesto),
+                puestoVacio,
+                lang.getString("empleados.modal.error.campos.requeridos"));
+    }
+
+    /**
+     * Muestra u oculta el label de error de un campo según si ha sido tocado y si es inválido.
+     *
+     * @param errorLabel Label de error del campo.
+     * @param tocado     Indica si el usuario ha interactuado con el campo.
+     * @param invalido   Indica si el valor actual es inválido.
+     * @param mensaje    Mensaje de error a mostrar.
+     */
+    private void mostrarErrorCampo(Label errorLabel, boolean tocado, boolean invalido, String mensaje) {
+        if (tocado && invalido) {
+            errorLabel.setText(mensaje);
+            errorLabel.setVisible(true);
+            errorLabel.setManaged(true);
+        } else {
+            ocultarErrorCampo(errorLabel);
+        }
+    }
+
+    /**
+     * Oculta el label de error de un campo.
+     *
+     * @param errorLabel Label de error a ocultar.
+     */
+    private void ocultarErrorCampo(Label errorLabel) {
+        errorLabel.setVisible(false);
+        errorLabel.setManaged(false);
+    }
+
+    /**
+     * Indica si el usuario ha interactuado con un campo (si no está vacío o ha perdido el foco).
+     *
+     * @param field Campo de texto a comprobar.
+     * @return true si el campo ha sido tocado.
+     */
+    private boolean campoTocado(TextField field) {
+        return field.isFocused() || !field.getText().isEmpty();
     }
 }
