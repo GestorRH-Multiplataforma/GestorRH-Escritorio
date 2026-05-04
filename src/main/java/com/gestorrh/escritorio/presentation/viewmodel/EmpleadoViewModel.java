@@ -1,6 +1,7 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
 import com.gestorrh.escritorio.data.network.dto.PeticionBajaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 import javafx.application.Platform;
@@ -107,6 +108,7 @@ public class EmpleadoViewModel {
         empleadoRepository.getEmpleados()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     empleados.setAll(lista);
+                    aplicarFiltro();
                     cargando.set(false);
                 }))
                 .exceptionally(ex -> {
@@ -134,11 +136,12 @@ public class EmpleadoViewModel {
 
     /**
      * Readmite a un empleado dado de baja de forma asíncrona.
+     * La API genera una nueva contraseña de acceso devuelta en la respuesta.
      *
      * @param id Identificador único del empleado a readmitir.
-     * @return CompletableFuture que se completa con null tras la readmisión exitosa.
+     * @return CompletableFuture con los datos del empleado readmitido y su nueva contraseña.
      */
-    public CompletableFuture<Void> readmitirEmpleado(Long id) {
+    public CompletableFuture<RespuestaCrearEmpleadoDTO> readmitirEmpleado(Long id) {
         return empleadoRepository.readmitir(id);
     }
 

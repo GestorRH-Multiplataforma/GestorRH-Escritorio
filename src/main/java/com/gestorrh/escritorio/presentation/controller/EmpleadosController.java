@@ -168,7 +168,12 @@ public class EmpleadosController {
                 setGraphic(null);
                 setText(null);
 
-                if (empty || fechaStr == null) {
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+                if (fechaStr == null) {
                     setText("—");
                     setAlignment(javafx.geometry.Pos.CENTER);
                     return;
@@ -183,7 +188,7 @@ public class EmpleadosController {
                     String estilo = esFutura ? "badge-baja-programada" : "badge-inactivo";
                     String texto  = esFutura
                             ? lang.getString("empleados.badge.baja.programada") + " · " + fechaLegible
-                            : lang.getString("empleados.estado.inactivo") + " · " + fechaLegible;
+                            : lang.getString("empleados.badge.inactivo") + " · " + fechaLegible;
 
                     Label badge = new Label(texto);
                     badge.getStyleClass().addAll("badge", estilo);
@@ -485,107 +490,137 @@ public class EmpleadosController {
     }
 
     /**
-     * Muestra el diálogo de confirmación de baja con DatePicker y ejecuta
-     * la operación si el usuario confirma.
+     * Abre el modal de confirmación de baja y ejecuta la operación si el usuario confirma.
      *
      * @param empleado Empleado a dar de baja.
      */
     private void handleBaja(RespuestaEmpleadoDTO empleado) {
-        LanguageManager lang = LanguageManager.getInstance();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/baja-confirmacion-modal.fxml")
+            );
+            Parent root = loader.load();
+            BajaConfirmacionModalController controller = loader.getController();
+            controller.inicializar(
+                    BajaConfirmacionModalController.Modo.BAJA,
+                    empleado.nombre() + " " + empleado.apellidos(),
+                    fecha -> viewModel.darDeBajaEmpleado(empleado.idEmpleado(), fecha)
+                            .thenRun(() -> Platform.runLater(() -> {
+                                viewModel.cargarEmpleados();
+                                paginaActual = 0;
+                            }))
+                            .exceptionally(ex -> {
+                                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                                Platform.runLater(() -> mostrarError(cause.getMessage()));
+                                return null;
+                            })
+            );
 
-        String nombreCompleto = empleado.nombre() + " " + empleado.apellidos();
-        String mensaje = lang.getString("empleados.baja.confirmar.mensaje")
-                .replace("{0}", nombreCompleto);
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initOwner(tablaEmpleados.getScene().getWindow());
+            modal.setResizable(false);
+            modal.setScene(new Scene(root));
+            modal.getScene().getStylesheets().add(
+                    getClass().getResource("/css/styles.css").toExternalForm()
+            );
+            modal.setOnCloseRequest(e -> controller.limpiar());
+            modal.showAndWait();
 
-        DatePicker datePicker = new DatePicker(LocalDate.now());
-        datePicker.setMaxWidth(Double.MAX_VALUE);
-
-        Label labelFecha = new Label(lang.getString("empleados.baja.fecha.label"));
-        labelFecha.getStyleClass().add("modal-field-label");
-
-        VBox contenido = new VBox(10,
-                new Label(mensaje),
-                labelFecha,
-                datePicker
-        );
-        contenido.setPadding(new javafx.geometry.Insets(10, 0, 0, 0));
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(lang.getString("empleados.baja.confirmar.titulo"));
-        alert.setHeaderText(null);
-        alert.getDialogPane().setContent(contenido);
-        alert.getDialogPane().getScene().getWindow().sizeToScene();
-
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType == ButtonType.OK) {
-                String fechaBaja = datePicker.getValue().format(
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                );
-                viewModel.darDeBajaEmpleado(empleado.idEmpleado(), fechaBaja)
-                        .thenRun(() -> Platform.runLater(() -> {
-                            viewModel.cargarEmpleados();
-                            Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                            exito.setTitle(lang.getString("dialog.confirm.title"));
-                            exito.setHeaderText(null);
-                            exito.setContentText(lang.getString("empleados.baja.exito"));
-                            exito.showAndWait();
-                        }))
-                        .exceptionally(ex -> {
-                            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-                            Platform.runLater(() -> {
-                                Alert error = new Alert(Alert.AlertType.ERROR);
-                                error.setTitle(lang.getString("dialog.error.title"));
-                                error.setHeaderText(null);
-                                error.setContentText(cause.getMessage());
-                                error.showAndWait();
-                            });
-                            return null;
-                        });
-            }
-        });
+        } catch (IOException e) {
+            LOGGER.severe("EmpleadosController: Error al abrir modal de baja: " + e.getMessage());
+        }
     }
 
     /**
-     * Muestra el diálogo de confirmación de readmisión y ejecuta
-     * la operación si el usuario confirma.
+     * Abre el modal de confirmación de readmisión, ejecuta la operación si el usuario
+     * confirma y muestra la nueva contraseña generada por la API.
      *
      * @param empleado Empleado a readmitir.
      */
     private void handleReadmitir(RespuestaEmpleadoDTO empleado) {
-        LanguageManager lang = LanguageManager.getInstance();
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/baja-confirmacion-modal.fxml")
+            );
+            Parent root = loader.load();
+            BajaConfirmacionModalController controller = loader.getController();
+            controller.inicializar(
+                    BajaConfirmacionModalController.Modo.READMITIR,
+                    empleado.nombre() + " " + empleado.apellidos(),
+                    fecha -> viewModel.readmitirEmpleado(empleado.idEmpleado())
+                            .thenAccept(respuesta -> Platform.runLater(() -> {
+                                viewModel.cargarEmpleados();
+                                paginaActual = 0;
+                                mostrarModalPasswordGenerada(respuesta.passwordGenerada());
+                            }))
+                            .exceptionally(ex -> {
+                                Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                                Platform.runLater(() -> mostrarError(cause.getMessage()));
+                                return null;
+                            })
+            );
 
-        String nombreCompleto = empleado.nombre() + " " + empleado.apellidos();
-        String mensaje = lang.getString("empleados.readmitir.confirmar.mensaje")
-                .replace("{0}", nombreCompleto);
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initOwner(tablaEmpleados.getScene().getWindow());
+            modal.setResizable(false);
+            modal.setScene(new Scene(root));
+            modal.getScene().getStylesheets().add(
+                    getClass().getResource("/css/styles.css").toExternalForm()
+            );
+            modal.setOnCloseRequest(e -> controller.limpiar());
+            modal.showAndWait();
 
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(lang.getString("empleados.readmitir.confirmar.titulo"));
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
+        } catch (IOException e) {
+            LOGGER.severe("EmpleadosController: Error al abrir modal de readmisión: " + e.getMessage());
+        }
+    }
 
-        alert.showAndWait().ifPresent(buttonType -> {
-            if (buttonType == ButtonType.OK) {
-                viewModel.readmitirEmpleado(empleado.idEmpleado())
-                        .thenRun(() -> Platform.runLater(() -> {
-                            viewModel.cargarEmpleados();
-                            Alert exito = new Alert(Alert.AlertType.INFORMATION);
-                            exito.setTitle(lang.getString("dialog.confirm.title"));
-                            exito.setHeaderText(null);
-                            exito.setContentText(lang.getString("empleados.readmitir.exito"));
-                            exito.showAndWait();
-                        }))
-                        .exceptionally(ex -> {
-                            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
-                            Platform.runLater(() -> {
-                                Alert error = new Alert(Alert.AlertType.ERROR);
-                                error.setTitle(lang.getString("dialog.error.title"));
-                                error.setHeaderText(null);
-                                error.setContentText(cause.getMessage());
-                                error.showAndWait();
-                            });
-                            return null;
-                        });
-            }
-        });
+    /**
+     * Abre el modal que muestra la contraseña generada tras readmitir un empleado.
+     * Reutiliza el mismo modal que se usa al dar de alta.
+     *
+     * @param password Contraseña generada por la API.
+     */
+    private void mostrarModalPasswordGenerada(String password) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/empleado-password-modal.fxml")
+            );
+            Parent root = loader.load();
+            EmpleadoPasswordModalController controller = loader.getController();
+            controller.setPasswordGenerada(password);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tablaEmpleados.getScene().getWindow());
+            stage.setResizable(false);
+            stage.setTitle(LanguageManager.getInstance()
+                    .getString("empleados.modal.password.titulo"));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    getClass().getResource("/css/styles.css").toExternalForm()
+            );
+            stage.setScene(scene);
+            stage.setOnCloseRequest(e -> controller.limpiar());
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            LOGGER.severe("EmpleadosController: Error al abrir modal de contraseña: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Muestra un Alert de error genérico con el mensaje proporcionado.
+     *
+     * @param mensaje Mensaje de error a mostrar al usuario.
+     */
+    private void mostrarError(String mensaje) {
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle(LanguageManager.getInstance().getString("dialog.error.title"));
+        error.setHeaderText(null);
+        error.setContentText(mensaje);
+        error.showAndWait();
     }
 }

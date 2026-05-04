@@ -74,5 +74,5 @@ public interface EmpleadoService {
      * @return Llamada sin cuerpo de respuesta (204 en caso de éxito).
      */
     @POST("api/empleados/{id}/readmitir")
-    Call<Void> readmitir(@Path("id") Long id);
+    Call<RespuestaCrearEmpleadoDTO> readmitir(@Path("id") Long id);
 }

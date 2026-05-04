@@ -84,11 +84,12 @@ public class EmpleadoRepository extends BaseRepository {
 
     /**
      * Readmite a un empleado dado de baja de forma asíncrona.
+     * La API genera una nueva contraseña de acceso devuelta en la respuesta.
      *
      * @param id Identificador único del empleado a readmitir.
-     * @return CompletableFuture que se completa con null tras la readmisión exitosa.
+     * @return CompletableFuture con los datos del empleado readmitido y su nueva contraseña.
      */
-    public CompletableFuture<Void> readmitir(Long id) {
-        return executeAsyncVoid(service.readmitir(id));
+    public CompletableFuture<RespuestaCrearEmpleadoDTO> readmitir(Long id) {
+        return executeAsync(service.readmitir(id));
     }
 }
