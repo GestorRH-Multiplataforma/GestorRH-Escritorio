@@ -1,5 +1,7 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
+import com.gestorrh.escritorio.data.network.dto.PeticionBajaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 import javafx.application.Platform;
@@ -14,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ViewModel encargado de gestionar el estado y la lógica del directorio de empleados.
@@ -45,7 +48,6 @@ public class EmpleadoViewModel {
     private final ObjectProperty<FiltroEstado> filtroEstado =
             new SimpleObjectProperty<>(FiltroEstado.SOLO_ACTIVOS);
     private final BooleanProperty cargando = new SimpleBooleanProperty(false);
-    private final BooleanProperty mostrarColumnaEstado = new SimpleBooleanProperty(false);
     private final StringProperty mensajeError = new SimpleStringProperty("");
     private final BooleanProperty errorVisible = new SimpleBooleanProperty(false);
 
@@ -67,7 +69,6 @@ public class EmpleadoViewModel {
         filtroTexto.addListener((obs, oldVal, newVal) -> aplicarFiltro());
         filtroEstado.addListener((obs, oldVal, newVal) -> {
             aplicarFiltro();
-            mostrarColumnaEstado.set(newVal != FiltroEstado.SOLO_ACTIVOS);
         });
     }
 
@@ -107,6 +108,7 @@ public class EmpleadoViewModel {
         empleadoRepository.getEmpleados()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     empleados.setAll(lista);
+                    aplicarFiltro();
                     cargando.set(false);
                 }))
                 .exceptionally(ex -> {
@@ -119,6 +121,28 @@ public class EmpleadoViewModel {
                     });
                     return null;
                 });
+    }
+
+    /**
+     * Tramita la baja de un empleado de forma asíncrona.
+     *
+     * @param id        Identificador único del empleado.
+     * @param fechaBaja Fecha de baja en formato ISO (yyyy-MM-dd).
+     * @return CompletableFuture que se completa con null tras la baja exitosa.
+     */
+    public CompletableFuture<Void> darDeBajaEmpleado(Long id, String fechaBaja) {
+        return empleadoRepository.darDeBaja(id, new PeticionBajaEmpleadoDTO(fechaBaja));
+    }
+
+    /**
+     * Readmite a un empleado dado de baja de forma asíncrona.
+     * La API genera una nueva contraseña de acceso devuelta en la respuesta.
+     *
+     * @param id Identificador único del empleado a readmitir.
+     * @return CompletableFuture con los datos del empleado readmitido y su nueva contraseña.
+     */
+    public CompletableFuture<RespuestaCrearEmpleadoDTO> readmitirEmpleado(Long id) {
+        return empleadoRepository.readmitir(id);
     }
 
     /**
@@ -148,9 +172,6 @@ public class EmpleadoViewModel {
 
     /** @return Property del estado de carga. */
     public BooleanProperty cargandoProperty() { return cargando; }
-
-    /** @return Property que indica si la columna Estado debe mostrarse. */
-    public BooleanProperty mostrarColumnaEstadoProperty() { return mostrarColumnaEstado; }
 
     /** @return Property del mensaje de error. */
     public StringProperty mensajeErrorProperty() { return mensajeError; }

@@ -35,13 +35,13 @@
                VBox.vgrow="ALWAYS">
 
         <columns>
-            <TableColumn fx:id="colNombre"    prefWidth="200"/>
-            <TableColumn fx:id="colEmail"     prefWidth="180"/>
+            <TableColumn fx:id="colNombre"       prefWidth="200"/>
+            <TableColumn fx:id="colEmail"        prefWidth="180"/>
             <TableColumn fx:id="colDepartamento" prefWidth="120"/>
-            <TableColumn fx:id="colPuesto"    prefWidth="150"/>
-            <TableColumn fx:id="colRol"       prefWidth="100"/>
-            <TableColumn fx:id="colEstado"    prefWidth="80"/>
-            <TableColumn fx:id="colAcciones"  prefWidth="140"/>
+            <TableColumn fx:id="colPuesto"       prefWidth="150"/>
+            <TableColumn fx:id="colRol"          prefWidth="100"/>
+            <TableColumn fx:id="colFechaBaja"    prefWidth="160"/>
+            <TableColumn fx:id="colAcciones"     prefWidth="160"/>
         </columns>
 
         <placeholder>

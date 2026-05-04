@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio.presentation.controller;
 
+import com.gestorrh.escritorio.config.ConfigManager;
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
@@ -70,6 +71,11 @@ public class LoginController {
 
         emailField.textProperty().addListener((obs, oldVal, newVal) -> viewModel.clearError());
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> viewModel.clearError());
+
+        if (ConfigManager.getInstance().isDev()) {
+            emailField.setText("admin@tech.com");
+            passwordField.setText("123456");
+        }
 
         updateLangToggle();
 

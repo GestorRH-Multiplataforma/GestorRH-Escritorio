@@ -1,11 +1,7 @@
 package com.gestorrh.escritorio.data.repository;
 
 import com.gestorrh.escritorio.data.network.EmpleadoService;
-import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionResetPasswordDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.*;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -72,5 +68,28 @@ public class EmpleadoRepository extends BaseRepository {
      */
     public CompletableFuture<RespuestaEmpleadoDTO> resetPassword(Long id, PeticionResetPasswordDTO dto) {
         return executeAsync(service.resetPassword(id, dto));
+    }
+
+    /**
+     * Tramita la baja de un empleado de forma asíncrona estableciendo
+     * la fecha de baja del contrato.
+     *
+     * @param id  Identificador único del empleado.
+     * @param dto DTO con la fecha de baja del contrato.
+     * @return CompletableFuture que se completa con null tras la baja exitosa.
+     */
+    public CompletableFuture<Void> darDeBaja(Long id, PeticionBajaEmpleadoDTO dto) {
+        return executeAsyncVoid(service.darDeBaja(id, dto));
+    }
+
+    /**
+     * Readmite a un empleado dado de baja de forma asíncrona.
+     * La API genera una nueva contraseña de acceso devuelta en la respuesta.
+     *
+     * @param id Identificador único del empleado a readmitir.
+     * @return CompletableFuture con los datos del empleado readmitido y su nueva contraseña.
+     */
+    public CompletableFuture<RespuestaCrearEmpleadoDTO> readmitir(Long id) {
+        return executeAsync(service.readmitir(id));
     }
 }
