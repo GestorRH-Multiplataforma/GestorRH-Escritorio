@@ -828,3 +828,316 @@
 .btn-tabla-baja:hover {
     -fx-background-color: #FEE2E2;
 }
+
+/* Formulario Alta/Edición de Empleado */
+
+.modal-root {
+    -fx-background-color: #F8FAFC;
+}
+
+.modal-header {
+    -fx-background-color: #1A365D;
+    -fx-padding: 16 24 16 24;
+}
+
+.modal-titulo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* TabPane del modal */
+.modal-tab-pane {
+    -fx-background-color: #F8FAFC;
+    -fx-tab-min-height: 36px;
+}
+
+.modal-tab-pane .tab-header-area {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0 0 0 0;
+}
+
+.modal-tab-pane .tab-header-background {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
+}
+
+.modal-tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+
+.modal-tab-pane .tab .tab-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.modal-tab-pane .tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #00A8E8 transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.modal-tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #1A365D;
+    -fx-font-weight: bold;
+}
+
+.modal-tab-pane .tab:hover .tab-label {
+    -fx-text-fill: #1A365D;
+}
+
+.modal-tab-pane .tab-content-area {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 0;
+}
+
+/* Contenido de las pestañas */
+.modal-tab-content {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 24 24 8 24;
+    -fx-spacing: 16;
+}
+
+/* Etiquetas de campo */
+.modal-field-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.modal-field-label-opcional {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #94A3B8;
+}
+
+/* Campos de texto del modal */
+.modal-text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1A365D;
+    -fx-pref-height: 38px;
+}
+
+.modal-text-field:focused {
+    -fx-border-color: #00A8E8;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(0, 168, 232, 0.15), 6, 0, 0, 0);
+}
+
+.modal-text-field:hover {
+    -fx-border-color: #94A3B8;
+}
+
+.modal-text-field:disabled {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #94A3B8;
+    -fx-border-color: #E2E8F0;
+    -fx-opacity: 1;
+}
+
+/* Dropdown de Rol */
+.modal-combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-font-size: 13px;
+    -fx-pref-height: 38px;
+    -fx-cursor: hand;
+}
+
+.modal-combo-box:focused {
+    -fx-border-color: #00A8E8;
+    -fx-border-width: 2;
+}
+
+/* Error inline del modal */
+.modal-error-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #D32F2F;
+    -fx-background-color: rgba(211, 47, 47, 0.08);
+    -fx-background-radius: 6;
+    -fx-padding: 6 10 6 10;
+}
+
+/* Panel de reset de contraseña */
+.reset-password-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 16;
+    -fx-spacing: 12;
+}
+
+.reset-password-titulo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.modal-btn-reset {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+}
+
+.modal-btn-reset:hover {
+    -fx-background-color: #E2E8F0;
+}
+
+.modal-btn-reset:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+/* Footer del modal */
+.modal-footer {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 14 24 14 24;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, -2, 0);
+}
+
+.modal-btn-guardar {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 9 22 9 22;
+    -fx-cursor: hand;
+}
+
+.modal-btn-guardar:hover {
+    -fx-background-color: #0090CC;
+}
+
+.modal-btn-guardar:disabled {
+    -fx-background-color: #94A3B8;
+    -fx-opacity: 0.7;
+    -fx-cursor: default;
+}
+
+.modal-btn-cancelar {
+    -fx-background-color: transparent;
+    -fx-text-fill: #64748B;
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 9 22 9 22;
+    -fx-cursor: hand;
+}
+
+.modal-btn-cancelar:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+}
+
+/* Contraseña generada tras el alta */
+
+.password-modal-root {
+    -fx-background-color: #F8FAFC;
+}
+
+.password-modal-header {
+    -fx-background-color: #1A365D;
+    -fx-padding: 16 24 16 24;
+    -fx-spacing: 10;
+}
+
+.password-modal-titulo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.password-modal-subtitulo {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: rgba(255, 255, 255, 0.75);
+}
+
+.password-display-container {
+    -fx-background-color: #1A365D;
+    -fx-background-radius: 10;
+    -fx-padding: 16 20 16 20;
+    -fx-spacing: 10;
+}
+
+.password-display {
+    -fx-font-family: "Courier New", "Consolas", "Lucida Console", monospace;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00A8E8;
+    -fx-letter-spacing: 2px;
+}
+
+.password-aviso {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #F59E0B;
+    -fx-wrap-text: true;
+    -fx-text-alignment: CENTER;
+}
+
+.password-modal-btn-copiar {
+    -fx-background-color: rgba(0, 168, 232, 0.15);
+    -fx-text-fill: #00A8E8;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(0, 168, 232, 0.30);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 7 16 7 16;
+    -fx-cursor: hand;
+}
+
+.password-modal-btn-copiar:hover {
+    -fx-background-color: rgba(0, 168, 232, 0.25);
+}
+
+.password-modal-btn-cerrar {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 9 28 9 28;
+    -fx-cursor: hand;
+}
+
+.password-modal-btn-cerrar:hover {
+    -fx-background-color: #0090CC;
+}
