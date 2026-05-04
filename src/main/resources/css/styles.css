@@ -1148,3 +1148,31 @@
 .password-modal-btn-cerrar:hover {
     -fx-background-color: #0090CC;
 }
+
+/* Badge baja programada */
+.badge-baja-programada {
+    -fx-text-fill: #92400E;
+    -fx-background-color: #FEF3C7;
+    -fx-border-color: #FCD34D;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+}
+
+/* Botón readmitir en tabla */
+.btn-tabla-readmitir {
+    -fx-background-color: #F0FDF4;
+    -fx-text-fill: #166534;
+    -fx-border-color: #BBF7D0;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+
+.btn-tabla-readmitir:hover {
+    -fx-background-color: #DCFCE7;
+}
+
+/* Botón baja deshabilitado en tabla */
+.btn-tabla-baja:disabled {
+    -fx-opacity: 0.4;
+    -fx-cursor: default;
+}
