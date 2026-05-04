@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.EmpleadoFormController"
+      styleClass="modal-root"
+      prefWidth="520.0"
+      spacing="0.0">
+
+    <!-- Header -->
+    <HBox styleClass="modal-header" alignment="CENTER_LEFT">
+        <Label fx:id="modalTituloLabel" styleClass="modal-titulo"/>
+    </HBox>
+
+    <!-- TabPane -->
+    <TabPane fx:id="tabPane"
+             styleClass="modal-tab-pane"
+             tabClosingPolicy="UNAVAILABLE"
+             VBox.vgrow="ALWAYS">
+
+        <!-- Pestaña: Datos Personales -->
+        <Tab fx:id="tabPersonal">
+            <VBox styleClass="modal-tab-content" spacing="14.0">
+
+                <!-- Nombre -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelNombre" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldNombre" styleClass="modal-text-field"/>
+                    <Label fx:id="errorNombre" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Apellidos -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelApellidos" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldApellidos" styleClass="modal-text-field"/>
+                    <Label fx:id="errorApellidos" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Email -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelEmail" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldEmail" styleClass="modal-text-field"/>
+                    <Label fx:id="errorEmail" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Teléfono -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelTelefono" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldTelefono" styleClass="modal-text-field"/>
+                </VBox>
+
+            </VBox>
+        </Tab>
+
+        <!-- Pestaña: Datos Laborales -->
+        <Tab fx:id="tabLaboral">
+            <VBox styleClass="modal-tab-content" spacing="14.0">
+
+                <!-- Departamento -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelDepartamento" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldDepartamento" styleClass="modal-text-field"/>
+                    <Label fx:id="errorDepartamento" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Puesto -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelPuesto" styleClass="modal-field-label"/>
+                    <TextField fx:id="fieldPuesto" styleClass="modal-text-field"/>
+                    <Label fx:id="errorPuesto" styleClass="modal-field-error"
+                           visible="false" managed="false"/>
+                </VBox>
+
+                <!-- Rol -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelRol" styleClass="modal-field-label"/>
+                    <ComboBox fx:id="comboRol"
+                              styleClass="modal-combo-box"
+                              maxWidth="Infinity"/>
+                </VBox>
+
+                <!-- Panel Reset Contraseña (solo visible en edición) -->
+                <VBox fx:id="panelResetPassword"
+                      styleClass="reset-password-panel"
+                      spacing="12.0"
+                      visible="false"
+                      managed="false">
+
+                    <Label fx:id="labelResetTitulo" styleClass="reset-password-titulo"/>
+
+                    <VBox spacing="4.0">
+                        <Label fx:id="labelNuevaPassword" styleClass="modal-field-label"/>
+                        <PasswordField fx:id="fieldNuevaPassword"
+                                       styleClass="modal-text-field"/>
+                    </VBox>
+
+                    <VBox spacing="4.0">
+                        <Label fx:id="labelConfirmarPassword" styleClass="modal-field-label"/>
+                        <PasswordField fx:id="fieldConfirmarPassword"
+                                       styleClass="modal-text-field"/>
+                    </VBox>
+
+                    <Label fx:id="errorResetLabel"
+                           styleClass="modal-field-error"
+                           wrapText="true"
+                           visible="false"
+                           managed="false"/>
+
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="btnReset"
+                                styleClass="modal-btn-reset"
+                                onAction="#handleReset"/>
+                    </HBox>
+
+                </VBox>
+
+            </VBox>
+        </Tab>
+
+    </TabPane>
+
+    <!-- Footer -->
+    <HBox styleClass="modal-footer" alignment="CENTER_RIGHT" spacing="10.0">
+        <Button fx:id="btnCancelar"
+                styleClass="modal-btn-cancelar"
+                onAction="#handleCancelar"/>
+        <Button fx:id="btnGuardar"
+                styleClass="modal-btn-guardar"
+                onAction="#handleGuardar"/>
+    </HBox>
+
+</VBox>

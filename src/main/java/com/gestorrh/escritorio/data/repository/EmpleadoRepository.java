@@ -1,6 +1,10 @@
 package com.gestorrh.escritorio.data.repository;
 
 import com.gestorrh.escritorio.data.network.EmpleadoService;
+import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.PeticionCrearEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.PeticionResetPasswordDTO;
+import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
 
 import java.util.List;
@@ -11,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
  * Actúa como mediador entre la capa de red y la lógica de negocio.
  *
  * @author Fco Javier García Cañero
- * @version 1.1
+ * @version 1.2
  */
 public class EmpleadoRepository extends BaseRepository {
 
@@ -34,5 +38,39 @@ public class EmpleadoRepository extends BaseRepository {
      */
     public CompletableFuture<List<RespuestaEmpleadoDTO>> getEmpleados() {
         return executeAsync(service.listarEmpleados());
+    }
+
+    /**
+     * Da de alta a un nuevo empleado de forma asíncrona.
+     * La contraseña inicial es generada por el servidor y devuelta en la respuesta.
+     *
+     * @param dto DTO con los datos del nuevo empleado.
+     * @return CompletableFuture con los datos del empleado creado y su contraseña generada.
+     */
+    public CompletableFuture<RespuestaCrearEmpleadoDTO> crearEmpleado(PeticionCrearEmpleadoDTO dto) {
+        return executeAsync(service.crearEmpleado(dto));
+    }
+
+    /**
+     * Actualiza los datos de un empleado existente de forma asíncrona.
+     *
+     * @param id  Identificador único del empleado a actualizar.
+     * @param dto DTO con los nuevos datos del empleado.
+     * @return CompletableFuture con los datos actualizados del empleado.
+     */
+    public CompletableFuture<RespuestaEmpleadoDTO> actualizarEmpleado(Long id, PeticionActualizarEmpleadoDTO dto) {
+        return executeAsync(service.actualizarEmpleado(id, dto));
+    }
+
+    /**
+     * Restablece la contraseña de un empleado de forma asíncrona.
+     * Usado por RRHH cuando el empleado ha olvidado su contraseña.
+     *
+     * @param id  Identificador único del empleado.
+     * @param dto DTO con la nueva contraseña establecida por el administrador.
+     * @return CompletableFuture con los datos actualizados del empleado.
+     */
+    public CompletableFuture<RespuestaEmpleadoDTO> resetPassword(Long id, PeticionResetPasswordDTO dto) {
+        return executeAsync(service.resetPassword(id, dto));
     }
 }

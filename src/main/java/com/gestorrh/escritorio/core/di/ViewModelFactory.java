@@ -1,6 +1,7 @@
 package com.gestorrh.escritorio.core.di;
 
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
+import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
 
@@ -10,7 +11,7 @@ import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
  * para asegurar que cada vista tenga un estado limpio y aislado.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class ViewModelFactory {
 
@@ -46,6 +47,22 @@ public class ViewModelFactory {
         return new EmpleadoViewModel(RepositoryFactory.getInstance().getEmpleadoRepository());
     }
 
+    /**
+     * Crea un ViewModel para el formulario de alta y edición de empleados.
+     * Se genera una nueva instancia por cada apertura del modal para garantizar
+     * un estado limpio e independiente.
+     *
+     * @return Nueva instancia de EmpleadoFormViewModel.
+     */
+    public EmpleadoFormViewModel createEmpleadoFormViewModel() {
+        return new EmpleadoFormViewModel(RepositoryFactory.getInstance().getEmpleadoRepository());
+    }
+
+    /**
+     * Crea un ViewModel para la pantalla de Login inyectando su repositorio.
+     *
+     * @return Nueva instancia de LoginViewModel.
+     */
     public LoginViewModel createLoginViewModel() {
         return new LoginViewModel(RepositoryFactory.getInstance().getAuthRepository());
     }

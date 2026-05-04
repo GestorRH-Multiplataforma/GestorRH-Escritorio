@@ -3,25 +3,43 @@ package com.gestorrh.escritorio.presentation.controller;
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel.ModoFormulario;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel.FiltroEstado;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Controlador para la vista del directorio de empleados.
- * Gestiona la tabla paginada, los filtros y la barra de búsqueda.
+ * Gestiona la tabla paginada, los filtros, la barra de búsqueda
+ * y la apertura del modal de alta y edición de empleados.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class EmpleadosController {
 
+    private static final Logger LOGGER = Logger.getLogger(EmpleadosController.class.getName());
     private static final int FILAS_POR_PAGINA = 25;
 
     @FXML private TextField campoBusqueda;
@@ -134,7 +152,6 @@ public class EmpleadosController {
 
     /**
      * Configura la columna Estado con badges de color según actividad.
-     * La visibilidad de esta columna se gestiona mediante binding reactivo.
      */
     private void configurarColumnaEstado() {
         colEstado.setCellValueFactory(data ->
@@ -165,7 +182,7 @@ public class EmpleadosController {
 
     /**
      * Configura la columna Acciones con los botones Editar y Baja.
-     * Los botones se renderizan pero aún no tienen funcionalidad (issues posteriores).
+     * El botón Editar abre el modal en modo Edición con los datos del empleado seleccionado.
      */
     private void configurarColumnaAcciones() {
         colAcciones.setCellFactory(col -> new TableCell<>() {
@@ -178,6 +195,12 @@ public class EmpleadosController {
             {
                 btnEditar.getStyleClass().addAll("btn-tabla", "btn-tabla-editar");
                 btnBaja.getStyleClass().addAll("btn-tabla", "btn-tabla-baja");
+
+                btnEditar.setOnAction(e -> {
+                    RespuestaEmpleadoDTO empleado = getTableView().getItems().get(getIndex());
+                    abrirModal(ModoFormulario.EDICION, empleado);
+                });
+
                 actualizarTextosBotones();
             }
 
@@ -271,9 +294,9 @@ public class EmpleadosController {
     private void actualizarPagina() {
         if (empleadosFiltrados == null) return;
 
-        int total      = empleadosFiltrados.size();
-        int desde      = paginaActual * FILAS_POR_PAGINA;
-        int hasta      = Math.min(desde + FILAS_POR_PAGINA, total);
+        int total  = empleadosFiltrados.size();
+        int desde  = paginaActual * FILAS_POR_PAGINA;
+        int hasta  = Math.min(desde + FILAS_POR_PAGINA, total);
 
         List<RespuestaEmpleadoDTO> pagina = desde < total
                 ? empleadosFiltrados.subList(desde, hasta)
@@ -346,11 +369,42 @@ public class EmpleadosController {
     // Handlers FXML
 
     /**
-     * Placeholder para el botón "Nuevo Empleado".
-     * La funcionalidad se implementará en la issue de alta de empleado.
+     * Abre el modal en modo Alta con todos los campos vacíos.
      */
     @FXML
     private void handleNuevoEmpleado() {
-        // TODO: Implementar en issue de alta de empleado
+        abrirModal(ModoFormulario.ALTA, null);
+    }
+
+    /**
+     * Abre el modal de alta o edición de empleado.
+     *
+     * @param modo     Modo de operación del formulario.
+     * @param empleado Datos del empleado a editar, o null en modo Alta.
+     */
+    private void abrirModal(ModoFormulario modo, RespuestaEmpleadoDTO empleado) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/empleado-form-modal.fxml")
+            );
+            Parent root = loader.load();
+            EmpleadoFormController controller = loader.getController();
+            controller.inicializar(modo, empleado);
+            controller.setOnGuardadoExitoso(() -> viewModel.cargarEmpleados());
+
+            Stage modal = new Stage();
+            modal.initModality(Modality.APPLICATION_MODAL);
+            modal.initOwner(tablaEmpleados.getScene().getWindow());
+            modal.setResizable(false);
+            modal.setScene(new Scene(root));
+            modal.getScene().getStylesheets().add(
+                    getClass().getResource("/css/styles.css").toExternalForm()
+            );
+            modal.setOnCloseRequest(e -> controller.limpiar());
+            modal.showAndWait();
+
+        } catch (IOException e) {
+            LOGGER.severe("EmpleadosController: Error al abrir el modal de empleado: " + e.getMessage());
+        }
     }
 }
