@@ -7,23 +7,21 @@ import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel.Modo
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel.FiltroEstado;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javafx.geometry.Insets;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,7 +50,7 @@ public class EmpleadosController {
     @FXML private TableColumn<RespuestaEmpleadoDTO, String> colDepartamento;
     @FXML private TableColumn<RespuestaEmpleadoDTO, String> colPuesto;
     @FXML private TableColumn<RespuestaEmpleadoDTO, String> colRol;
-    @FXML private TableColumn<RespuestaEmpleadoDTO, String> colEstado;
+    @FXML private TableColumn<RespuestaEmpleadoDTO, String> colFechaBaja;
     @FXML private TableColumn<RespuestaEmpleadoDTO, Void> colAcciones;
 
     @FXML private Button btnAnterior;
@@ -117,7 +115,7 @@ public class EmpleadosController {
                 new SimpleStringProperty(data.getValue().puesto()));
 
         configurarColumnaRol();
-        configurarColumnaEstado();
+        configurarColumnaFechaBaja();
         configurarColumnaAcciones();
     }
 
@@ -151,71 +149,149 @@ public class EmpleadosController {
     }
 
     /**
-     * Configura la columna Estado con badges de color según actividad.
+     * Configura la columna Fecha de Baja con badges visuales según el estado:
+     * - Guión (—) si el empleado no tiene baja registrada.
+     * - Badge amarillo "Baja programada" si la fecha es futura.
+     * - Badge gris "Inactivo" con la fecha si ya ha pasado.
      */
-    private void configurarColumnaEstado() {
-        colEstado.setCellValueFactory(data ->
-                new SimpleStringProperty(String.valueOf(data.getValue().activo())));
-        colEstado.setCellFactory(col -> new TableCell<>() {
+    private void configurarColumnaFechaBaja() {
+        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatterSalida  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        colFechaBaja.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().fechaBajaContrato()));
+
+        colFechaBaja.setCellFactory(col -> new TableCell<>() {
             @Override
-            protected void updateItem(String activo, boolean empty) {
-                super.updateItem(activo, empty);
-                if (empty || activo == null) {
-                    setGraphic(null);
+            protected void updateItem(String fechaStr, boolean empty) {
+                super.updateItem(fechaStr, empty);
+                setGraphic(null);
+                setText(null);
+
+                if (empty || fechaStr == null) {
+                    setText("—");
+                    setAlignment(javafx.geometry.Pos.CENTER);
                     return;
                 }
-                LanguageManager lang = LanguageManager.getInstance();
-                boolean estaActivo = "true".equals(activo);
-                String texto = estaActivo
-                        ? lang.getString("empleados.estado.activo")
-                        : lang.getString("empleados.estado.inactivo");
-                String estilo = estaActivo ? "badge-activo" : "badge-inactivo";
-                Label badge = new Label(texto);
-                badge.getStyleClass().addAll("badge", estilo);
-                setAlignment(javafx.geometry.Pos.CENTER);
-                setGraphic(badge);
-                setText(null);
+
+                try {
+                    LocalDate fecha    = LocalDate.parse(fechaStr, formatterEntrada);
+                    String fechaLegible = fecha.format(formatterSalida);
+                    LanguageManager lang = LanguageManager.getInstance();
+
+                    boolean esFutura = fecha.isAfter(LocalDate.now());
+                    String estilo = esFutura ? "badge-baja-programada" : "badge-inactivo";
+                    String texto  = esFutura
+                            ? lang.getString("empleados.badge.baja.programada") + " · " + fechaLegible
+                            : lang.getString("empleados.estado.inactivo") + " · " + fechaLegible;
+
+                    Label badge = new Label(texto);
+                    badge.getStyleClass().addAll("badge", estilo);
+                    setAlignment(javafx.geometry.Pos.CENTER);
+                    setGraphic(badge);
+                } catch (Exception e) {
+                    setText("—");
+                    setAlignment(javafx.geometry.Pos.CENTER);
+                }
             }
         });
-        colEstado.visibleProperty().bind(viewModel.mostrarColumnaEstadoProperty());
     }
 
     /**
-     * Configura la columna Acciones con los botones Editar y Baja.
-     * El botón Editar abre el modal en modo Edición con los datos del empleado seleccionado.
+     * Configura la columna Acciones con los botones Editar, Baja y Readmitir.
+     * - Empleado activo sin fecha de baja: botones Editar + Baja habilitado.
+     * - Empleado activo con fecha de baja futura: botones Editar + Baja deshabilitado con Tooltip.
+     * - Empleado inactivo: botones Editar + Readmitir.
      */
     private void configurarColumnaAcciones() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         colAcciones.setCellFactory(col -> new TableCell<>() {
-            private final Button btnEditar = new Button();
-            private final Button btnBaja   = new Button();
-            private final HBox contenedor  = new HBox(6, btnEditar, btnBaja) {{
+            private final Button btnEditar    = new Button();
+            private final Button btnBaja      = new Button();
+            private final Button btnReadmitir = new Button();
+            private final HBox contenedor     = new HBox(6, btnEditar, btnBaja, btnReadmitir) {{
                 setAlignment(javafx.geometry.Pos.CENTER);
             }};
 
             {
                 btnEditar.getStyleClass().addAll("btn-tabla", "btn-tabla-editar");
                 btnBaja.getStyleClass().addAll("btn-tabla", "btn-tabla-baja");
+                btnReadmitir.getStyleClass().addAll("btn-tabla", "btn-tabla-readmitir");
 
                 btnEditar.setOnAction(e -> {
                     RespuestaEmpleadoDTO empleado = getTableView().getItems().get(getIndex());
                     abrirModal(ModoFormulario.EDICION, empleado);
                 });
 
-                actualizarTextosBotones();
-            }
+                btnBaja.setOnAction(e -> {
+                    RespuestaEmpleadoDTO empleado = getTableView().getItems().get(getIndex());
+                    handleBaja(empleado);
+                });
 
-            private void actualizarTextosBotones() {
-                LanguageManager lang = LanguageManager.getInstance();
-                btnEditar.setText(lang.getString("empleados.btn.editar"));
-                btnBaja.setText(lang.getString("empleados.btn.baja"));
+                btnReadmitir.setOnAction(e -> {
+                    RespuestaEmpleadoDTO empleado = getTableView().getItems().get(getIndex());
+                    handleReadmitir(empleado);
+                });
             }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                actualizarTextosBotones();
                 setAlignment(javafx.geometry.Pos.CENTER);
-                setGraphic(empty ? null : contenedor);
+
+                if (empty) {
+                    setGraphic(null);
+                    return;
+                }
+
+                RespuestaEmpleadoDTO empleado = getTableView().getItems().get(getIndex());
+                LanguageManager lang = LanguageManager.getInstance();
+
+                btnEditar.setText(lang.getString("empleados.btn.editar"));
+                btnBaja.setText(lang.getString("empleados.btn.baja"));
+                btnReadmitir.setText(lang.getString("empleados.btn.readmitir"));
+
+                String fechaBajaStr = empleado.fechaBajaContrato();
+                boolean tieneFechaBaja = fechaBajaStr != null;
+                boolean estaActivo = empleado.activo();
+
+                if (estaActivo && !tieneFechaBaja) {
+                    // Activo sin baja programada: Editar + Baja habilitado
+                    btnBaja.setDisable(false);
+                    btnBaja.setTooltip(null);
+                    btnBaja.setVisible(true);
+                    btnBaja.setManaged(true);
+                    btnReadmitir.setVisible(false);
+                    btnReadmitir.setManaged(false);
+
+                } else if (estaActivo && tieneFechaBaja) {
+                    // Activo con baja programada: Editar + Baja deshabilitado con tooltip
+                    try {
+                        LocalDate fecha = LocalDate.parse(fechaBajaStr,
+                                DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        String fechaLegible = fecha.format(formatter);
+                        String tooltipMsg = lang.getString("empleados.baja.tooltip")
+                                .replace("{0}", fechaLegible);
+                        btnBaja.setTooltip(new Tooltip(tooltipMsg));
+                    } catch (Exception ex) {
+                        btnBaja.setTooltip(null);
+                    }
+                    btnBaja.setDisable(true);
+                    btnBaja.setVisible(true);
+                    btnBaja.setManaged(true);
+                    btnReadmitir.setVisible(false);
+                    btnReadmitir.setManaged(false);
+
+                } else {
+                    // Inactivo: Editar + Readmitir
+                    btnBaja.setVisible(false);
+                    btnBaja.setManaged(false);
+                    btnReadmitir.setVisible(true);
+                    btnReadmitir.setManaged(true);
+                }
+
+                setGraphic(contenedor);
             }
         });
     }
@@ -349,7 +425,7 @@ public class EmpleadosController {
         colDepartamento.setText(lang.getString("empleados.col.departamento"));
         colPuesto.setText(lang.getString("empleados.col.puesto"));
         colRol.setText(lang.getString("empleados.col.rol"));
-        colEstado.setText(lang.getString("empleados.col.estado"));
+        colFechaBaja.setText(lang.getString("empleados.col.fecha.baja"));
         colAcciones.setText(lang.getString("empleados.col.acciones"));
 
         int indiceActual = selectorFiltro.getSelectionModel().getSelectedIndex();
@@ -406,5 +482,110 @@ public class EmpleadosController {
         } catch (IOException e) {
             LOGGER.severe("EmpleadosController: Error al abrir el modal de empleado: " + e.getMessage());
         }
+    }
+
+    /**
+     * Muestra el diálogo de confirmación de baja con DatePicker y ejecuta
+     * la operación si el usuario confirma.
+     *
+     * @param empleado Empleado a dar de baja.
+     */
+    private void handleBaja(RespuestaEmpleadoDTO empleado) {
+        LanguageManager lang = LanguageManager.getInstance();
+
+        String nombreCompleto = empleado.nombre() + " " + empleado.apellidos();
+        String mensaje = lang.getString("empleados.baja.confirmar.mensaje")
+                .replace("{0}", nombreCompleto);
+
+        DatePicker datePicker = new DatePicker(LocalDate.now());
+        datePicker.setMaxWidth(Double.MAX_VALUE);
+
+        Label labelFecha = new Label(lang.getString("empleados.baja.fecha.label"));
+        labelFecha.getStyleClass().add("modal-field-label");
+
+        VBox contenido = new VBox(10,
+                new Label(mensaje),
+                labelFecha,
+                datePicker
+        );
+        contenido.setPadding(new javafx.geometry.Insets(10, 0, 0, 0));
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(lang.getString("empleados.baja.confirmar.titulo"));
+        alert.setHeaderText(null);
+        alert.getDialogPane().setContent(contenido);
+        alert.getDialogPane().getScene().getWindow().sizeToScene();
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                String fechaBaja = datePicker.getValue().format(
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                );
+                viewModel.darDeBajaEmpleado(empleado.idEmpleado(), fechaBaja)
+                        .thenRun(() -> Platform.runLater(() -> {
+                            viewModel.cargarEmpleados();
+                            Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                            exito.setTitle(lang.getString("dialog.confirm.title"));
+                            exito.setHeaderText(null);
+                            exito.setContentText(lang.getString("empleados.baja.exito"));
+                            exito.showAndWait();
+                        }))
+                        .exceptionally(ex -> {
+                            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                            Platform.runLater(() -> {
+                                Alert error = new Alert(Alert.AlertType.ERROR);
+                                error.setTitle(lang.getString("dialog.error.title"));
+                                error.setHeaderText(null);
+                                error.setContentText(cause.getMessage());
+                                error.showAndWait();
+                            });
+                            return null;
+                        });
+            }
+        });
+    }
+
+    /**
+     * Muestra el diálogo de confirmación de readmisión y ejecuta
+     * la operación si el usuario confirma.
+     *
+     * @param empleado Empleado a readmitir.
+     */
+    private void handleReadmitir(RespuestaEmpleadoDTO empleado) {
+        LanguageManager lang = LanguageManager.getInstance();
+
+        String nombreCompleto = empleado.nombre() + " " + empleado.apellidos();
+        String mensaje = lang.getString("empleados.readmitir.confirmar.mensaje")
+                .replace("{0}", nombreCompleto);
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(lang.getString("empleados.readmitir.confirmar.titulo"));
+        alert.setHeaderText(null);
+        alert.setContentText(mensaje);
+
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                viewModel.readmitirEmpleado(empleado.idEmpleado())
+                        .thenRun(() -> Platform.runLater(() -> {
+                            viewModel.cargarEmpleados();
+                            Alert exito = new Alert(Alert.AlertType.INFORMATION);
+                            exito.setTitle(lang.getString("dialog.confirm.title"));
+                            exito.setHeaderText(null);
+                            exito.setContentText(lang.getString("empleados.readmitir.exito"));
+                            exito.showAndWait();
+                        }))
+                        .exceptionally(ex -> {
+                            Throwable cause = ex.getCause() != null ? ex.getCause() : ex;
+                            Platform.runLater(() -> {
+                                Alert error = new Alert(Alert.AlertType.ERROR);
+                                error.setTitle(lang.getString("dialog.error.title"));
+                                error.setHeaderText(null);
+                                error.setContentText(cause.getMessage());
+                                error.showAndWait();
+                            });
+                            return null;
+                        });
+            }
+        });
     }
 }
