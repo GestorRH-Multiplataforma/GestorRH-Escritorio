@@ -185,20 +185,25 @@ public class LoginController {
     }
 
     /**
-     * Navega a la vista del Dashboard tras un login exitoso.
+     * Navega a la vista del Shell principal tras un login exitoso.
+     * Maximiza la ventana de forma nativa en macOS y Windows.
+     * El Shell carga internamente el Dashboard como vista inicial.
      */
     private void navigateToDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
-            Scene scene = new Scene(loader.load());
-            scene.getStylesheets().add(
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/shell-view.fxml"));
+            Scene escenaShell = new Scene(loader.load());
+            escenaShell.getStylesheets().add(
                     getClass().getResource("/css/styles.css").toExternalForm()
             );
+
             Stage stage = (Stage) loginButton.getScene().getWindow();
             cleanup();
+
             stage.setResizable(true);
-            stage.setScene(scene);
+            stage.setScene(escenaShell);
             stage.setMaximized(true);
+
         } catch (IOException e) {
             viewModel.handleError(e);
         }

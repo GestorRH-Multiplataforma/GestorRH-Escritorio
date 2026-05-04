@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestorrh.escritorio.presentation.controller.ShellController"
+            stylesheets="@../css/styles.css"
+            styleClass="shell-root">
+
+    <top>
+        <HBox styleClass="shell-header" alignment="CENTER_LEFT" spacing="12.0">
+
+            <Label fx:id="headerLogoLabel" styleClass="shell-header-logo"/>
+
+            <Separator orientation="VERTICAL" styleClass="shell-header-separator"/>
+
+            <Label fx:id="headerNombreEmpresaLabel" styleClass="shell-header-empresa"
+                   HBox.hgrow="ALWAYS"/>
+
+            <HBox spacing="0" alignment="CENTER_RIGHT">
+                <Button fx:id="headerLangEsBtn" text="ES"
+                        styleClass="shell-lang-btn, shell-lang-btn-active"
+                        onAction="#handleLangEs"/>
+                <Button fx:id="headerLangEnBtn" text="EN"
+                        styleClass="shell-lang-btn"
+                        onAction="#handleLangEn"/>
+            </HBox>
+
+            <HBox.margin>
+                <Insets right="16.0"/>
+            </HBox.margin>
+
+        </HBox>
+    </top>
+
+    <left>
+        <VBox fx:id="sidebar" styleClass="shell-sidebar"
+              prefWidth="250.0" minWidth="60.0" maxWidth="250.0">
+
+            <Button fx:id="btnColapsarSidebar"
+                    styleClass="sidebar-btn, sidebar-colapsar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleToggleSidebar"
+                    alignment="CENTER_RIGHT">
+                <graphic>
+                    <FontIcon fx:id="iconoColapsar"
+                              iconLiteral="mdi2c-chevron-left"
+                              iconSize="18"
+                              styleClass="sidebar-icono"/>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuDashboardBtn"
+                    styleClass="sidebar-btn, sidebar-btn-active"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuDashboard">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2v-view-dashboard"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuDashboardLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuEmpleadosBtn"
+                    styleClass="sidebar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuEmpleados">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2a-account-group"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuEmpleadosLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuTurnosBtn"
+                    styleClass="sidebar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuTurnos">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2c-calendar-clock"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuTurnosLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuAusenciasBtn"
+                    styleClass="sidebar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuAusencias">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2c-calendar-remove"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuAusenciasLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuInformesBtn"
+                    styleClass="sidebar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuInformes">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2c-chart-bar"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuInformesLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Button fx:id="menuConfiguracionBtn"
+                    styleClass="sidebar-btn"
+                    maxWidth="Infinity"
+                    onAction="#handleMenuConfiguracion">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2c-cog"
+                                  iconSize="18" styleClass="sidebar-icono"/>
+                        <Label fx:id="menuConfiguracionLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button fx:id="menuCerrarSesionBtn"
+                    styleClass="sidebar-btn, sidebar-btn-cerrar-sesion"
+                    maxWidth="Infinity"
+                    onAction="#handleCerrarSesion">
+                <graphic>
+                    <HBox alignment="CENTER_LEFT" spacing="12.0">
+                        <FontIcon iconLiteral="mdi2l-logout"
+                                  iconSize="18" styleClass="sidebar-icono-cerrar-sesion"/>
+                        <Label fx:id="menuCerrarSesionLabel" styleClass="sidebar-btn-label"/>
+                    </HBox>
+                </graphic>
+            </Button>
+
+        </VBox>
+    </left>
+
+    <center>
+        <BorderPane fx:id="panelContenido" styleClass="shell-content-pane"/>
+    </center>
+
+    <bottom>
+        <HBox styleClass="shell-footer" alignment="CENTER_LEFT">
+
+            <Label fx:id="footerVersionLabel" styleClass="shell-footer-text"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="footerHoraLabel" styleClass="shell-footer-hora"/>
+
+        </HBox>
+    </bottom>
+
+</BorderPane>

@@ -377,3 +377,234 @@
     -fx-font-size: 12px;
     -fx-pref-width: 80px;
 }
+
+/* SHELL — Layout principal (Header + Sidebar + ContentPane + Footer)
+   Paleta: Deep Navy #1A365D / Electric Cyan #00A8E8 / Surface #F8FAFC */
+
+.shell-root {
+    -fx-background-color: #F8FAFC;
+}
+
+/* HEADER */
+
+.shell-header {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0 20 0 20;
+    -fx-pref-height: 56px;
+    -fx-min-height: 56px;
+    -fx-max-height: 56px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.08), 6, 0, 0, 2);
+    -fx-spacing: 12;
+}
+
+.shell-header-logo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.shell-header-separator {
+    -fx-background-color: #CBD5E1;
+    -fx-pref-height: 24px;
+    -fx-max-height: 24px;
+    -fx-opacity: 0.6;
+}
+
+.shell-header-empresa {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+/* Toggle de idioma en el header */
+
+.shell-lang-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #94A3B8;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 5 12 5 12;
+    -fx-cursor: hand;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1;
+}
+
+.shell-lang-btn:hover {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+}
+
+.shell-lang-btn-active {
+    -fx-background-color: #1A365D;
+    -fx-text-fill: #FFFFFF;
+    -fx-border-color: #1A365D;
+}
+
+.shell-lang-btn-active:hover {
+    -fx-background-color: #1A365D;
+    -fx-text-fill: #FFFFFF;
+}
+
+#headerLangEsBtn {
+    -fx-background-radius: 6 0 0 6;
+    -fx-border-radius: 6 0 0 6;
+}
+
+#headerLangEnBtn {
+    -fx-background-radius: 0 6 6 0;
+    -fx-border-radius: 0 6 6 0;
+}
+
+/* SIDEBAR */
+
+.shell-sidebar {
+    -fx-background-color: #1A365D;
+    -fx-padding: 12 8 16 8;
+    -fx-spacing: 4;
+    -fx-pref-width: 250px;
+    -fx-min-width: 60px;
+    -fx-max-width: 250px;
+}
+
+/* Botón hamburguesa de colapsar/expandir */
+.sidebar-colapsar-btn {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_RIGHT;
+}
+
+.sidebar-colapsar-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 8;
+}
+
+/* Botones de menú — estado base */
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-padding: 10 12 10 12;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Estado activo */
+.sidebar-btn-active {
+    -fx-background-color: rgba(0, 168, 232, 0.20);
+}
+
+/* Labels de texto dentro de los botones */
+.sidebar-btn-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: rgba(255, 255, 255, 0.80);
+}
+
+.sidebar-btn-active .sidebar-btn-label {
+    -fx-text-fill: #00A8E8;
+    -fx-font-weight: bold;
+}
+
+.sidebar-btn:hover .sidebar-btn-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* Iconos en el sidebar */
+.sidebar-icono {
+    -fx-icon-color: rgba(255, 255, 255, 0.70);
+}
+
+.sidebar-btn-active .sidebar-icono {
+    -fx-icon-color: #00A8E8;
+}
+
+.sidebar-btn:hover .sidebar-icono {
+    -fx-icon-color: #FFFFFF;
+}
+
+/* Botón cerrar sesión */
+.sidebar-btn-cerrar-sesion .sidebar-btn-label {
+    -fx-text-fill: rgba(255, 255, 255, 0.50);
+}
+
+.sidebar-btn-cerrar-sesion:hover {
+    -fx-background-color: rgba(211, 47, 47, 0.15);
+}
+
+.sidebar-btn-cerrar-sesion:hover .sidebar-btn-label {
+    -fx-text-fill: #EF5350;
+}
+
+.sidebar-icono-cerrar-sesion {
+    -fx-icon-color: rgba(255, 255, 255, 0.50);
+}
+
+.sidebar-btn-cerrar-sesion:hover .sidebar-icono-cerrar-sesion {
+    -fx-icon-color: #EF5350;
+}
+
+/* CONTENT PANE */
+
+.shell-content-pane {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 12 0 0 0;
+    -fx-border-radius: 12 0 0 0;
+}
+
+.dashboard-content {
+    -fx-background-color: #F8FAFC;
+}
+
+/* FOOTER */
+
+.shell-footer {
+    -fx-background-color: #1A365D;
+    -fx-padding: 6 20 6 20;
+}
+
+.shell-footer-text {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 11px;
+    -fx-text-fill: rgba(255, 255, 255, 0.45);
+}
+
+.shell-footer-hora {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(255, 255, 255, 0.70);
+}
+
+/* PLACEHOLDER (secciones en desarrollo) */
+
+.placeholder-content {
+    -fx-background-color: #F8FAFC;
+}
+
+.placeholder-icono {
+    -fx-icon-color: #CBD5E1;
+}
+
+.placeholder-icono-error {
+    -fx-icon-color: #FCA5A5;
+}
+
+.placeholder-titulo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #94A3B8;
+}
+
+.placeholder-subtitulo {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+    -fx-text-fill: #CBD5E1;
+}

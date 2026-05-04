@@ -1,66 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController"
-            styleClass="dashboard-root">
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController"
+      styleClass="dashboard-content"
+      spacing="24.0">
 
-    <left>
-        <VBox styleClass="sidebar">
-            <Label fx:id="appTitleLabel" styleClass="sidebar-title"/>
+    <padding>
+        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
+    </padding>
 
-            <VBox styleClass="sidebar-menu" VBox.vgrow="ALWAYS">
-                <Button fx:id="menuDashboardBtn" styleClass="sidebar-btn, sidebar-btn-active"
-                        maxWidth="Infinity" onAction="#handleMenuDashboard"/>
-                <Button fx:id="menuEmployeesBtn" styleClass="sidebar-btn"
-                        maxWidth="Infinity" onAction="#handleMenuEmployees"/>
-                <Button fx:id="menuShiftsBtn" styleClass="sidebar-btn"
-                        maxWidth="Infinity" onAction="#handleMenuShifts"/>
-                <Button fx:id="menuAbsencesBtn" styleClass="sidebar-btn"
-                        maxWidth="Infinity" onAction="#handleMenuAbsences"/>
-                <Button fx:id="menuReportsBtn" styleClass="sidebar-btn"
-                        maxWidth="Infinity" onAction="#handleMenuReports"/>
-                <Button fx:id="menuSettingsBtn" styleClass="sidebar-btn"
-                        maxWidth="Infinity" onAction="#handleMenuSettings"/>
-            </VBox>
+    <VBox spacing="4.0">
+        <Label fx:id="bienvenidaLabel"  styleClass="dashboard-saludo"/>
+        <Label fx:id="subtituloLabel"   styleClass="dashboard-subtitulo"/>
+    </VBox>
 
-            <Button fx:id="logoutBtn" styleClass="sidebar-btn, sidebar-btn-logout"
-                    maxWidth="Infinity" onAction="#handleLogout"/>
+    <HBox spacing="20.0">
+        <VBox styleClass="kpi-card">
+            <Label fx:id="kpiEmpleadosActivosTitulo" styleClass="kpi-title"/>
+            <Label fx:id="kpiEmpleadosActivosValor"  text="—" styleClass="kpi-value"/>
         </VBox>
-    </left>
-
-    <center>
-        <VBox styleClass="content-area">
-
-            <HBox styleClass="content-header">
-                <Label fx:id="welcomeLabel" styleClass="welcome-label"/>
-                <Label fx:id="companyNameLabel" styleClass="company-name-label"/>
-                <HBox HBox.hgrow="ALWAYS"/>
-                <ComboBox fx:id="languageSelector" styleClass="language-selector"/>
-            </HBox>
-
-            <HBox styleClass="kpi-container" spacing="20">
-                <VBox styleClass="kpi-card">
-                    <Label fx:id="kpiActiveEmployeesLabel" styleClass="kpi-title"/>
-                    <Label fx:id="kpiActiveEmployeesValue" text="—" styleClass="kpi-value"/>
-                </VBox>
-                <VBox styleClass="kpi-card">
-                    <Label fx:id="kpiWorkingNowLabel" styleClass="kpi-title"/>
-                    <Label fx:id="kpiWorkingNowValue" text="—" styleClass="kpi-value"/>
-                </VBox>
-                <VBox styleClass="kpi-card">
-                    <Label fx:id="kpiAbsencesTodayLabel" styleClass="kpi-title"/>
-                    <Label fx:id="kpiAbsencesTodayValue" text="—" styleClass="kpi-value"/>
-                </VBox>
-            </HBox>
-
-            <StackPane VBox.vgrow="ALWAYS" styleClass="content-placeholder">
-                <Label fx:id="recentActivityLabel" styleClass="section-title"/>
-            </StackPane>
-
+        <VBox styleClass="kpi-card">
+            <Label fx:id="kpiTrabajandoAhoraTitulo" styleClass="kpi-title"/>
+            <Label fx:id="kpiTrabajandoAhoraValor"  text="—" styleClass="kpi-value"/>
         </VBox>
-    </center>
+        <VBox styleClass="kpi-card">
+            <Label fx:id="kpiAusenciasHoyTitulo" styleClass="kpi-title"/>
+            <Label fx:id="kpiAusenciasHoyValor"  text="—" styleClass="kpi-value"/>
+        </VBox>
+    </HBox>
 
-</BorderPane>
+    <StackPane VBox.vgrow="ALWAYS" styleClass="content-placeholder">
+        <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
+    </StackPane>
+
+</VBox>
