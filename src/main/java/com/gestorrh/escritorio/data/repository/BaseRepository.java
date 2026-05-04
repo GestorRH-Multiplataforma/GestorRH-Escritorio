@@ -41,4 +41,29 @@ public abstract class BaseRepository {
             }
         });
     }
+
+    /**
+     * Ejecuta una llamada Retrofit sin cuerpo de respuesta (204 No Content)
+     * de forma asíncrona en un hilo de background.
+     * Gestiona de forma centralizada los errores de red y de la API.
+     *
+     * @param call La llamada Retrofit a ejecutar.
+     * @return CompletableFuture que se completa con null en caso de éxito,
+     *         o falla con ApiException si hay error de red o de la API.
+     */
+    protected CompletableFuture<Void> executeAsyncVoid(Call<Void> call) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Response<Void> response = call.execute();
+                if (response.isSuccessful()) {
+                    return null;
+                }
+                throw new ApiException("error.unknown", response.code(), "error.unknown");
+            } catch (ApiException e) {
+                throw e;
+            } catch (IOException e) {
+                throw new ApiException("error.timeout", 0, "error.timeout");
+            }
+        });
+    }
 }

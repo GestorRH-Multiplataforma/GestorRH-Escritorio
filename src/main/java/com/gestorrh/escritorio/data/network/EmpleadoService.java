@@ -1,10 +1,6 @@
 package com.gestorrh.escritorio.data.network;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionResetPasswordDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.*;
 
 import retrofit2.*;
 import retrofit2.http.*;
@@ -59,4 +55,24 @@ public interface EmpleadoService {
     @PUT("api/empleados/{id}/reset-password")
     Call<RespuestaEmpleadoDTO> resetPassword(@Path("id") Long id,
                                              @Body PeticionResetPasswordDTO peticion);
+
+    /**
+     * Tramita la baja de un empleado estableciendo la fecha de baja del contrato.
+     * La API gestionará automáticamente el cambio de estado a partir de esa fecha.
+     *
+     * @param id      Identificador único del empleado.
+     * @param peticion DTO con la fecha de baja del contrato.
+     * @return Llamada sin cuerpo de respuesta (204 en caso de éxito).
+     */
+    @POST("api/empleados/{id}/baja")
+    Call<Void> darDeBaja(@Path("id") Long id, @Body PeticionBajaEmpleadoDTO peticion);
+
+    /**
+     * Readmite a un empleado dado de baja, reactivando su acceso al sistema.
+     *
+     * @param id Identificador único del empleado a readmitir.
+     * @return Llamada sin cuerpo de respuesta (204 en caso de éxito).
+     */
+    @POST("api/empleados/{id}/readmitir")
+    Call<Void> readmitir(@Path("id") Long id);
 }
