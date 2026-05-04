@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.PlaceholderController"
+      styleClass="placeholder-content"
+      alignment="CENTER"
+      spacing="16.0">
+    <padding><Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/></padding>
+    <FontIcon iconLiteral="mdi2c-clock-outline" iconSize="64" styleClass="placeholder-icono"/>
+    <Label fx:id="tituloSeccionLabel" styleClass="placeholder-titulo"/>
+    <Label fx:id="proximamenteLabel"  styleClass="placeholder-subtitulo"/>
+</VBox>
