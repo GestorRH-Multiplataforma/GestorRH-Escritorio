@@ -124,9 +124,7 @@ public class ShellController {
     @FXML
     private void handleMenuEmpleados() {
         marcarMenuActivo(menuEmpleadosBtn);
-        NavigationManager.getInstance().navegar("/fxml/empleados-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.employees.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/empleados-view.fxml");
     }
 
     /** Navega a la sección Turnos. */

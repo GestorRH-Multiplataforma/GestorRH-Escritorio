@@ -608,3 +608,223 @@
     -fx-font-size: 14px;
     -fx-text-fill: #CBD5E1;
 }
+
+/* VISTA EMPLEADOS */
+
+.empleados-content {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Barra superior */
+.empleados-toolbar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-padding: 12 16 12 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.empleados-search-field {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-pref-height: 36px;
+}
+
+.empleados-search-field:focused {
+    -fx-border-color: #00A8E8;
+    -fx-border-width: 2;
+}
+
+.empleados-filtro {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-pref-height: 36px;
+    -fx-font-size: 13px;
+}
+
+.empleados-btn-nuevo {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16 8 16;
+    -fx-pref-height: 36px;
+    -fx-cursor: hand;
+}
+
+.empleados-btn-nuevo:hover {
+    -fx-background-color: #0090CC;
+}
+
+/* Error inline */
+.empleados-error-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #D32F2F;
+    -fx-background-color: rgba(211, 47, 47, 0.08);
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+}
+
+/* Tabla */
+.empleados-table {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-border-color: transparent;
+}
+
+.empleados-table .column-header-background {
+    -fx-background-color: #F1F5F9;
+}
+
+.empleados-table .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 10 12 10 12;
+}
+
+.empleados-table .column-header .label {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #64748B;
+}
+
+.empleados-table .table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent transparent #F1F5F9 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 4 0 4 0;
+}
+
+.empleados-table .table-row-cell:hover {
+    -fx-background-color: #F8FAFC;
+}
+
+.empleados-table .table-row-cell:selected {
+    -fx-background-color: rgba(0, 168, 232, 0.08);
+}
+
+.empleados-table .table-cell {
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1A365D;
+}
+
+.empleados-tabla-placeholder {
+    -fx-font-size: 14px;
+    -fx-text-fill: #94A3B8;
+}
+
+/* Pie de tabla - paginación */
+.empleados-footer {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-padding: 10 16 10 16;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.empleados-btn-paginacion {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+
+.empleados-btn-paginacion:hover {
+    -fx-background-color: #E2E8F0;
+}
+
+.empleados-btn-paginacion:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+.empleados-paginacion-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+    -fx-alignment: CENTER;
+}
+
+/* BADGES (Rol y Estado) */
+
+.badge {
+    -fx-background-radius: 20;
+    -fx-padding: 3 10 3 10;
+    -fx-font-size: 12px;
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-min-width: 90px;
+    -fx-alignment: CENTER;
+    -fx-text-alignment: CENTER;
+}
+
+.badge-activo {
+    -fx-text-fill: #166534;
+    -fx-background-color: #DCFCE7;
+}
+
+.badge-inactivo {
+    -fx-text-fill: #6B7280;
+    -fx-background-color: #F3F4F6;
+}
+
+.badge-supervisor {
+    -fx-text-fill: #1D4ED8;
+    -fx-background-color: #DBEAFE;
+}
+
+.badge-empleado {
+    -fx-text-fill: #374151;
+    -fx-background-color: #F9FAFB;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+}
+
+/* BOTONES DE ACCIÓN EN TABLA */
+
+.btn-tabla {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+}
+
+.btn-tabla-editar {
+    -fx-background-color: #EFF6FF;
+    -fx-text-fill: #1D4ED8;
+    -fx-border-color: #BFDBFE;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+
+.btn-tabla-editar:hover {
+    -fx-background-color: #DBEAFE;
+}
+
+.btn-tabla-baja {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #DC2626;
+    -fx-border-color: #FECACA;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+}
+
+.btn-tabla-baja:hover {
+    -fx-background-color: #FEE2E2;
+}
