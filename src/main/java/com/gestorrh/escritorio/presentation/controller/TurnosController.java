@@ -3,6 +3,7 @@ package com.gestorrh.escritorio.presentation.controller;
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.data.network.dto.RespuestaTurnoDTO;
+import com.gestorrh.escritorio.presentation.component.CalendarioMensual;
 import com.gestorrh.escritorio.presentation.viewmodel.TurnoFormViewModel.ModoFormulario;
 import com.gestorrh.escritorio.presentation.viewmodel.TurnoViewModel;
 
@@ -31,11 +32,11 @@ import java.util.logging.Logger;
 
 /**
  * Controlador para la vista del catálogo de turnos.
- * Gestiona la tabla, el filtro de búsqueda y la apertura del modal
- * de alta y edición de turnos.
+ * Gestiona la tabla, el filtro de búsqueda, la apertura del modal
+ * de alta y edición de turnos, y el componente de calendario mensual.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class TurnosController {
 
@@ -54,6 +55,8 @@ public class TurnosController {
     @FXML private Label             labelTablaVacia;
     @FXML private ProgressIndicator indicadorCarga;
 
+    @FXML private CalendarioMensual calendarioMensual;
+
     private final TurnoViewModel viewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
@@ -65,12 +68,14 @@ public class TurnosController {
     }
 
     /**
-     * Inicializa los bindings, configura la tabla y lanza la carga de datos.
+     * Inicializa los bindings, configura la tabla, el calendario
+     * y lanza la carga de datos.
      */
     @FXML
     public void initialize() {
         configurarColumnas();
         configurarBindings();
+        configurarCalendario();
 
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
@@ -79,10 +84,14 @@ public class TurnosController {
     }
 
     /**
-     * Libera el listener de idioma al destruirse la vista para evitar memory leaks.
+     * Libera los listeners de idioma del controlador y del calendario
+     * al destruirse la vista para evitar memory leaks.
      */
     public void limpiar() {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
+        if (calendarioMensual != null) {
+            calendarioMensual.limpiar();
+        }
     }
 
     /**
@@ -160,6 +169,19 @@ public class TurnosController {
         labelError.managedProperty().bind(viewModel.errorVisibleProperty());
 
         tablaTurnos.setItems(viewModel.getTurnosFiltrados());
+    }
+
+    /**
+     * Configura el calendario mensual registrando el callback de clic
+     * sobre un día. En esta fase muestra el día seleccionado en consola;
+     * la lógica de asignación de turnos se implementará en la issue #17.
+     */
+    private void configurarCalendario() {
+        if (calendarioMensual == null) return;
+
+        calendarioMensual.setOnDiaClick(fecha ->
+                LOGGER.info("Día seleccionado en calendario de turnos: " + fecha)
+        );
     }
 
     /**
