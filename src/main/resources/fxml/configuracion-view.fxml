@@ -4,20 +4,235 @@
 <?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.PlaceholderController"
-      styleClass="placeholder-content"
-      alignment="CENTER"
-      spacing="16.0">
+<ScrollPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.gestorrh.escritorio.presentation.controller.ConfiguracionController"
+            fitToWidth="true"
+            styleClass="configuracion-scroll">
 
-    <padding>
-        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
-    </padding>
+    <VBox styleClass="configuracion-content" spacing="20.0">
+        <padding>
+            <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
+        </padding>
 
-    <FontIcon iconLiteral="mdi2c-clock-outline" iconSize="64"
-              styleClass="placeholder-icono"/>
-    <Label fx:id="tituloSeccionLabel" styleClass="placeholder-titulo"/>
-    <Label fx:id="proximamenteLabel"  styleClass="placeholder-subtitulo"/>
+        <Label fx:id="bannerExito"
+               styleClass="config-banner-exito"
+               wrapText="true"
+               maxWidth="Infinity"
+               visible="false"
+               managed="false"/>
 
-</VBox>
+        <Label fx:id="bannerError"
+               styleClass="config-banner-error"
+               wrapText="true"
+               maxWidth="Infinity"
+               visible="false"
+               managed="false"/>
+
+        <VBox styleClass="config-section-card" spacing="14.0">
+
+            <Label fx:id="labelSeccionGenerales" styleClass="config-section-title"/>
+
+            <Separator/>
+
+            <VBox spacing="4.0">
+                <Label fx:id="labelEmail" styleClass="modal-field-label"/>
+                <Label fx:id="labelEmailValor" styleClass="config-field-readonly"/>
+            </VBox>
+
+            <VBox spacing="4.0">
+                <Label fx:id="labelNombre" styleClass="modal-field-label"/>
+                <TextField fx:id="fieldNombre" styleClass="modal-text-field"/>
+                <Label fx:id="errorNombre"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <VBox spacing="4.0">
+                <Label fx:id="labelDireccion" styleClass="modal-field-label"/>
+                <TextField fx:id="fieldDireccion" styleClass="modal-text-field"/>
+                <Label fx:id="errorDireccion"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <VBox spacing="4.0">
+                <Label fx:id="labelTelefono" styleClass="modal-field-label"/>
+                <TextField fx:id="fieldTelefono" styleClass="modal-text-field"/>
+                <Label fx:id="errorTelefono"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+        </VBox>
+
+        <VBox styleClass="config-section-card" spacing="14.0">
+
+            <Label fx:id="labelSeccionUbicacion" styleClass="config-section-title"/>
+
+            <Separator/>
+
+            <Label fx:id="labelBannerUbicacion"
+                   styleClass="config-banner-info"
+                   wrapText="true"
+                   maxWidth="Infinity"/>
+
+            <HBox spacing="8.0" alignment="CENTER_LEFT">
+                <TextField fx:id="fieldBusquedaMapa"
+                           styleClass="modal-text-field"
+                           HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnBuscarMapa"
+                        styleClass="config-btn-buscar"
+                        onAction="#handleBuscarMapa"/>
+                <ProgressIndicator fx:id="indicadorGeocodificacion"
+                                   maxWidth="24.0"
+                                   maxHeight="24.0"
+                                   visible="false"
+                                   managed="false"/>
+            </HBox>
+
+            <Label fx:id="errorGeocodificacion"
+                   styleClass="modal-field-error"
+                   wrapText="true"
+                   visible="false"
+                   managed="false"/>
+
+            <HBox spacing="16.0" alignment="CENTER_LEFT">
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="labelLatitudTitulo" styleClass="modal-field-label"/>
+                    <Label fx:id="labelLatitud" styleClass="config-coord-display"/>
+                </VBox>
+                <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                    <Label fx:id="labelLongitudTitulo" styleClass="modal-field-label"/>
+                    <Label fx:id="labelLongitud" styleClass="config-coord-display"/>
+                </VBox>
+                <VBox spacing="4.0">
+                    <Label fx:id="labelRadioTitulo" styleClass="modal-field-label"/>
+                    <Spinner fx:id="spinnerRadio"
+                             styleClass="config-spinner"
+                             prefWidth="120.0"
+                             editable="true"/>
+                </VBox>
+            </HBox>
+
+            <TitledPane fx:id="panelCoordenadasManuales"
+                        styleClass="config-titled-pane"
+                        expanded="false"
+                        animated="true">
+
+                <VBox spacing="10.0" styleClass="config-manual-coords-content">
+                    <padding>
+                        <Insets top="12.0" right="12.0" bottom="12.0" left="12.0"/>
+                    </padding>
+
+                    <Label fx:id="labelAvisoManual"
+                           styleClass="config-banner-info"
+                           wrapText="true"
+                           maxWidth="Infinity"/>
+
+                    <HBox spacing="12.0">
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label fx:id="labelLatitudManual" styleClass="modal-field-label"/>
+                            <TextField fx:id="fieldLatitudManual"
+                                       styleClass="modal-text-field"/>
+                        </VBox>
+                        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                            <Label fx:id="labelLongitudManual" styleClass="modal-field-label"/>
+                            <TextField fx:id="fieldLongitudManual"
+                                       styleClass="modal-text-field"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label fx:id="errorCoordenadasManuales"
+                           styleClass="modal-field-error"
+                           wrapText="true"
+                           visible="false"
+                           managed="false"/>
+
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="btnAplicarCoordenadas"
+                                styleClass="config-btn-aplicar"
+                                onAction="#handleAplicarCoordenadas"/>
+                    </HBox>
+
+                </VBox>
+
+            </TitledPane>
+
+        </VBox>
+
+        <TitledPane fx:id="panelPassword"
+                    styleClass="config-titled-pane"
+                    expanded="false"
+                    animated="true">
+
+            <VBox spacing="14.0" styleClass="config-password-panel">
+                <padding>
+                    <Insets top="16.0" right="20.0" bottom="16.0" left="20.0"/>
+                </padding>
+
+                <VBox spacing="4.0">
+                    <Label fx:id="labelPasswordActual" styleClass="modal-field-label"/>
+                    <PasswordField fx:id="fieldPasswordActual"
+                                   styleClass="modal-text-field"/>
+                    <Label fx:id="errorPasswordActual"
+                           styleClass="modal-field-error"
+                           visible="false"
+                           managed="false"/>
+                </VBox>
+
+                <VBox spacing="4.0">
+                    <Label fx:id="labelNuevaPassword" styleClass="modal-field-label"/>
+                    <PasswordField fx:id="fieldNuevaPassword"
+                                   styleClass="modal-text-field"/>
+                    <Label fx:id="errorNuevaPassword"
+                           styleClass="modal-field-error"
+                           visible="false"
+                           managed="false"/>
+                </VBox>
+
+                <!-- Confirmar contraseña -->
+                <VBox spacing="4.0">
+                    <Label fx:id="labelConfirmarPassword" styleClass="modal-field-label"/>
+                    <PasswordField fx:id="fieldConfirmarPassword"
+                                   styleClass="modal-text-field"/>
+                    <Label fx:id="errorConfirmarPassword"
+                           styleClass="modal-field-error"
+                           visible="false"
+                           managed="false"/>
+                </VBox>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="btnCambiarPassword"
+                            styleClass="modal-btn-guardar"
+                            onAction="#handleCambiarPassword"/>
+                </HBox>
+
+            </VBox>
+
+        </TitledPane>
+
+        <HBox alignment="CENTER_RIGHT" spacing="12.0">
+            <Button fx:id="btnDescartar"
+                    styleClass="modal-btn-cancelar"
+                    onAction="#handleDescartar"/>
+            <Button fx:id="btnGuardar"
+                    styleClass="modal-btn-guardar"
+                    onAction="#handleGuardar"/>
+        </HBox>
+
+        <!-- Indicador de carga general -->
+        <HBox alignment="CENTER">
+            <ProgressIndicator fx:id="indicadorCarga"
+                               maxWidth="32.0"
+                               maxHeight="32.0"
+                               visible="false"
+                               managed="false"/>
+        </HBox>
+
+    </VBox>
+
+</ScrollPane>

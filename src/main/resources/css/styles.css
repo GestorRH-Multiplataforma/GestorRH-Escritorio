@@ -1314,3 +1314,220 @@
     -fx-text-fill: #94A3B8;
     -fx-font-size: 10px;
 }
+
+/* CONFIGURACIÓN DE EMPRESA */
+
+.configuracion-scroll {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: transparent;
+}
+
+.configuracion-scroll > .viewport {
+    -fx-background-color: #F8FAFC;
+}
+
+.configuracion-content {
+    -fx-background-color: #F8FAFC;
+}
+
+/* Tarjeta de sección */
+.config-section-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-padding: 20 24 20 24;
+}
+
+/* Título de sección */
+.config-section-title {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+/* Campo solo lectura (email) */
+.config-field-readonly {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 8;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-padding: 8 12 8 12;
+    -fx-pref-height: 38px;
+    -fx-max-width: Infinity;
+}
+
+/* Banner informativo (ubicación requerida) */
+.config-banner-info {
+    -fx-background-color: rgba(0, 168, 232, 0.08);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(0, 168, 232, 0.25);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 14 10 14;
+    -fx-text-fill: #0369A1;
+    -fx-font-size: 12px;
+    -fx-wrap-text: true;
+}
+
+/* Banner de éxito */
+.config-banner-exito {
+    -fx-background-color: #F0FDF4;
+    -fx-background-radius: 8;
+    -fx-border-color: #BBF7D0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 14 10 14;
+    -fx-text-fill: #166534;
+    -fx-font-size: 13px;
+}
+
+/* Banner de error */
+.config-banner-error {
+    -fx-background-color: rgba(211, 47, 47, 0.08);
+    -fx-background-radius: 8;
+    -fx-border-color: rgba(211, 47, 47, 0.20);
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 14 10 14;
+    -fx-text-fill: #D32F2F;
+    -fx-font-size: 13px;
+}
+
+/* Display de coordenadas (solo lectura, estilo monoespaciado) */
+.config-coord-display {
+    -fx-font-family: "Courier New", "Consolas", monospace;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 6;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 6 10 6 10;
+    -fx-min-width: 130px;
+    -fx-pref-height: 34px;
+}
+
+/* Botón buscar dirección */
+.config-btn-buscar {
+    -fx-background-color: #1A365D;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+    -fx-pref-height: 38px;
+    -fx-cursor: hand;
+}
+
+.config-btn-buscar:hover {
+    -fx-background-color: #0F2240;
+}
+
+.config-btn-buscar:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+/* Botón aplicar coordenadas manuales */
+.config-btn-aplicar {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #1A365D;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 7 16 7 16;
+    -fx-cursor: hand;
+}
+
+.config-btn-aplicar:hover {
+    -fx-background-color: #E2E8F0;
+}
+
+.config-btn-aplicar:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+/* Spinner de radio de validez */
+.config-spinner {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1.5;
+    -fx-background-radius: 8;
+}
+
+.config-spinner .text-field {
+    -fx-background-color: transparent;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1A365D;
+    -fx-padding: 6 8 6 8;
+}
+
+.config-spinner .increment-arrow-button,
+.config-spinner .decrement-arrow-button {
+    -fx-background-color: #F1F5F9;
+    -fx-border-color: #CBD5E1;
+    -fx-cursor: hand;
+}
+
+.config-spinner .increment-arrow-button:hover,
+.config-spinner .decrement-arrow-button:hover {
+    -fx-background-color: #E2E8F0;
+}
+
+/* TitledPane — override estilos JavaFX por defecto */
+.config-titled-pane {
+    -fx-text-fill: #1A365D;
+}
+
+.config-titled-pane > .title {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 16 12 16;
+}
+
+.config-titled-pane > .title .text {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.config-titled-pane > .title:hover {
+    -fx-background-color: #F8FAFC;
+    -fx-cursor: hand;
+}
+
+.config-titled-pane > .content {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 0 0 10 10;
+    -fx-border-width: 0 1 1 1;
+    -fx-padding: 0;
+}
+
+/* Panel interno coordenadas manuales */
+.config-manual-coords-content {
+    -fx-background-color: #FFFFFF;
+}
+
+/* Panel interno cambio de contraseña */
+.config-password-panel {
+    -fx-background-color: #FFFFFF;
+}
