@@ -2,56 +2,64 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import com.gestorrh.escritorio.presentation.component.CalendarioMensual?>
 
-<VBox xmlns="http://javafx.com/javafx/21"
+<HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.gestorrh.escritorio.presentation.controller.TurnosController"
       styleClass="empleados-content"
-      spacing="16.0">
+      spacing="20.0">
 
     <padding>
         <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
     </padding>
 
-    <!-- Toolbar -->
-    <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
-        <TextField fx:id="campoBusqueda"
-                   styleClass="empleados-search-field"
-                   HBox.hgrow="ALWAYS"/>
-        <Button fx:id="btnNuevoTurno"
-                styleClass="empleados-btn-nuevo"
-                onAction="#handleNuevoTurno"/>
-    </HBox>
+    <VBox spacing="16.0" HBox.hgrow="ALWAYS">
 
-    <Label fx:id="labelError"
-           styleClass="empleados-error-label"
-           wrapText="true"
-           visible="false"
-           managed="false"/>
+        <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
+            <TextField fx:id="campoBusqueda"
+                       styleClass="empleados-search-field"
+                       HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnNuevoTurno"
+                    styleClass="empleados-btn-nuevo"
+                    onAction="#handleNuevoTurno"/>
+        </HBox>
 
-    <TableView fx:id="tablaTurnos"
-               styleClass="empleados-table"
-               VBox.vgrow="ALWAYS">
+        <Label fx:id="labelError"
+               styleClass="empleados-error-label"
+               wrapText="true"
+               visible="false"
+               managed="false"/>
 
-        <columns>
-            <TableColumn fx:id="colDescripcion" prefWidth="300"/>
-            <TableColumn fx:id="colHoraInicio"  prefWidth="120"/>
-            <TableColumn fx:id="colHoraFin"     prefWidth="120"/>
-            <TableColumn fx:id="colAcciones"    prefWidth="160"/>
-        </columns>
+        <TableView fx:id="tablaTurnos"
+                   styleClass="empleados-table"
+                   VBox.vgrow="ALWAYS">
 
-        <placeholder>
-            <Label fx:id="labelTablaVacia" styleClass="empleados-tabla-placeholder"/>
-        </placeholder>
+            <columns>
+                <TableColumn fx:id="colDescripcion" prefWidth="220"/>
+                <TableColumn fx:id="colHoraInicio"  prefWidth="100"/>
+                <TableColumn fx:id="colHoraFin"     prefWidth="100"/>
+                <TableColumn fx:id="colAcciones"    prefWidth="140"/>
+            </columns>
 
-    </TableView>
+            <placeholder>
+                <Label fx:id="labelTablaVacia" styleClass="empleados-tabla-placeholder"/>
+            </placeholder>
 
-    <StackPane VBox.vgrow="NEVER">
-        <ProgressIndicator fx:id="indicadorCarga"
-                           maxWidth="40.0"
-                           maxHeight="40.0"
-                           visible="false"
-                           managed="false"/>
-    </StackPane>
+        </TableView>
 
-</VBox>
+        <StackPane VBox.vgrow="NEVER">
+            <ProgressIndicator fx:id="indicadorCarga"
+                               maxWidth="40.0"
+                               maxHeight="40.0"
+                               visible="false"
+                               managed="false"/>
+        </StackPane>
+
+    </VBox>
+
+    <VBox spacing="8.0" minWidth="340.0" maxWidth="340.0">
+        <CalendarioMensual fx:id="calendarioMensual"/>
+    </VBox>
+
+</HBox>

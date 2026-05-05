@@ -1531,3 +1531,153 @@
 .config-password-panel {
     -fx-background-color: #FFFFFF;
 }
+
+/* CALENDARIO MENSUAL */
+
+.calendario {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+    -fx-padding: 16;
+    -fx-spacing: 8;
+}
+
+/* Barra de navegación mes/año */
+.calendario-nav {
+    -fx-alignment: CENTER;
+    -fx-spacing: 12;
+    -fx-padding: 0 0 8 0;
+}
+
+.calendario-titulo-mes {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+    -fx-min-width: 160px;
+    -fx-alignment: CENTER;
+}
+
+.calendario-btn-nav {
+    -fx-background-color: transparent;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+    -fx-text-fill: #1A365D;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.calendario-btn-nav:hover {
+    -fx-background-color: #F1F5F9;
+}
+
+/* Cabecera días de la semana */
+.calendario-cabecera {
+    -fx-hgap: 2;
+    -fx-vgap: 0;
+}
+
+.calendario-cabecera-dia {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #64748B;
+    -fx-alignment: CENTER;
+    -fx-pref-width: 44px;
+    -fx-pref-height: 28px;
+}
+
+/* Grid de días */
+.calendario-grid {
+    -fx-hgap: 2;
+    -fx-vgap: 2;
+}
+
+/* Celda base */
+.calendario-dia {
+    -fx-pref-width: 44px;
+    -fx-pref-height: 44px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+}
+
+.calendario-dia:hover {
+    -fx-background-color: #F1F5F9;
+}
+
+.calendario-dia-numero {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1A365D;
+}
+
+/* Días de otro mes */
+.calendario-dia--otro-mes {
+    -fx-cursor: default;
+    -fx-opacity: 0.35;
+}
+
+.calendario-dia--otro-mes:hover {
+    -fx-background-color: transparent;
+}
+
+/* Día de hoy */
+.calendario-dia--hoy {
+    -fx-border-color: #00A8E8;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+}
+
+.calendario-dia--hoy .calendario-dia-numero {
+    -fx-text-fill: #00A8E8;
+    -fx-font-weight: bold;
+}
+
+/* Día seleccionado */
+.calendario-dia--seleccionado {
+    -fx-background-color: #1A365D;
+    -fx-background-radius: 8;
+}
+
+.calendario-dia--seleccionado .calendario-dia-numero {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+}
+
+/* Marcas de contenido (usadas por consumidores) */
+.calendario-dia--con-asignacion {
+    -fx-background-color: rgba(0, 168, 232, 0.12);
+    -fx-background-radius: 8;
+}
+
+.calendario-dia--con-asignacion .calendario-dia-numero {
+    -fx-font-weight: bold;
+}
+
+.calendario-dia--con-ausencia {
+    -fx-background-color: rgba(245, 158, 11, 0.12);
+    -fx-background-radius: 8;
+}
+
+.calendario-dia--con-ausencia .calendario-dia-numero {
+    -fx-font-weight: bold;
+}
+
+/* Punto indicador inferior (decoración opcional del renderizador) */
+.calendario-dia-dot {
+    -fx-background-color: #00A8E8;
+    -fx-background-radius: 3;
+    -fx-pref-width: 6px;
+    -fx-pref-height: 6px;
+    -fx-max-width: 6px;
+    -fx-max-height: 6px;
+}
+
+.calendario-dia--con-ausencia .calendario-dia-dot {
+    -fx-background-color: #F59E0B;
+}
