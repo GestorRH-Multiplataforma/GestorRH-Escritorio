@@ -4,62 +4,181 @@
 <?import javafx.geometry.Insets?>
 <?import com.gestorrh.escritorio.presentation.component.CalendarioMensual?>
 
-<HBox xmlns="http://javafx.com/javafx/21"
+<VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.gestorrh.escritorio.presentation.controller.TurnosController"
       styleClass="empleados-content"
-      spacing="20.0">
+      spacing="0.0">
 
-    <padding>
-        <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
-    </padding>
+    <TabPane fx:id="tabPane"
+             styleClass="turnos-tab-pane"
+             tabClosingPolicy="UNAVAILABLE"
+             VBox.vgrow="ALWAYS">
 
-    <VBox spacing="16.0" HBox.hgrow="ALWAYS">
+        <Tab fx:id="tabAsignaciones">
+            <VBox spacing="0.0">
 
-        <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
-            <TextField fx:id="campoBusqueda"
-                       styleClass="empleados-search-field"
-                       HBox.hgrow="ALWAYS"/>
-            <Button fx:id="btnNuevoTurno"
-                    styleClass="empleados-btn-nuevo"
-                    onAction="#handleNuevoTurno"/>
-        </HBox>
+                <HBox fx:id="bannerSedeNoConfigurada"
+                      styleClass="asignaciones-banner-warning"
+                      alignment="CENTER_LEFT"
+                      spacing="10.0"
+                      visible="false"
+                      managed="false">
+                    <padding>
+                        <Insets top="10.0" right="16.0" bottom="10.0" left="16.0"/>
+                    </padding>
+                    <Label fx:id="lblBannerSede"
+                           styleClass="asignaciones-banner-warning-texto"
+                           wrapText="true"
+                           HBox.hgrow="ALWAYS"/>
+                    <Hyperlink fx:id="linkConfigurar"
+                               styleClass="asignaciones-banner-warning-enlace"
+                               onAction="#handleIrAConfiguracion"/>
+                </HBox>
 
-        <Label fx:id="labelError"
-               styleClass="empleados-error-label"
-               wrapText="true"
-               visible="false"
-               managed="false"/>
+                <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
 
-        <TableView fx:id="tablaTurnos"
-                   styleClass="empleados-table"
-                   VBox.vgrow="ALWAYS">
+                    <VBox styleClass="config-section-card"
+                          spacing="14.0"
+                          minWidth="270.0"
+                          maxWidth="270.0">
+                        <padding>
+                            <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
+                        </padding>
 
-            <columns>
-                <TableColumn fx:id="colDescripcion" prefWidth="220"/>
-                <TableColumn fx:id="colHoraInicio"  prefWidth="100"/>
-                <TableColumn fx:id="colHoraFin"     prefWidth="100"/>
-                <TableColumn fx:id="colAcciones"    prefWidth="140"/>
-            </columns>
+                        <Label fx:id="lblFormTitulo" styleClass="config-section-title"/>
 
-            <placeholder>
-                <Label fx:id="labelTablaVacia" styleClass="empleados-tabla-placeholder"/>
-            </placeholder>
+                        <Separator/>
 
-        </TableView>
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblEmpleado" styleClass="modal-field-label"/>
+                            <ComboBox fx:id="comboEmpleado"
+                                      styleClass="modal-combo-box"
+                                      maxWidth="Infinity"/>
+                        </VBox>
 
-        <StackPane VBox.vgrow="NEVER">
-            <ProgressIndicator fx:id="indicadorCarga"
-                               maxWidth="40.0"
-                               maxHeight="40.0"
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblTurno" styleClass="modal-field-label"/>
+                            <ComboBox fx:id="comboTurno"
+                                      styleClass="modal-combo-box"
+                                      maxWidth="Infinity"/>
+                        </VBox>
+
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblModalidad" styleClass="modal-field-label"/>
+                            <ComboBox fx:id="comboModalidad"
+                                      styleClass="modal-combo-box"
+                                      maxWidth="Infinity"/>
+                        </VBox>
+
+                        <Region VBox.vgrow="ALWAYS"/>
+
+                        <Button fx:id="btnAsignar"
+                                styleClass="empleados-btn-nuevo"
+                                maxWidth="Infinity"
+                                onAction="#handleAsignar"/>
+
+                        <Label fx:id="lblErrorFormulario"
+                               styleClass="modal-field-error"
+                               wrapText="true"
                                visible="false"
                                managed="false"/>
-        </StackPane>
 
-    </VBox>
+                    </VBox>
 
-    <VBox spacing="8.0" minWidth="340.0" maxWidth="340.0">
-        <CalendarioMensual fx:id="calendarioMensual"/>
-    </VBox>
+                    <VBox HBox.hgrow="ALWAYS" spacing="8.0">
+                        <CalendarioMensual fx:id="calendarioAsignaciones"/>
+                    </VBox>
 
-</HBox>
+                    <VBox styleClass="config-section-card"
+                          spacing="12.0"
+                          minWidth="300.0"
+                          maxWidth="300.0">
+                        <padding>
+                            <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
+                        </padding>
+
+                        <Label fx:id="lblResumenTitulo" styleClass="config-section-title"/>
+
+                        <Separator/>
+
+                        <ProgressIndicator fx:id="indicadorCargaAsignaciones"
+                                           maxWidth="32.0"
+                                           maxHeight="32.0"
+                                           visible="false"
+                                           managed="false"/>
+
+                        <Label fx:id="lblResumenVacio"
+                               styleClass="empleados-tabla-placeholder"
+                               wrapText="true"
+                               visible="false"
+                               managed="false"/>
+
+                        <VBox fx:id="listaAsignacionesDia"
+                              spacing="8.0"
+                              VBox.vgrow="ALWAYS"/>
+
+                        <Separator/>
+
+                        <Label fx:id="lblTotalDia"
+                               styleClass="modal-field-label"/>
+
+                    </VBox>
+
+                </HBox>
+
+            </VBox>
+        </Tab>
+
+        <Tab fx:id="tabCatalogo">
+            <VBox spacing="16.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
+                    <TextField fx:id="campoBusqueda"
+                               styleClass="empleados-search-field"
+                               HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnNuevoTurno"
+                            styleClass="empleados-btn-nuevo"
+                            onAction="#handleNuevoTurno"/>
+                </HBox>
+
+                <Label fx:id="labelError"
+                       styleClass="empleados-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <TableView fx:id="tablaTurnos"
+                           styleClass="empleados-table"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colDescripcion" prefWidth="220"/>
+                        <TableColumn fx:id="colHoraInicio"  prefWidth="100"/>
+                        <TableColumn fx:id="colHoraFin"     prefWidth="100"/>
+                        <TableColumn fx:id="colAcciones"    prefWidth="140"/>
+                    </columns>
+                    <placeholder>
+                        <Label fx:id="labelTablaVacia" styleClass="empleados-tabla-placeholder"/>
+                    </placeholder>
+                </TableView>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorCarga"
+                                       maxWidth="40.0"
+                                       maxHeight="40.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+            </VBox>
+        </Tab>
+
+    </TabPane>
+
+</VBox>

@@ -1681,3 +1681,135 @@
 .calendario-dia--con-ausencia .calendario-dia-dot {
     -fx-background-color: #F59E0B;
 }
+
+/* VISTA: Asignación de Turnos */
+
+.turnos-tab-pane {
+    -fx-background-color: #F8FAFC;
+    -fx-tab-min-height: 40px;
+}
+
+.turnos-tab-pane .tab-header-area {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0 20 0 20;
+}
+
+.turnos-tab-pane .tab-header-background {
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
+}
+
+.turnos-tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+
+.turnos-tab-pane .tab .tab-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.turnos-tab-pane .tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #00A8E8 transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.turnos-tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #1A365D;
+    -fx-font-weight: bold;
+}
+
+.turnos-tab-pane .tab:hover .tab-label {
+    -fx-text-fill: #1A365D;
+}
+
+.turnos-tab-pane .tab-content-area {
+    -fx-background-color: #F8FAFC;
+    -fx-padding: 0;
+}
+
+/* Banner sede no configurada */
+
+.asignaciones-banner-warning {
+    -fx-background-color: #FFF7ED;
+    -fx-border-color: #FED7AA;
+    -fx-border-width: 0 0 1 0;
+}
+
+.asignaciones-banner-warning-texto {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #92400E;
+}
+
+.asignaciones-banner-warning-enlace {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #B45309;
+    -fx-border-color: transparent;
+    -fx-underline: true;
+    -fx-cursor: hand;
+}
+
+.asignaciones-banner-warning-enlace:hover {
+    -fx-text-fill: #92400E;
+}
+
+/* Tarjetas del panel de resumen del día */
+
+.asignacion-tarjeta {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 8;
+    -fx-border-color: #E2E8F0;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 10 12 10 12;
+}
+
+.asignacion-tarjeta-nombre {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+.asignacion-tarjeta-turno {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #64748B;
+}
+
+/* Badges de modalidad */
+
+.badge-presencial {
+    -fx-text-fill: #065F46;
+    -fx-background-color: #D1FAE5;
+    -fx-background-radius: 20;
+    -fx-padding: 3 10 3 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-teletrabajo {
+    -fx-text-fill: #4C1D95;
+    -fx-background-color: #EDE9FE;
+    -fx-background-radius: 20;
+    -fx-padding: 3 10 3 10;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Marca de teletrabajo en el calendario */
+
+.calendario-dia--teletrabajo {
+    -fx-background-color: rgba(139, 92, 246, 0.12);
+    -fx-background-radius: 8;
+}
+
+.calendario-dia--teletrabajo .calendario-dia-numero {
+    -fx-font-weight: bold;
+}
