@@ -1,10 +1,6 @@
 package com.gestorrh.escritorio.core.di;
 
-import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
-import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel;
-import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
-import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
-import com.gestorrh.escritorio.presentation.viewmodel.ConfiguracionViewModel;
+import com.gestorrh.escritorio.presentation.viewmodel.*;
 
 /**
  * Fábrica centralizada para la creación de ViewModels.
@@ -79,5 +75,25 @@ public class ViewModelFactory {
         return new ConfiguracionViewModel(
                 RepositoryFactory.getInstance().getEmpresaRepository()
         );
+    }
+
+    /**
+     * Crea un ViewModel para la gestión del catálogo de turnos.
+     *
+     * @return Nueva instancia de TurnoViewModel.
+     */
+    public TurnoViewModel createTurnoViewModel() {
+        return new TurnoViewModel(RepositoryFactory.getInstance().getTurnoRepository());
+    }
+
+    /**
+     * Crea un ViewModel para el formulario de alta y edición de turnos.
+     * Se genera una nueva instancia por cada apertura del modal para garantizar
+     * un estado limpio e independiente.
+     *
+     * @return Nueva instancia de TurnoFormViewModel.
+     */
+    public TurnoFormViewModel createTurnoFormViewModel() {
+        return new TurnoFormViewModel(RepositoryFactory.getInstance().getTurnoRepository());
     }
 }
