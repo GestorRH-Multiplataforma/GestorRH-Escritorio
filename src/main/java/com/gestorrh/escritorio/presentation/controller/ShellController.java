@@ -131,9 +131,7 @@ public class ShellController {
     @FXML
     private void handleMenuTurnos() {
         marcarMenuActivo(menuTurnosBtn);
-        NavigationManager.getInstance().navegar("/fxml/turnos-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.shifts.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/turnos-view.fxml");
     }
 
     /** Navega a la sección Ausencias. */

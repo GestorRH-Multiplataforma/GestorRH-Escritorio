@@ -2,16 +2,57 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.PlaceholderController"
-      styleClass="placeholder-content"
-      alignment="CENTER"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.TurnosController"
+      styleClass="empleados-content"
       spacing="16.0">
-    <padding><Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/></padding>
-    <FontIcon iconLiteral="mdi2c-clock-outline" iconSize="64" styleClass="placeholder-icono"/>
-    <Label fx:id="tituloSeccionLabel" styleClass="placeholder-titulo"/>
-    <Label fx:id="proximamenteLabel"  styleClass="placeholder-subtitulo"/>
+
+    <padding>
+        <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
+    </padding>
+
+    <!-- Toolbar -->
+    <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
+        <TextField fx:id="campoBusqueda"
+                   styleClass="empleados-search-field"
+                   HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnNuevoTurno"
+                styleClass="empleados-btn-nuevo"
+                onAction="#handleNuevoTurno"/>
+    </HBox>
+
+    <Label fx:id="labelError"
+           styleClass="empleados-error-label"
+           wrapText="true"
+           visible="false"
+           managed="false"/>
+
+    <TableView fx:id="tablaTurnos"
+               styleClass="empleados-table"
+               VBox.vgrow="ALWAYS">
+
+        <columns>
+            <TableColumn fx:id="colId"          prefWidth="60"/>
+            <TableColumn fx:id="colDescripcion" prefWidth="300"/>
+            <TableColumn fx:id="colHoraInicio"  prefWidth="120"/>
+            <TableColumn fx:id="colHoraFin"     prefWidth="120"/>
+            <TableColumn fx:id="colAcciones"    prefWidth="160"/>
+        </columns>
+
+        <placeholder>
+            <Label fx:id="labelTablaVacia" styleClass="empleados-tabla-placeholder"/>
+        </placeholder>
+
+    </TableView>
+
+    <StackPane VBox.vgrow="NEVER">
+        <ProgressIndicator fx:id="indicadorCarga"
+                           maxWidth="40.0"
+                           maxHeight="40.0"
+                           visible="false"
+                           managed="false"/>
+    </StackPane>
+
 </VBox>
