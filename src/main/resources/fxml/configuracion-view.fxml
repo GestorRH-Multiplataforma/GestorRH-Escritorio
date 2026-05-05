@@ -11,25 +11,28 @@
             styleClass="configuracion-scroll">
 
     <VBox styleClass="configuracion-content" spacing="20.0">
+
         <padding>
             <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
         </padding>
 
-        <Label fx:id="bannerExito"
-               styleClass="config-banner-exito"
-               wrapText="true"
-               maxWidth="Infinity"
-               visible="false"
-               managed="false"/>
+    <Label fx:id="bannerExito"
+           styleClass="config-banner-exito"
+           wrapText="true"
+           maxWidth="Infinity"
+           visible="false"
+           managed="false"/>
 
-        <Label fx:id="bannerError"
-               styleClass="config-banner-error"
-               wrapText="true"
-               maxWidth="Infinity"
-               visible="false"
-               managed="false"/>
+    <Label fx:id="bannerError"
+           styleClass="config-banner-error"
+           wrapText="true"
+           maxWidth="Infinity"
+           visible="false"
+           managed="false"/>
 
-        <VBox styleClass="config-section-card" spacing="14.0">
+    <HBox spacing="20.0" VBox.vgrow="NEVER">
+
+        <VBox styleClass="config-section-card" spacing="14.0" HBox.hgrow="ALWAYS">
 
             <Label fx:id="labelSeccionGenerales" styleClass="config-section-title"/>
 
@@ -67,9 +70,11 @@
                        managed="false"/>
             </VBox>
 
+            <Region VBox.vgrow="ALWAYS"/>
+
         </VBox>
 
-        <VBox styleClass="config-section-card" spacing="14.0">
+        <VBox styleClass="config-section-card" spacing="14.0" HBox.hgrow="ALWAYS">
 
             <Label fx:id="labelSeccionUbicacion" styleClass="config-section-title"/>
 
@@ -100,20 +105,22 @@
                    visible="false"
                    managed="false"/>
 
-            <HBox spacing="16.0" alignment="CENTER_LEFT">
+            <HBox spacing="12.0" alignment="CENTER_LEFT">
                 <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                     <Label fx:id="labelLatitudTitulo" styleClass="modal-field-label"/>
-                    <Label fx:id="labelLatitud" styleClass="config-coord-display"/>
+                    <Label fx:id="labelLatitud" styleClass="config-coord-display"
+                           maxWidth="Infinity"/>
                 </VBox>
                 <VBox spacing="4.0" HBox.hgrow="ALWAYS">
                     <Label fx:id="labelLongitudTitulo" styleClass="modal-field-label"/>
-                    <Label fx:id="labelLongitud" styleClass="config-coord-display"/>
+                    <Label fx:id="labelLongitud" styleClass="config-coord-display"
+                           maxWidth="Infinity"/>
                 </VBox>
                 <VBox spacing="4.0">
                     <Label fx:id="labelRadioTitulo" styleClass="modal-field-label"/>
                     <Spinner fx:id="spinnerRadio"
                              styleClass="config-spinner"
-                             prefWidth="120.0"
+                             prefWidth="110.0"
                              editable="true"/>
                 </VBox>
             </HBox>
@@ -162,76 +169,84 @@
 
             </TitledPane>
 
+            <Region VBox.vgrow="ALWAYS"/>
+
         </VBox>
+
+    </HBox>
+
+    <HBox spacing="20.0">
 
         <TitledPane fx:id="panelPassword"
                     styleClass="config-titled-pane"
                     expanded="false"
-                    animated="true">
+                    animated="true"
+                    HBox.hgrow="ALWAYS">
 
             <VBox spacing="14.0" styleClass="config-password-panel">
                 <padding>
                     <Insets top="16.0" right="20.0" bottom="16.0" left="20.0"/>
                 </padding>
 
-                <VBox spacing="4.0">
-                    <Label fx:id="labelPasswordActual" styleClass="modal-field-label"/>
-                    <PasswordField fx:id="fieldPasswordActual"
-                                   styleClass="modal-text-field"/>
-                    <Label fx:id="errorPasswordActual"
-                           styleClass="modal-field-error"
-                           visible="false"
-                           managed="false"/>
-                </VBox>
+                <HBox spacing="20.0">
 
-                <VBox spacing="4.0">
-                    <Label fx:id="labelNuevaPassword" styleClass="modal-field-label"/>
-                    <PasswordField fx:id="fieldNuevaPassword"
-                                   styleClass="modal-text-field"/>
-                    <Label fx:id="errorNuevaPassword"
-                           styleClass="modal-field-error"
-                           visible="false"
-                           managed="false"/>
-                </VBox>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="labelPasswordActual" styleClass="modal-field-label"/>
+                        <PasswordField fx:id="fieldPasswordActual"
+                                       styleClass="modal-text-field"/>
+                        <Label fx:id="errorPasswordActual"
+                               styleClass="modal-field-error"
+                               visible="false"
+                               managed="false"/>
+                    </VBox>
 
-                <!-- Confirmar contraseña -->
-                <VBox spacing="4.0">
-                    <Label fx:id="labelConfirmarPassword" styleClass="modal-field-label"/>
-                    <PasswordField fx:id="fieldConfirmarPassword"
-                                   styleClass="modal-text-field"/>
-                    <Label fx:id="errorConfirmarPassword"
-                           styleClass="modal-field-error"
-                           visible="false"
-                           managed="false"/>
-                </VBox>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="labelNuevaPassword" styleClass="modal-field-label"/>
+                        <PasswordField fx:id="fieldNuevaPassword"
+                                       styleClass="modal-text-field"/>
+                        <Label fx:id="errorNuevaPassword"
+                               styleClass="modal-field-error"
+                               visible="false"
+                               managed="false"/>
+                    </VBox>
 
-                <HBox alignment="CENTER_RIGHT">
-                    <Button fx:id="btnCambiarPassword"
-                            styleClass="modal-btn-guardar"
-                            onAction="#handleCambiarPassword"/>
+                    <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="labelConfirmarPassword" styleClass="modal-field-label"/>
+                        <PasswordField fx:id="fieldConfirmarPassword"
+                                       styleClass="modal-text-field"/>
+                        <Label fx:id="errorConfirmarPassword"
+                               styleClass="modal-field-error"
+                               visible="false"
+                               managed="false"/>
+                    </VBox>
+
+                    <VBox alignment="BOTTOM_RIGHT">
+                        <Button fx:id="btnCambiarPassword"
+                                styleClass="modal-btn-guardar"
+                                onAction="#handleCambiarPassword"/>
+                    </VBox>
+
                 </HBox>
 
             </VBox>
 
         </TitledPane>
 
-        <HBox alignment="CENTER_RIGHT" spacing="12.0">
-            <Button fx:id="btnDescartar"
-                    styleClass="modal-btn-cancelar"
-                    onAction="#handleDescartar"/>
-            <Button fx:id="btnGuardar"
-                    styleClass="modal-btn-guardar"
-                    onAction="#handleGuardar"/>
-        </HBox>
+    </HBox>
 
-        <!-- Indicador de carga general -->
-        <HBox alignment="CENTER">
-            <ProgressIndicator fx:id="indicadorCarga"
-                               maxWidth="32.0"
-                               maxHeight="32.0"
-                               visible="false"
-                               managed="false"/>
-        </HBox>
+    <HBox alignment="CENTER_RIGHT" spacing="12.0">
+        <ProgressIndicator fx:id="indicadorCarga"
+                           maxWidth="28.0"
+                           maxHeight="28.0"
+                           visible="false"
+                           managed="false"/>
+        <Button fx:id="btnDescartar"
+                styleClass="modal-btn-cancelar"
+                onAction="#handleDescartar"/>
+        <Button fx:id="btnGuardar"
+                styleClass="modal-btn-guardar"
+                onAction="#handleGuardar"/>
+    </HBox>
 
     </VBox>
 

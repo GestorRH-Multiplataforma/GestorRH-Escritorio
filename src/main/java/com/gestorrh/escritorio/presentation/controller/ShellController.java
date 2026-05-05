@@ -154,13 +154,11 @@ public class ShellController {
         );
     }
 
-    /** Navega a la sección Configuración (placeholder). */
+    /** Navega a la sección Configuración. */
     @FXML
     private void handleMenuConfiguracion() {
         marcarMenuActivo(menuConfiguracionBtn);
-        NavigationManager.getInstance().navegar("/fxml/configuracion-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.settings.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/configuracion-view.fxml");
     }
 
     /**
