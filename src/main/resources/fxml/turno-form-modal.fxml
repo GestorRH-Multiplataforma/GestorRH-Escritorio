@@ -8,6 +8,7 @@
       fx:controller="com.gestorrh.escritorio.presentation.controller.TurnoFormController"
       styleClass="modal-root"
       prefWidth="440.0"
+      prefHeight="380.0"
       spacing="0.0">
 
     <HBox styleClass="modal-header" alignment="CENTER_LEFT">

@@ -45,7 +45,6 @@ public class TurnosController {
     @FXML private Button         btnNuevoTurno;
 
     @FXML private TableView<RespuestaTurnoDTO>   tablaTurnos;
-    @FXML private TableColumn<RespuestaTurnoDTO, String> colId;
     @FXML private TableColumn<RespuestaTurnoDTO, String> colDescripcion;
     @FXML private TableColumn<RespuestaTurnoDTO, String> colHoraInicio;
     @FXML private TableColumn<RespuestaTurnoDTO, String> colHoraFin;
@@ -91,9 +90,6 @@ public class TurnosController {
      */
     private void configurarColumnas() {
         tablaTurnos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-
-        colId.setCellValueFactory(data ->
-                new SimpleStringProperty(String.valueOf(data.getValue().idTurno())));
 
         colDescripcion.setCellValueFactory(data ->
                 new SimpleStringProperty(data.getValue().descripcion()));
@@ -262,7 +258,6 @@ public class TurnosController {
         campoBusqueda.setPromptText(lang.getString("turnos.buscar.placeholder"));
         btnNuevoTurno.setText(lang.getString("turnos.btn.nuevo"));
 
-        colId.setText(lang.getString("turnos.col.id"));
         colDescripcion.setText(lang.getString("turnos.col.descripcion"));
         colHoraInicio.setText(lang.getString("turnos.col.horaInicio"));
         colHoraFin.setText(lang.getString("turnos.col.horaFin"));
@@ -271,5 +266,7 @@ public class TurnosController {
         if (labelTablaVacia != null) {
             labelTablaVacia.setText(lang.getString("turnos.tabla.vacia"));
         }
+
+        tablaTurnos.refresh();
     }
 }
