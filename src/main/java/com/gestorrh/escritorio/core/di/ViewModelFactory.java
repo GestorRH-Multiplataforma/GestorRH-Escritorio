@@ -96,4 +96,20 @@ public class ViewModelFactory {
     public TurnoFormViewModel createTurnoFormViewModel() {
         return new TurnoFormViewModel(RepositoryFactory.getInstance().getTurnoRepository());
     }
+
+    /**
+     * Crea un ViewModel para la pantalla de asignación de turnos en calendario.
+     * Se genera una nueva instancia por cada apertura de la vista para
+     * garantizar un estado limpio e independiente.
+     *
+     * @return Nueva instancia de AsignacionTurnosViewModel.
+     */
+    public AsignacionTurnosViewModel createAsignacionTurnosViewModel() {
+        return new AsignacionTurnosViewModel(
+                RepositoryFactory.getInstance().getAsignacionTurnoRepository(),
+                RepositoryFactory.getInstance().getEmpleadoRepository(),
+                RepositoryFactory.getInstance().getTurnoRepository(),
+                RepositoryFactory.getInstance().getEmpresaRepository()
+        );
+    }
 }
