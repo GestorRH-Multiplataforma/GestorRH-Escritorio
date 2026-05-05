@@ -4,6 +4,7 @@ import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
 import com.gestorrh.escritorio.presentation.viewmodel.LoginViewModel;
+import com.gestorrh.escritorio.presentation.viewmodel.ConfiguracionViewModel;
 
 /**
  * Fábrica centralizada para la creación de ViewModels.
@@ -65,5 +66,18 @@ public class ViewModelFactory {
      */
     public LoginViewModel createLoginViewModel() {
         return new LoginViewModel(RepositoryFactory.getInstance().getAuthRepository());
+    }
+
+    /**
+     * Crea un ViewModel para la pantalla de Configuración de empresa.
+     * Se genera una nueva instancia por cada apertura de la vista para
+     * garantizar un estado limpio e independiente.
+     *
+     * @return Nueva instancia de ConfiguracionViewModel.
+     */
+    public ConfiguracionViewModel createConfiguracionViewModel() {
+        return new ConfiguracionViewModel(
+                RepositoryFactory.getInstance().getEmpresaRepository()
+        );
     }
 }
