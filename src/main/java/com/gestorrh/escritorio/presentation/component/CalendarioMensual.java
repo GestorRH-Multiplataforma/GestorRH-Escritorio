@@ -208,6 +208,12 @@ public class CalendarioMensual extends VBox {
         cabecera.getStyleClass().add("calendario-cabecera");
         cabecera.setHgap(2);
         rellenarCabecera();
+        for (int i = 0; i < COLUMNAS; i++) {
+            javafx.scene.layout.ColumnConstraints col = new javafx.scene.layout.ColumnConstraints();
+            col.setHgrow(javafx.scene.layout.Priority.ALWAYS);
+            col.setFillWidth(true);
+            cabecera.getColumnConstraints().add(col);
+        }
     }
 
     /**
@@ -238,6 +244,21 @@ public class CalendarioMensual extends VBox {
         grid.getStyleClass().add("calendario-grid");
         grid.setHgap(2);
         grid.setVgap(2);
+
+        for (int i = 0; i < COLUMNAS; i++) {
+            javafx.scene.layout.ColumnConstraints col = new javafx.scene.layout.ColumnConstraints();
+            col.setHgrow(javafx.scene.layout.Priority.ALWAYS);
+            col.setFillWidth(true);
+            grid.getColumnConstraints().add(col);
+        }
+
+        for (int i = 0; i < FILAS; i++) {
+            javafx.scene.layout.RowConstraints fila = new javafx.scene.layout.RowConstraints();
+            fila.setVgrow(javafx.scene.layout.Priority.ALWAYS);
+            fila.setFillHeight(true);
+            fila.setMinHeight(52);
+            grid.getRowConstraints().add(fila);
+        }
     }
 
     /**

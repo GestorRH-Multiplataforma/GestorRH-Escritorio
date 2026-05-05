@@ -94,6 +94,8 @@ public class TurnosController {
     @FXML private Label labelTablaVacia;
     @FXML private ProgressIndicator indicadorCarga;
 
+    @FXML private VBox panelTips;
+
     private final TurnoViewModel turnoViewModel;
     private final AsignacionTurnosViewModel asignacionViewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
@@ -119,6 +121,14 @@ public class TurnosController {
 
         turnoViewModel.cargarTurnos();
         asignacionViewModel.inicializar();
+        asignacionViewModel.getAsignacionesMes().addListener(
+                (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio -> {
+                    if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
+                        Platform.runLater(() -> handleDiaClick(LocalDate.now()));
+                    }
+                }
+        );
+        mostrarTips();
     }
 
     /**
@@ -205,10 +215,30 @@ public class TurnosController {
         configurarComboTurno();
 
         comboModalidad.setItems(asignacionViewModel.getModalidades());
+        comboModalidad.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(String modalidad) {
+                if (modalidad == null) return "";
+                return switch (modalidad.toUpperCase()) {
+                    case "PRESENCIAL" -> LanguageManager.getInstance()
+                            .getString("asignaciones.modalidad.presencial");
+                    case "TELETRABAJO" -> LanguageManager.getInstance()
+                            .getString("asignaciones.modalidad.teletrabajo");
+                    default -> modalidad.charAt(0) + modalidad.substring(1).toLowerCase();
+                };
+            }
+            @Override
+            public String fromString(String s) { return null; }
+        });
+        comboModalidad.setPromptText(LanguageManager.getInstance()
+                .getString("asignaciones.form.modalidad.placeholder"));
         comboModalidad.valueProperty().bindBidirectional(
                 asignacionViewModel.modalidadSeleccionadaProperty());
 
-        btnAsignar.disableProperty().bind(asignacionViewModel.sedeConfiguradaProperty().not());
+        asignacionViewModel.sedeConfiguradaProperty().addListener((obs, anterior, configurada) ->
+                Platform.runLater(() -> btnAsignar.setDisable(!configurada))
+        );
+        btnAsignar.setDisable(!asignacionViewModel.sedeConfiguradaProperty().get());
 
         asignacionViewModel.sedeConfiguradaProperty().addListener((obs, anterior, configurada) ->
                 Platform.runLater(() -> actualizarBannerSede(configurada))
@@ -237,6 +267,9 @@ public class TurnosController {
                 (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio ->
                         Platform.runLater(this::actualizarResumenDia)
         );
+        LanguageManager.getInstance().addListener(() ->
+                Platform.runLater(this::actualizarMarcasCalendario)
+        );
     }
 
     /**
@@ -253,6 +286,8 @@ public class TurnosController {
             @Override
             public RespuestaEmpleadoDTO fromString(String s) { return null; }
         });
+        comboEmpleado.setPromptText(LanguageManager.getInstance()
+                .getString("asignaciones.form.empleado.placeholder"));
         comboEmpleado.valueProperty().bindBidirectional(
                 asignacionViewModel.empleadoSeleccionadoProperty());
     }
@@ -273,6 +308,8 @@ public class TurnosController {
             @Override
             public RespuestaTurnoDTO fromString(String s) { return null; }
         });
+        comboTurno.setPromptText(LanguageManager.getInstance()
+                .getString("asignaciones.form.turno.placeholder"));
         comboTurno.valueProperty().bindBidirectional(
                 asignacionViewModel.turnoSeleccionadoProperty());
     }
@@ -296,10 +333,7 @@ public class TurnosController {
         for (RespuestaAsignacionTurnoDTO asignacion : asignacionViewModel.getAsignacionesMes()) {
             if (asignacion.fecha() == null) continue;
             LocalDate fecha = LocalDate.parse(asignacion.fecha());
-            String estilo = esTeletrabajo(asignacion.modalidad())
-                    ? "calendario-dia--teletrabajo"
-                    : "calendario-dia--con-asignacion";
-            calendarioAsignaciones.marcarDia(fecha, estilo);
+            calendarioAsignaciones.marcarDia(fecha, "calendario-dia--con-asignacion");
         }
     }
 
@@ -333,17 +367,22 @@ public class TurnosController {
      */
     private void actualizarResumenDia() {
         listaAsignacionesDia.getChildren().clear();
+        lblResumenVacio.setVisible(false);
+        lblResumenVacio.setManaged(false);
+        lblTotalDia.setVisible(false);
+        lblTotalDia.setManaged(false);
 
-        if (asignacionViewModel.getAsignacionesDia().isEmpty()) {
-            lblResumenVacio.setVisible(true);
-            lblResumenVacio.setManaged(true);
-            lblTotalDia.setVisible(false);
-            lblTotalDia.setManaged(false);
+        if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
             return;
         }
 
-        lblResumenVacio.setVisible(false);
-        lblResumenVacio.setManaged(false);
+        if (asignacionViewModel.getAsignacionesDia().isEmpty()) {
+            lblResumenVacio.setText(LanguageManager.getInstance()
+                    .getString("asignaciones.resumen.vacio"));
+            lblResumenVacio.setVisible(true);
+            lblResumenVacio.setManaged(true);
+            return;
+        }
 
         for (RespuestaAsignacionTurnoDTO asignacion : asignacionViewModel.getAsignacionesDia()) {
             listaAsignacionesDia.getChildren().add(crearTarjetaAsignacion(asignacion));
@@ -437,12 +476,10 @@ public class TurnosController {
         btnAsignar.setDisable(true);
 
         asignacionViewModel.crearAsignacion(diaSeleccionado)
-                .thenAccept(nueva -> Platform.runLater(() -> btnAsignar.setDisable(
-                        !asignacionViewModel.sedeConfiguradaProperty().get())))
+                .thenAccept(nueva -> Platform.runLater(() -> btnAsignar.setDisable(false)))
                 .exceptionally(ex -> {
                     Platform.runLater(() -> {
-                        btnAsignar.setDisable(
-                                !asignacionViewModel.sedeConfiguradaProperty().get());
+                        btnAsignar.setDisable(false);
                         Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
                         mostrarAlertaError(causa.getMessage());
                     });
@@ -600,6 +637,57 @@ public class TurnosController {
     }
 
     /**
+     * Rellena el panel de tips con 4 tips en orden aleatorio,
+     * ocupando el espacio restante bajo el calendario.
+     */
+    private void mostrarTips() {
+        if (panelTips == null) return;
+        panelTips.getChildren().clear();
+
+        LanguageManager lang = LanguageManager.getInstance();
+        int total = 6;
+
+        java.util.List<Integer> indices = new java.util.ArrayList<>();
+        for (int i = 1; i <= total; i++) indices.add(i);
+        java.util.Collections.shuffle(indices);
+
+        String[] iconos = {
+                "mdi2l-lightbulb-outline",
+                "mdi2c-calendar-check",
+                "mdi2a-account-group",
+                "mdi2r-refresh",
+                "mdi2c-chart-line",
+                "mdi2s-star-outline"
+        };
+
+        for (int i = 0; i < 4; i++) {
+            int indice = indices.get(i);
+            String texto = lang.getString("tip." + indice);
+            String icono = iconos[i % iconos.length];
+
+            org.kordamp.ikonli.javafx.FontIcon fontIcono =
+                    new org.kordamp.ikonli.javafx.FontIcon(icono);
+            fontIcono.setIconSize(16);
+            fontIcono.getStyleClass().add("tip-icono");
+
+            javafx.scene.control.Label lblTexto = new javafx.scene.control.Label(texto);
+            lblTexto.getStyleClass().add("tip-texto");
+            lblTexto.setWrapText(true);
+            lblTexto.setMaxWidth(Double.MAX_VALUE);
+
+            javafx.scene.layout.HBox fila = new javafx.scene.layout.HBox(10, fontIcono, lblTexto);
+            fila.setAlignment(javafx.geometry.Pos.TOP_LEFT);
+            javafx.scene.layout.HBox.setHgrow(lblTexto, javafx.scene.layout.Priority.ALWAYS);
+
+            javafx.scene.layout.VBox tarjeta = new javafx.scene.layout.VBox(fila);
+            tarjeta.getStyleClass().add("tip-tarjeta");
+            javafx.scene.layout.VBox.setVgrow(tarjeta, javafx.scene.layout.Priority.ALWAYS);
+
+            panelTips.getChildren().add(tarjeta);
+        }
+    }
+
+    /**
      * Muestra el label de error del formulario de asignación.
      *
      * @param mensaje Mensaje de error a mostrar.
@@ -649,9 +737,13 @@ public class TurnosController {
         lblModalidad.setText(lang.getString("asignaciones.form.modalidad"));
         btnAsignar.setText(lang.getString("asignaciones.btn.asignar"));
 
-        if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
+        LocalDate diaActual = asignacionViewModel.diaSeleccionadoProperty().get();
+        if (diaActual == null) {
             lblResumenTitulo.setText(lang.getString("asignaciones.titulo"));
             lblResumenVacio.setText(lang.getString("asignaciones.resumen.vacio"));
+        } else {
+            actualizarTituloResumen(diaActual);
+            actualizarResumenDia();
         }
 
         campoBusqueda.setPromptText(lang.getString("turnos.buscar.placeholder"));
@@ -666,6 +758,11 @@ public class TurnosController {
             labelTablaVacia.setText(lang.getString("turnos.tabla.vacia"));
         }
 
+        comboEmpleado.setPromptText(lang.getString("asignaciones.form.empleado.placeholder"));
+        comboTurno.setPromptText(lang.getString("asignaciones.form.turno.placeholder"));
+        comboModalidad.setPromptText(lang.getString("asignaciones.form.modalidad.placeholder"));
+        comboModalidad.setConverter(comboModalidad.getConverter());
         tablaTurnos.refresh();
+        mostrarTips();
     }
 }

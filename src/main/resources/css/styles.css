@@ -1540,6 +1540,8 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
     -fx-padding: 16;
     -fx-spacing: 8;
+    -fx-min-width: 380px;
+    -fx-max-width: 600px;
 }
 
 /* Barra de navegación mes/año */
@@ -1587,8 +1589,6 @@
     -fx-font-weight: bold;
     -fx-text-fill: #64748B;
     -fx-alignment: CENTER;
-    -fx-pref-width: 44px;
-    -fx-pref-height: 28px;
 }
 
 /* Grid de días */
@@ -1599,11 +1599,10 @@
 
 /* Celda base */
 .calendario-dia {
-    -fx-pref-width: 44px;
-    -fx-pref-height: 44px;
     -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-alignment: CENTER;
+    -fx-min-height: 52px;
 }
 
 .calendario-dia:hover {
@@ -1651,12 +1650,13 @@
 
 /* Marcas de contenido (usadas por consumidores) */
 .calendario-dia--con-asignacion {
-    -fx-background-color: rgba(0, 168, 232, 0.12);
+    -fx-background-color: rgba(0, 120, 200, 0.25);
     -fx-background-radius: 8;
 }
 
 .calendario-dia--con-asignacion .calendario-dia-numero {
     -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
 }
 
 .calendario-dia--con-ausencia {
@@ -1806,10 +1806,34 @@
 /* Marca de teletrabajo en el calendario */
 
 .calendario-dia--teletrabajo {
-    -fx-background-color: rgba(139, 92, 246, 0.12);
+    -fx-background-color: rgba(0, 120, 200, 0.25);
     -fx-background-radius: 8;
 }
 
 .calendario-dia--teletrabajo .calendario-dia-numero {
     -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+}
+
+/* Panel de tips */
+
+.tip-tarjeta {
+    -fx-background-color: #F0F9FF;
+    -fx-background-radius: 10;
+    -fx-border-color: #BAE6FD;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 12 16 12 16;
+}
+
+.tip-icono {
+    -fx-icon-color: #0369A1;
+}
+
+.tip-texto {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #0369A1;
+    -fx-line-spacing: 2;
+    -fx-wrap-text: true;
 }
