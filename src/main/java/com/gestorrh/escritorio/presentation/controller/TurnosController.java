@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.RespuestaAsignacionTurnoDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
@@ -53,7 +54,7 @@ import java.util.logging.Logger;
  * @author Fco Javier García Cañero
  * @version 2.0
  */
-public class TurnosController {
+public class TurnosController implements Limpiable {
 
     private static final Logger LOGGER = Logger.getLogger(TurnosController.class.getName());
 

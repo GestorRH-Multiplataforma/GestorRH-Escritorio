@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoFormViewModel.ModoFormulario;
 import com.gestorrh.escritorio.presentation.viewmodel.EmpleadoViewModel;
@@ -35,7 +36,7 @@ import java.util.logging.Logger;
  * @author Fco Javier García Cañero
  * @version 1.1
  */
-public class EmpleadosController {
+public class EmpleadosController implements Limpiable {
 
     private static final Logger LOGGER = Logger.getLogger(EmpleadosController.class.getName());
     private static final int FILAS_POR_PAGINA = 25;

@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.presentation.viewmodel.ConfiguracionViewModel;
 
 import javafx.animation.PauseTransition;
@@ -27,7 +28,7 @@ import javafx.util.Duration;
  * @author Fco Javier García Cañero
  * @version 1.0
  */
-public class ConfiguracionController {
+public class ConfiguracionController implements Limpiable {
 
     @FXML private Label bannerExito;
     @FXML private Label bannerError;

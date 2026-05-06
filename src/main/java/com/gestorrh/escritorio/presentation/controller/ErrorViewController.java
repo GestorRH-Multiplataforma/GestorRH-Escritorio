@@ -1,6 +1,7 @@
 package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
@@ -11,7 +12,7 @@ import javafx.scene.control.Label;
  * @author Fco Javier García Cañero
  * @version 1.0
  */
-public class ErrorViewController {
+public class ErrorViewController implements Limpiable {
 
     @FXML private Label tituloLabel;
     @FXML private Label descripcionLabel;
