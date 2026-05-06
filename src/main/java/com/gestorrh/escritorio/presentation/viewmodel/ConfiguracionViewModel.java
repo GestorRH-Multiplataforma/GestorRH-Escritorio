@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
+import com.gestorrh.escritorio.data.network.GeocodingService;
 import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.PeticionCambiarPasswordEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpresaDTO;
@@ -39,11 +40,9 @@ public class ConfiguracionViewModel {
     private static final int RADIO_MIN = 25;
     private static final int RADIO_MAX = 500;
     private static final int RADIO_DEFAULT = 50;
-    private static final String NOMINATIM_URL =
-            "https://nominatim.openstreetmap.org/search?format=json&limit=1&q=";
-    private static final String NOMINATIM_USER_AGENT = "GestorRH-Escritorio/1.0";
 
     private final EmpresaRepository empresaRepository;
+    private final GeocodingService geocodingService = new GeocodingService();
 
     private RespuestaEmpresaDTO perfilOriginal;
 
@@ -244,9 +243,8 @@ public class ConfiguracionViewModel {
     }
 
     /**
-     * Geocodifica una dirección textual usando Nominatim (OpenStreetMap)
+     * Geocodifica una dirección textual usando el GeocodingService
      * y actualiza las Properties de latitud y longitud con el resultado.
-     * Cumple con las normas de uso de Nominatim (User-Agent identificativo).
      *
      * @param query Dirección textual a geocodificar.
      * @return CompletableFuture que se completa cuando finaliza la geocodificación.
@@ -255,35 +253,14 @@ public class ConfiguracionViewModel {
         geocodificando.set(true);
         errorGeocodificacion.set("");
 
-        String url = NOMINATIM_URL + URLEncoder.encode(query, StandardCharsets.UTF_8);
-
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .header("User-Agent", NOMINATIM_USER_AGENT)
-                .header("Accept-Language", "es")
-                .GET()
-                .build();
-
-        return client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenAccept(response -> {
-                    JsonArray results = JsonParser.parseString(response.body()).getAsJsonArray();
-                    Platform.runLater(() -> {
-                        if (results.isEmpty()) {
-                            errorGeocodificacion.set("configuracion.error.geocoding");
-                        } else {
-                            double lat = results.get(0).getAsJsonObject()
-                                    .get("lat").getAsDouble();
-                            double lon = results.get(0).getAsJsonObject()
-                                    .get("lon").getAsDouble();
-                            latitudSede.set(lat);
-                            longitudSede.set(lon);
-                            if (radioValidez.get() == null) {
-                                radioValidez.set(RADIO_DEFAULT);
-                            }
-                        }
-                    });
-                })
+        return geocodingService.geocodificar(query)
+                .thenAccept(resultado -> Platform.runLater(() -> {
+                    latitudSede.set(resultado.latitud());
+                    longitudSede.set(resultado.longitud());
+                    if (radioValidez.get() == null) {
+                        radioValidez.set(RADIO_DEFAULT);
+                    }
+                }))
                 .exceptionally(ex -> {
                     Platform.runLater(() ->
                             errorGeocodificacion.set("configuracion.error.geocoding")
