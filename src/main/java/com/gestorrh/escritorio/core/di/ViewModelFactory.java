@@ -123,4 +123,17 @@ public class ViewModelFactory {
     public AusenciasViewModel createAusenciasViewModel() {
         return new AusenciasViewModel(RepositoryFactory.getInstance().getAusenciaRepository());
     }
+
+    /**
+     * Crea un ViewModel para la pantalla de registro de nueva empresa.
+     * Se genera una nueva instancia para garantizar un estado limpio.
+     *
+     * @return Nueva instancia de RegistroViewModel.
+     */
+    public RegistroViewModel createRegistroViewModel() {
+        return new RegistroViewModel(
+                RepositoryFactory.getInstance().getEmpresaRepository(),
+                RepositoryFactory.getInstance().getAuthRepository()
+        );
+    }
 }
