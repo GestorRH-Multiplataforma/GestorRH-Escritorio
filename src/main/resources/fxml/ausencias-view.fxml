@@ -2,22 +2,149 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.PlaceholderController"
-      styleClass="placeholder-content"
-      alignment="CENTER"
-      spacing="16.0">
+      fx:controller="com.gestorrh.escritorio.presentation.controller.AusenciasController"
+      styleClass="empleados-content"
+      spacing="0.0">
 
-    <padding>
-        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
-    </padding>
+    <TabPane fx:id="tabPane"
+             styleClass="turnos-tab-pane"
+             tabClosingPolicy="UNAVAILABLE"
+             VBox.vgrow="ALWAYS">
 
-    <FontIcon iconLiteral="mdi2c-clock-outline" iconSize="64"
-              styleClass="placeholder-icono"/>
-    <Label fx:id="tituloSeccionLabel" styleClass="placeholder-titulo"/>
-    <Label fx:id="proximamenteLabel"  styleClass="placeholder-subtitulo"/>
+        <!-- PESTAÑA PENDIENTES -->
+        <Tab fx:id="tabPendientes">
+            <VBox spacing="12.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblErrorPendientes"
+                       styleClass="empleados-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <TableView fx:id="tablaPendientes"
+                           styleClass="empleados-table"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colPendEmpleado"     prefWidth="180"/>
+                        <TableColumn fx:id="colPendTipo"         prefWidth="110"/>
+                        <TableColumn fx:id="colPendDescripcion" prefWidth="160"/>
+                        <TableColumn fx:id="colPendFechas"       prefWidth="180"/>
+                        <TableColumn fx:id="colPendDias"         prefWidth="50"/>
+                        <TableColumn fx:id="colPendJustificante" prefWidth="60"/>
+                        <TableColumn fx:id="colPendEstado"       prefWidth="100"/>
+                        <TableColumn fx:id="colPendAcciones"     prefWidth="160"/>
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="empleados-tabla-placeholder"
+                               text="No hay ausencias pendientes"/>
+                    </placeholder>
+                </TableView>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorPendientes"
+                                       maxWidth="40.0"
+                                       maxHeight="40.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+            </VBox>
+        </Tab>
+
+        <!-- PESTAÑA APROBADAS -->
+        <Tab fx:id="tabAprobadas">
+            <VBox spacing="12.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblErrorAprobadas"
+                       styleClass="empleados-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <TableView fx:id="tablaAprobadas"
+                           styleClass="empleados-table"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colAprEmpleado"     prefWidth="150"/>
+                        <TableColumn fx:id="colAprTipo"         prefWidth="100"/>
+                        <TableColumn fx:id="colAprDescripcion"  prefWidth="160"/>
+                        <TableColumn fx:id="colAprFechas"       prefWidth="160"/>
+                        <TableColumn fx:id="colAprDias"         prefWidth="50"/>
+                        <TableColumn fx:id="colAprJustificante" prefWidth="60"/>
+                        <TableColumn fx:id="colAprEstado"       prefWidth="90"/>
+                        <TableColumn fx:id="colAprResponsable"  prefWidth="130"/>
+                        <TableColumn fx:id="colAprObservaciones" prefWidth="200"/>
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="empleados-tabla-placeholder"
+                               text="No hay ausencias aprobadas"/>
+                    </placeholder>
+                </TableView>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorAprobadas"
+                                       maxWidth="40.0"
+                                       maxHeight="40.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+            </VBox>
+        </Tab>
+
+        <!-- PESTAÑA RECHAZADAS -->
+        <Tab fx:id="tabRechazadas">
+            <VBox spacing="12.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblErrorRechazadas"
+                       styleClass="empleados-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <TableView fx:id="tablaRechazadas"
+                           styleClass="empleados-table"
+                           VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colRecEmpleado"     prefWidth="150"/>
+                        <TableColumn fx:id="colRecTipo"         prefWidth="100"/>
+                        <TableColumn fx:id="colRecDescripcion"  prefWidth="160"/>
+                        <TableColumn fx:id="colRecFechas"       prefWidth="160"/>
+                        <TableColumn fx:id="colRecDias"         prefWidth="50"/>
+                        <TableColumn fx:id="colRecJustificante" prefWidth="60"/>
+                        <TableColumn fx:id="colRecEstado"       prefWidth="90"/>
+                        <TableColumn fx:id="colRecResponsable"  prefWidth="130"/>
+                        <TableColumn fx:id="colRecObservaciones" prefWidth="200"/>
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="empleados-tabla-placeholder"
+                               text="No hay ausencias rechazadas"/>
+                    </placeholder>
+                </TableView>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorRechazadas"
+                                       maxWidth="40.0"
+                                       maxHeight="40.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+            </VBox>
+        </Tab>
+
+    </TabPane>
 
 </VBox>

@@ -1,8 +1,10 @@
 package com.gestorrh.escritorio.presentation.controller;
 
+import com.gestorrh.escritorio.core.di.RepositoryFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.core.security.SessionManager;
+import com.gestorrh.escritorio.data.repository.AusenciaRepository;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -61,6 +63,7 @@ public class ShellController {
 
     @FXML private Button menuAusenciasBtn;
     @FXML private Label  menuAusenciasLabel;
+    @FXML private Label badgeAusencias;
 
     @FXML private Button menuInformesBtn;
     @FXML private Label  menuInformesLabel;
@@ -80,6 +83,10 @@ public class ShellController {
     private Timeline animacionSidebar;
     private Timeline relojTimeline;
 
+    private int totalAusenciasPendientes = 0;
+
+    private final AusenciaRepository ausenciaRepository =
+            RepositoryFactory.getInstance().getAusenciaRepository();
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
     /**
@@ -100,6 +107,7 @@ public class ShellController {
         iniciarRelojFooter();
 
         NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml");
+        cargarBadgeAusenciasInicial();
     }
 
     /**
@@ -138,9 +146,12 @@ public class ShellController {
     @FXML
     private void handleMenuAusencias() {
         marcarMenuActivo(menuAusenciasBtn);
-        NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.absences.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml", ctrl -> {
+            AusenciasController ausenciasController = (AusenciasController) ctrl;
+            ausenciasController.setOnPendientesActualizados(total -> {
+                Platform.runLater(() -> actualizarBadgeAusencias(total));
+            });
+        });
     }
 
     /** Navega a la sección Informes. */
@@ -205,6 +216,30 @@ public class ShellController {
     private void handleLangEn() {
         LanguageManager.getInstance().setLocale(Locale.of("en"));
         actualizarToggleIdioma();
+    }
+
+    /**
+     * Carga el número de ausencias pendientes al iniciar el shell
+     * para mostrar el badge en el sidebar sin necesidad de navegar a la vista.
+     */
+    private void cargarBadgeAusenciasInicial() {
+        ausenciaRepository.listar("SOLICITADA")
+                .thenAccept(lista -> Platform.runLater(() ->
+                        actualizarBadgeAusencias(lista.size())))
+                .exceptionally(ex -> null);
+    }
+
+    /**
+     * Actualiza el badge de ausencias pendientes en el sidebar.
+     * Muestra el contador si hay pendientes, lo oculta si no hay ninguna.
+     *
+     * @param total Número de ausencias pendientes.
+     */
+    private void actualizarBadgeAusencias(int total) {
+        totalAusenciasPendientes = total;
+        badgeAusencias.setText(String.valueOf(total));
+        badgeAusencias.setVisible(total > 0);
+        badgeAusencias.setManaged(total > 0);
     }
 
     /**
@@ -288,6 +323,9 @@ public class ShellController {
 
         menuCerrarSesionLabel.setVisible(mostrarTexto);
         menuCerrarSesionLabel.setManaged(mostrarTexto);
+
+        badgeAusencias.setVisible(mostrarTexto && totalAusenciasPendientes > 0);
+        badgeAusencias.setManaged(mostrarTexto && totalAusenciasPendientes > 0);
     }
 
     /**

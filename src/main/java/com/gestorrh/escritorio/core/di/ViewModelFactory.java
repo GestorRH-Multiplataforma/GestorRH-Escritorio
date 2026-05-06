@@ -112,4 +112,15 @@ public class ViewModelFactory {
                 RepositoryFactory.getInstance().getEmpresaRepository()
         );
     }
+
+    /**
+     * Crea un ViewModel para la pantalla del buzón de ausencias.
+     * Se genera una nueva instancia por cada apertura de la vista para
+     * garantizar un estado limpio e independiente.
+     *
+     * @return Nueva instancia de AusenciasViewModel.
+     */
+    public AusenciasViewModel createAusenciasViewModel() {
+        return new AusenciasViewModel(RepositoryFactory.getInstance().getAusenciaRepository());
+    }
 }

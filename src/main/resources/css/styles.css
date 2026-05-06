@@ -1837,3 +1837,107 @@
     -fx-line-spacing: 2;
     -fx-wrap-text: true;
 }
+
+/* AUSENCIAS — Badges de tipo */
+
+.badge-ausencia-vacaciones {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #1D4ED8;
+}
+
+.badge-ausencia-medica {
+    -fx-background-color: #F3E8FF;
+    -fx-text-fill: #6B21A8;
+}
+
+.badge-ausencia-motivo_personal {
+    -fx-background-color: #FEF9C3;
+    -fx-text-fill: #713F12;
+}
+
+.badge-ausencia-otros {
+    -fx-background-color: #F1F5F9;
+    -fx-text-fill: #475569;
+}
+
+/* AUSENCIAS — Badges de estado */
+
+.badge-ausencia-solicitada {
+    -fx-background-color: #FEF3C7;
+    -fx-text-fill: #92400E;
+}
+
+.badge-ausencia-aprobada {
+    -fx-background-color: #DCFCE7;
+    -fx-text-fill: #166534;
+}
+
+.badge-ausencia-rechazada {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #991B1B;
+}
+
+/* AUSENCIAS — Botón justificante */
+
+.btn-clip {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 2 6 2 6;
+}
+
+.btn-clip:hover {
+    -fx-background-color: #EFF6FF;
+    -fx-background-radius: 6;
+}
+
+/* AUSENCIAS — Icono justificante */
+
+.ausencias-justificante-icono {
+    -fx-icon-color: #00A8E8;
+}
+
+/* AUSENCIAS — Celda centrada */
+
+.tabla-celda-centrada {
+    -fx-alignment: CENTER;
+}
+
+/* Columna de tabla con contenido centrado */
+.col-centrada {
+    -fx-alignment: CENTER;
+}
+
+/* AUSENCIAS — Badge contador pestaña pendientes */
+
+.ausencias-tab-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: inherit;
+}
+
+.ausencias-tab-badge {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 1 6 1 6;
+    -fx-min-width: 18px;
+    -fx-alignment: CENTER;
+}
+
+/* AUSENCIAS — Badge sidebar */
+
+.sidebar-ausencias-badge {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 1 6 1 6;
+    -fx-min-width: 18px;
+    -fx-alignment: CENTER;
+}
