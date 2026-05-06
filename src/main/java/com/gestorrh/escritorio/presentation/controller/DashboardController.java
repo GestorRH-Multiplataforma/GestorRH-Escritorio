@@ -3,9 +3,11 @@ package com.gestorrh.escritorio.presentation.controller;
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.navigation.Limpiable;
+import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -48,6 +50,7 @@ public class DashboardController implements Limpiable {
 
     @FXML private Label actividadRecienteLabel;
 
+    private java.util.function.Consumer<String> onNavegar;
     private final DashboardViewModel viewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
@@ -59,6 +62,16 @@ public class DashboardController implements Limpiable {
     }
 
     /**
+     * Registra el callback que se ejecutará cuando el usuario pulse una tarjeta KPI.
+     * El ShellController lo usa para actualizar el sidebar y navegar correctamente.
+     *
+     * @param callback Consumer que recibe la ruta FXML destino.
+     */
+    public void setOnNavegar(java.util.function.Consumer<String> callback) {
+        this.onNavegar = callback;
+    }
+
+    /**
      * Inicializa los bindings, configura los listeners reactivos,
      * instala los tooltips, registra el listener de idioma
      * y lanza la carga inicial de KPIs.
@@ -67,6 +80,7 @@ public class DashboardController implements Limpiable {
     public void initialize() {
         configurarBindings();
         configurarListenerKpis();
+        configurarNavegacion();
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
         viewModel.cargarKpis();
@@ -115,6 +129,32 @@ public class DashboardController implements Limpiable {
         viewModel.kpisProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 actualizarValoresKpis(newVal);
+            }
+        });
+    }
+
+    /**
+     * Configura las tarjetas KPI como elementos clicables que navegan
+     * a la sección correspondiente de la aplicación.
+     */
+    private void configurarNavegacion() {
+        configurarTarjetaNavegable(cardTotalEmpleados, "/fxml/empleados-view.fxml");
+        configurarTarjetaNavegable(cardPlanificadosHoy, "/fxml/turnos-view.fxml");
+        configurarTarjetaNavegable(cardAusentesHoy, "/fxml/ausencias-view.fxml");
+    }
+
+    /**
+     * Aplica el cursor de mano y el listener de clic a una tarjeta KPI
+     * para que navegue a la ruta FXML indicada al pulsarla.
+     *
+     * @param tarjeta  VBox de la tarjeta KPI a configurar.
+     * @param rutaFxml Ruta del FXML destino de la navegación.
+     */
+    private void configurarTarjetaNavegable(VBox tarjeta, String rutaFxml) {
+        tarjeta.setCursor(Cursor.HAND);
+        tarjeta.setOnMouseClicked(e -> {
+            if (onNavegar != null) {
+                onNavegar.accept(rutaFxml);
             }
         });
     }
