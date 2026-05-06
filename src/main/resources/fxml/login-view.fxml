@@ -158,9 +158,6 @@
                     <Hyperlink fx:id="registerLink"
                                styleClass="login-hyperlink"
                                onAction="#handleRegisterAction"/>
-                    <Hyperlink fx:id="forgotPasswordLink"
-                               styleClass="login-hyperlink"
-                               onAction="#handleForgotPasswordAction"/>
                 </VBox>
 
             </VBox>

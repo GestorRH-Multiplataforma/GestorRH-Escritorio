@@ -42,7 +42,6 @@ public class LoginController {
     @FXML private Button langEnButton;
     @FXML private ProgressIndicator loadingIndicator;
     @FXML private Hyperlink registerLink;
-    @FXML private Hyperlink forgotPasswordLink;
 
     private final LoginViewModel viewModel;
     private final Runnable textUpdater = this::updateTexts;
@@ -130,7 +129,6 @@ public class LoginController {
 
     /**
      * Placeholder para la navegación a la pantalla de registro de empresa.
-     * TODO: Implementar navegación en la issue correspondiente.
      */
     @FXML
     private void handleRegisterAction() {
@@ -146,15 +144,6 @@ public class LoginController {
             java.util.logging.Logger.getLogger(LoginController.class.getName())
                     .severe("LoginController: Error al cargar el formulario de registro: " + e.getMessage());
         }
-    }
-
-    /**
-     * Placeholder para la funcionalidad de recuperación de contraseña.
-     * TODO: Implementar en la issue correspondiente.
-     */
-    @FXML
-    private void handleForgotPasswordAction() {
-        // TODO: Implementar recuperación de contraseña
     }
 
     /**
@@ -189,7 +178,6 @@ public class LoginController {
         emailField.setPromptText(lang.getString("login.email.placeholder"));
         passwordField.setPromptText(lang.getString("login.password.placeholder"));
         registerLink.setText(lang.getString("login.register"));
-        forgotPasswordLink.setText(lang.getString("login.forgot.password"));
         brandClaimLabel.setText(lang.getString("login.claim"));
         brandTagLabel.setText(lang.getString("login.brand.tag"));
         feature1TitleLabel.setText(lang.getString("login.feature1.title"));
