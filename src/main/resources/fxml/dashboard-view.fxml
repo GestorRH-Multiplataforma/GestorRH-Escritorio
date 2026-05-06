@@ -3,6 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -11,31 +12,117 @@
       spacing="24.0">
 
     <padding>
-        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
+        <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
     </padding>
 
-    <VBox spacing="4.0">
-        <Label fx:id="bienvenidaLabel"  styleClass="dashboard-saludo"/>
-        <Label fx:id="subtituloLabel"   styleClass="dashboard-subtitulo"/>
-    </VBox>
-
-    <HBox spacing="20.0">
-        <VBox styleClass="kpi-card">
-            <Label fx:id="kpiEmpleadosActivosTitulo" styleClass="kpi-title"/>
-            <Label fx:id="kpiEmpleadosActivosValor"  text="—" styleClass="kpi-value"/>
+    <HBox alignment="CENTER_LEFT">
+        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
+            <Label fx:id="saludoLabel"    styleClass="dashboard-saludo"/>
+            <Label fx:id="subtituloLabel" styleClass="dashboard-subtitulo"/>
         </VBox>
-        <VBox styleClass="kpi-card">
-            <Label fx:id="kpiTrabajandoAhoraTitulo" styleClass="kpi-title"/>
-            <Label fx:id="kpiTrabajandoAhoraValor"  text="—" styleClass="kpi-value"/>
-        </VBox>
-        <VBox styleClass="kpi-card">
-            <Label fx:id="kpiAusenciasHoyTitulo" styleClass="kpi-title"/>
-            <Label fx:id="kpiAusenciasHoyValor"  text="—" styleClass="kpi-value"/>
-        </VBox>
+        <Button fx:id="btnActualizar"
+                styleClass="dashboard-btn-actualizar"
+                onAction="#handleActualizar">
+            <graphic>
+                <HBox spacing="6.0" alignment="CENTER">
+                    <FontIcon fx:id="iconoActualizar"
+                              iconLiteral="mdi2r-refresh"
+                              iconSize="15"
+                              styleClass="kpi-icon--primary"/>
+                    <Label fx:id="btnActualizarLabel" styleClass="dashboard-saludo"/>
+                </HBox>
+            </graphic>
+        </Button>
     </HBox>
 
-    <StackPane VBox.vgrow="ALWAYS" styleClass="content-placeholder">
-        <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
+    <Label fx:id="errorLabel"
+           styleClass="dashboard-error-label"
+           wrapText="true"
+           visible="false"
+           managed="false"/>
+
+    <StackPane>
+        <HBox fx:id="kpiContainer" spacing="16.0">
+            <VBox styleClass="kpi-card, kpi-card--primary" HBox.hgrow="ALWAYS">
+                <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
+                    <StackPane styleClass="kpi-icon-container--primary" HBox.hgrow="NEVER">
+                        <FontIcon iconLiteral="mdi2a-account-group"
+                                  iconSize="16"
+                                  styleClass="kpi-icon--primary"/>
+                    </StackPane>
+                    <Label fx:id="kpiTotalEmpleadosTitulo"
+                           styleClass="kpi-title"
+                           HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets left="8.0"/>
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+                <Label fx:id="kpiTotalEmpleadosValor" text="—" styleClass="kpi-value"/>
+                <Region styleClass="kpi-separator" maxWidth="Infinity"/>
+                <Label fx:id="kpiTotalEmpleadosSubtitulo" styleClass="kpi-subtitle"/>
+            </VBox>
+
+            <VBox styleClass="kpi-card, kpi-card--info" HBox.hgrow="ALWAYS">
+                <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
+                    <StackPane styleClass="kpi-icon-container--info" HBox.hgrow="NEVER">
+                        <FontIcon iconLiteral="mdi2c-calendar-check"
+                                  iconSize="16"
+                                  styleClass="kpi-icon--info"/>
+                    </StackPane>
+                    <Label fx:id="kpiPlanificadosHoyTitulo"
+                           styleClass="kpi-title"
+                           HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets left="8.0"/>
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+                <Label fx:id="kpiPlanificadosHoyValor" text="—" styleClass="kpi-value"/>
+                <Region styleClass="kpi-separator" maxWidth="Infinity"/>
+                <HBox spacing="4.0" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="mdi2i-information-outline"
+                              iconSize="13"
+                              styleClass="kpi-icon--info"/>
+                    <Label fx:id="kpiPlanificadosHoySubtitulo" styleClass="kpi-subtitle"/>
+                </HBox>
+            </VBox>
+
+            <VBox styleClass="kpi-card, kpi-card--warning" HBox.hgrow="ALWAYS">
+                <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
+                    <StackPane styleClass="kpi-icon-container--warning" HBox.hgrow="NEVER">
+                        <FontIcon iconLiteral="mdi2a-account-off"
+                                  iconSize="16"
+                                  styleClass="kpi-icon--warning"/>
+                    </StackPane>
+                    <Label fx:id="kpiAusentesHoyTitulo"
+                           styleClass="kpi-title"
+                           HBox.hgrow="ALWAYS">
+                        <HBox.margin>
+                            <Insets left="8.0"/>
+                        </HBox.margin>
+                    </Label>
+                </HBox>
+                <Label fx:id="kpiAusentesHoyValor" text="—" styleClass="kpi-value"/>
+                <Region styleClass="kpi-separator" maxWidth="Infinity"/>
+                <Label fx:id="kpiAusentesHoySubtitulo" styleClass="kpi-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <ProgressIndicator fx:id="indicadorCarga"
+                           maxWidth="48.0"
+                           maxHeight="48.0"
+                           visible="false"
+                           managed="false"/>
     </StackPane>
+
+    <VBox VBox.vgrow="ALWAYS"
+          styleClass="content-placeholder"
+          spacing="12.0">
+        <padding>
+            <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+        </padding>
+        <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
+    </VBox>
 
 </VBox>
