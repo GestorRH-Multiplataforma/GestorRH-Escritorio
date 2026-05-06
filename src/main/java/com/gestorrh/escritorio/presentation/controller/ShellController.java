@@ -177,6 +177,7 @@ public class ShellController {
      */
     @FXML
     private void handleCerrarSesion() {
+        NavigationManager.getInstance().limpiarControladorActual();
         limpiar();
         SessionManager.getInstance().clearSession();
 

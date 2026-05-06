@@ -114,4 +114,15 @@ public class NavigationManager {
             LOGGER.severe("NavigationManager: También falló la vista de error. Ruta original: " + rutaFallida);
         }
     }
+
+    /**
+     * Limpia el controlador activo si implementa Limpiable.
+     * Debe llamarse antes de destruir el Shell (ej. al cerrar sesión).
+     */
+    public void limpiarControladorActual() {
+        if (controladorActual instanceof Limpiable limpiable) {
+            limpiable.limpiar();
+        }
+        controladorActual = null;
+    }
 }
