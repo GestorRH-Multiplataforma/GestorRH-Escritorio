@@ -99,6 +99,8 @@ public class TurnosController {
     private final TurnoViewModel turnoViewModel;
     private final AsignacionTurnosViewModel asignacionViewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
+    private final Runnable actualizadorMarcas =
+            () -> Platform.runLater(this::actualizarMarcasCalendario);
 
     /**
      * Constructor del controlador. Obtiene ambos ViewModels desde la fábrica.
@@ -136,6 +138,7 @@ public class TurnosController {
      */
     public void limpiar() {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
+        LanguageManager.getInstance().removeListener(actualizadorMarcas);
         if (calendarioAsignaciones != null) {
             calendarioAsignaciones.limpiar();
         }
@@ -267,9 +270,7 @@ public class TurnosController {
                 (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio ->
                         Platform.runLater(this::actualizarResumenDia)
         );
-        LanguageManager.getInstance().addListener(() ->
-                Platform.runLater(this::actualizarMarcasCalendario)
-        );
+        LanguageManager.getInstance().addListener(actualizadorMarcas);
     }
 
     /**
