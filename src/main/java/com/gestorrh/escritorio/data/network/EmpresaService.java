@@ -2,10 +2,12 @@ package com.gestorrh.escritorio.data.network;
 
 import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.PeticionCambiarPasswordEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.PeticionRegistroEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpresaDTO;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
 /**
@@ -42,4 +44,14 @@ public interface EmpresaService {
      */
     @PUT("api/empresas/me/contrasena")
     Call<Void> cambiarPassword(@Body PeticionCambiarPasswordEmpresaDTO dto);
+
+    /**
+     * Registra una nueva empresa en el sistema.
+     * Este endpoint es público y no requiere token JWT.
+     *
+     * @param dto DTO con los datos de la nueva empresa.
+     * @return Datos del perfil de la empresa recién creada.
+     */
+    @POST("api/empresas/registro")
+    Call<RespuestaEmpresaDTO> registrar(@Body PeticionRegistroEmpresaDTO dto);
 }
