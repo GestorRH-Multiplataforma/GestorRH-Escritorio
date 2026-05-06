@@ -33,6 +33,7 @@
                     <columns>
                         <TableColumn fx:id="colPendEmpleado"     prefWidth="180"/>
                         <TableColumn fx:id="colPendTipo"         prefWidth="110"/>
+                        <TableColumn fx:id="colPendDescripcion" prefWidth="160"/>
                         <TableColumn fx:id="colPendFechas"       prefWidth="180"/>
                         <TableColumn fx:id="colPendDias"         prefWidth="50"/>
                         <TableColumn fx:id="colPendJustificante" prefWidth="60"/>
@@ -75,6 +76,7 @@
                     <columns>
                         <TableColumn fx:id="colAprEmpleado"     prefWidth="150"/>
                         <TableColumn fx:id="colAprTipo"         prefWidth="100"/>
+                        <TableColumn fx:id="colAprDescripcion"  prefWidth="160"/>
                         <TableColumn fx:id="colAprFechas"       prefWidth="160"/>
                         <TableColumn fx:id="colAprDias"         prefWidth="50"/>
                         <TableColumn fx:id="colAprJustificante" prefWidth="60"/>
@@ -118,6 +120,7 @@
                     <columns>
                         <TableColumn fx:id="colRecEmpleado"     prefWidth="150"/>
                         <TableColumn fx:id="colRecTipo"         prefWidth="100"/>
+                        <TableColumn fx:id="colRecDescripcion"  prefWidth="160"/>
                         <TableColumn fx:id="colRecFechas"       prefWidth="160"/>
                         <TableColumn fx:id="colRecDias"         prefWidth="50"/>
                         <TableColumn fx:id="colRecJustificante" prefWidth="60"/>

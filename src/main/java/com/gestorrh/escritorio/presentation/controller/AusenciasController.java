@@ -57,6 +57,7 @@ public class AusenciasController {
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colPendJustificante;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colPendEstado;
     @FXML private TableColumn<RespuestaAusenciaDTO, Void>   colPendAcciones;
+    @FXML private TableColumn<RespuestaAusenciaDTO, String> colPendDescripcion;
     @FXML private ProgressIndicator indicadorPendientes;
     @FXML private Label lblErrorPendientes;
 
@@ -69,6 +70,7 @@ public class AusenciasController {
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprEstado;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprResponsable;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprObservaciones;
+    @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprDescripcion;
     @FXML private ProgressIndicator indicadorAprobadas;
     @FXML private Label lblErrorAprobadas;
 
@@ -81,6 +83,7 @@ public class AusenciasController {
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colRecEstado;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colRecResponsable;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colRecObservaciones;
+    @FXML private TableColumn<RespuestaAusenciaDTO, String> colRecDescripcion;
     @FXML private ProgressIndicator indicadorRechazadas;
     @FXML private Label lblErrorRechazadas;
 
@@ -135,6 +138,9 @@ public class AusenciasController {
         colPendDias.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(
                         calcularDias(d.getValue().fechaInicio(), d.getValue().fechaFin()))));
+        colPendDescripcion.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().descripcion() != null
+                        ? d.getValue().descripcion() : "—"));
 
         configurarColumnaTipo(colPendTipo);
         configurarColumnaEstado(colPendEstado);
@@ -146,6 +152,19 @@ public class AusenciasController {
         lblErrorPendientes.textProperty().bind(viewModel.mensajeErrorProperty());
         lblErrorPendientes.visibleProperty().bind(viewModel.errorVisibleProperty());
         lblErrorPendientes.managedProperty().bind(viewModel.errorVisibleProperty());
+
+        colPendFechas.getStyleClass().add("col-centrada");
+        colPendDias.getStyleClass().add("col-centrada");
+
+        viewModel.getPendientes().addListener(
+                (javafx.collections.ListChangeListener<RespuestaAusenciaDTO>) cambio ->
+                        Platform.runLater(() -> {
+                            actualizarBadgePendientes();
+                            if (onPendientesActualizados != null) {
+                                onPendientesActualizados.accept(viewModel.getPendientes().size());
+                            }
+                        })
+        );
     }
 
     /**
@@ -165,6 +184,9 @@ public class AusenciasController {
         colAprDias.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(
                         calcularDias(d.getValue().fechaInicio(), d.getValue().fechaFin()))));
+        colAprDescripcion.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().descripcion() != null
+                        ? d.getValue().descripcion() : "—"));
         colAprResponsable.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().responsableRevision() != null
                         ? d.getValue().responsableRevision() : "—"));
@@ -181,6 +203,9 @@ public class AusenciasController {
         lblErrorAprobadas.textProperty().bind(viewModel.mensajeErrorProperty());
         lblErrorAprobadas.visibleProperty().bind(viewModel.errorVisibleProperty());
         lblErrorAprobadas.managedProperty().bind(viewModel.errorVisibleProperty());
+
+        colAprFechas.getStyleClass().add("col-centrada");
+        colAprDias.getStyleClass().add("col-centrada");
     }
 
     /**
@@ -200,6 +225,9 @@ public class AusenciasController {
         colRecDias.setCellValueFactory(d ->
                 new SimpleStringProperty(String.valueOf(
                         calcularDias(d.getValue().fechaInicio(), d.getValue().fechaFin()))));
+        colRecDescripcion.setCellValueFactory(d ->
+                new SimpleStringProperty(d.getValue().descripcion() != null
+                        ? d.getValue().descripcion() : "—"));
         colRecResponsable.setCellValueFactory(d ->
                 new SimpleStringProperty(d.getValue().responsableRevision() != null
                         ? d.getValue().responsableRevision() : "—"));
@@ -216,6 +244,9 @@ public class AusenciasController {
         lblErrorRechazadas.textProperty().bind(viewModel.mensajeErrorProperty());
         lblErrorRechazadas.visibleProperty().bind(viewModel.errorVisibleProperty());
         lblErrorRechazadas.managedProperty().bind(viewModel.errorVisibleProperty());
+
+        colRecFechas.getStyleClass().add("col-centrada");
+        colRecDias.getStyleClass().add("col-centrada");
     }
 
     /**
@@ -231,6 +262,7 @@ public class AusenciasController {
                 if (empty || tipo == null) { setGraphic(null); return; }
                 Label badge = new Label(localizar("ausencias.tipo." + tipo.toLowerCase()));
                 badge.getStyleClass().addAll("badge", "badge-ausencia-" + tipo.toLowerCase());
+                setAlignment(javafx.geometry.Pos.CENTER);
                 setGraphic(badge);
                 setText(null);
             }
@@ -251,6 +283,7 @@ public class AusenciasController {
                 if (empty || estado == null) { setGraphic(null); return; }
                 Label badge = new Label(localizar("ausencias.estado." + estado.toLowerCase()));
                 badge.getStyleClass().addAll("badge", "badge-ausencia-" + estado.toLowerCase());
+                setAlignment(javafx.geometry.Pos.CENTER);
                 setGraphic(badge);
                 setText(null);
             }
@@ -279,6 +312,7 @@ public class AusenciasController {
                     RespuestaAusenciaDTO ausencia = getTableView().getItems().get(getIndex());
                     handleDescargarJustificante(ausencia.justificante());
                 });
+                getStyleClass().add("tabla-celda-centrada");
             }
             @Override
             protected void updateItem(String justificante, boolean empty) {
@@ -291,7 +325,6 @@ public class AusenciasController {
                     setGraphic(null);
                     setText("—");
                 }
-                getStyleClass().add("tabla-celda-centrada");
             }
         });
     }
@@ -385,29 +418,37 @@ public class AusenciasController {
     }
 
     /**
-     * Descarga el justificante de una ausencia y muestra confirmación con la ruta.
+     * Abre un FileChooser para que el usuario elija dónde guardar el justificante,
+     * luego descarga el archivo y muestra confirmación con la ruta final.
      *
-     * @param nombreArchivo Nombre del archivo a descargar.
+     * @param nombreArchivo Nombre del archivo tal como viene en el DTO.
      */
     private void handleDescargarJustificante(String nombreArchivo) {
-        viewModel.descargarJustificante(nombreArchivo)
-                .thenAccept(file -> Platform.runLater(() -> {
-                    String mensaje = LanguageManager.getInstance()
-                            .getString("ausencias.justificante.descargado")
-                            .replace("{0}", file.getAbsolutePath());
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle(LanguageManager.getInstance()
-                            .getString("dialog.confirm.title"));
-                    alert.setHeaderText(null);
-                    alert.setContentText(mensaje);
-                    alert.showAndWait();
-                }))
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle(localizar("ausencias.justificante.guardar.titulo"));
+        fileChooser.setInitialFileName(nombreArchivo);
+
+        String extension = nombreArchivo.contains(".")
+                ? "*" + nombreArchivo.substring(nombreArchivo.lastIndexOf('.'))
+                : "*.*";
+        fileChooser.getExtensionFilters().add(
+                new javafx.stage.FileChooser.ExtensionFilter(
+                        localizar("ausencias.justificante.filtro"), extension));
+
+        fileChooser.setInitialDirectory(
+                java.nio.file.Paths.get(System.getProperty("user.home"), "Downloads").toFile());
+
+        java.io.File destino = fileChooser.showSaveDialog(
+                tablaPendientes.getScene().getWindow());
+
+        if (destino == null) return;
+
+        viewModel.descargarJustificante(nombreArchivo, destino.toPath())
                 .exceptionally(ex -> {
                     Platform.runLater(() -> {
                         Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
                         Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle(LanguageManager.getInstance()
-                                .getString("dialog.error.title"));
+                        alert.setTitle(localizar("dialog.error.title"));
                         alert.setHeaderText(null);
                         alert.setContentText(causa.getMessage());
                         alert.showAndWait();
@@ -417,6 +458,30 @@ public class AusenciasController {
     }
 
     // Utilidades
+
+    /**
+     * Actualiza el badge contador de la pestaña Pendientes.
+     * Muestra el número de ausencias pendientes junto al título de la pestaña.
+     */
+    private void actualizarBadgePendientes() {
+        LanguageManager lang = LanguageManager.getInstance();
+        int total = viewModel.getPendientes().size();
+
+        Label lblTab = new Label(lang.getString("ausencias.tab.pendientes"));
+        lblTab.getStyleClass().add("ausencias-tab-label");
+
+        if (total > 0) {
+            Label badge = new Label(String.valueOf(total));
+            badge.getStyleClass().add("ausencias-tab-badge");
+            HBox contenedor = new HBox(6, lblTab, badge);
+            contenedor.setAlignment(javafx.geometry.Pos.CENTER);
+            tabPendientes.setGraphic(contenedor);
+        } else {
+            tabPendientes.setGraphic(new HBox(lblTab));
+        }
+
+        tabPendientes.setText(null);
+    }
 
     /**
      * Formatea un rango de fechas ISO a formato legible (dd/MM/yyyy – dd/MM/yyyy).
@@ -450,6 +515,18 @@ public class AusenciasController {
         } catch (Exception e) {
             return 0;
         }
+    }
+
+    private java.util.function.Consumer<Integer> onPendientesActualizados;
+
+    /**
+     * Registra el callback que se ejecutará cuando cambie el número de pendientes.
+     * Usado por ShellController para actualizar el badge del sidebar.
+     *
+     * @param callback Consumer que recibe el total de pendientes.
+     */
+    public void setOnPendientesActualizados(java.util.function.Consumer<Integer> callback) {
+        this.onPendientesActualizados = callback;
     }
 
     /**
@@ -497,9 +574,13 @@ public class AusenciasController {
         colRecEstado.setText(lang.getString("ausencias.col.estado"));
         colRecResponsable.setText(lang.getString("ausencias.col.responsable"));
         colRecObservaciones.setText(lang.getString("ausencias.col.observaciones"));
+        colPendDescripcion.setText(lang.getString("ausencias.col.descripcion"));
+        colAprDescripcion.setText(lang.getString("ausencias.col.descripcion"));
+        colRecDescripcion.setText(lang.getString("ausencias.col.descripcion"));
 
         tablaPendientes.refresh();
         tablaAprobadas.refresh();
         tablaRechazadas.refresh();
+        actualizarBadgePendientes();
     }
 }

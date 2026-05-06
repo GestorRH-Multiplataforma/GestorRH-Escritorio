@@ -1902,3 +1902,42 @@
 .tabla-celda-centrada {
     -fx-alignment: CENTER;
 }
+
+/* Columna de tabla con contenido centrado */
+.col-centrada {
+    -fx-alignment: CENTER;
+}
+
+/* AUSENCIAS — Badge contador pestaña pendientes */
+
+.ausencias-tab-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: inherit;
+}
+
+.ausencias-tab-badge {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 1 6 1 6;
+    -fx-min-width: 18px;
+    -fx-alignment: CENTER;
+}
+
+/* AUSENCIAS — Badge sidebar */
+
+.sidebar-ausencias-badge {
+    -fx-background-color: #00A8E8;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 1 6 1 6;
+    -fx-min-width: 18px;
+    -fx-alignment: CENTER;
+}

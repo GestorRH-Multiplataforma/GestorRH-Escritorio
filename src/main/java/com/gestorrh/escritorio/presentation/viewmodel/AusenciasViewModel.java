@@ -186,14 +186,21 @@ public class AusenciasViewModel {
     }
 
     /**
-     * Descarga el justificante de una ausencia en la carpeta de Descargas del usuario.
+     * Descarga el justificante de una ausencia en la ruta indicada por el usuario.
      *
      * @param nombreArchivo Nombre del archivo tal como viene en el DTO.
+     * @param destino       Ruta completa donde guardar el archivo, elegida por el usuario.
      * @return CompletableFuture con el File guardado en disco.
      */
-    public CompletableFuture<File> descargarJustificante(String nombreArchivo) {
-        Path descargas = Paths.get(System.getProperty("user.home"), "Downloads");
-        return ausenciaRepository.descargarJustificante(nombreArchivo, descargas);
+    public CompletableFuture<File> descargarJustificante(String nombreArchivo, Path destino) {
+        return ausenciaRepository.descargarJustificante(nombreArchivo, destino.getParent())
+                .thenApply(file -> {
+                    if (!file.toPath().equals(destino)) {
+                        file.renameTo(destino.toFile());
+                        return destino.toFile();
+                    }
+                    return file;
+                });
     }
 
     /**

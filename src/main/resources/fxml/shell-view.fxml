@@ -101,7 +101,12 @@
                     <HBox alignment="CENTER_LEFT" spacing="12.0">
                         <FontIcon iconLiteral="mdi2c-calendar-remove"
                                   iconSize="18" styleClass="sidebar-icono"/>
-                        <Label fx:id="menuAusenciasLabel" styleClass="sidebar-btn-label"/>
+                        <Label fx:id="menuAusenciasLabel" styleClass="sidebar-btn-label"
+                               HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="badgeAusencias"
+                               styleClass="sidebar-ausencias-badge"
+                               visible="false"
+                               managed="false"/>
                     </HBox>
                 </graphic>
             </Button>
