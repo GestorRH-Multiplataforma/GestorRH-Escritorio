@@ -340,20 +340,145 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 10, 0, 0, 3);
-    -fx-padding: 20 24 20 24;
-    -fx-spacing: 6;
+    -fx-padding: 20 20 18 20;
+    -fx-spacing: 10;
     -fx-pref-width: 200px;
+    -fx-border-radius: 10;
+    -fx-border-width: 0 0 0 4;
+}
+
+.kpi-card--primary {
+    -fx-border-color: #1A365D;
+}
+
+.kpi-card--info {
+    -fx-border-color: #00A8E8;
+}
+
+.kpi-card--warning {
+    -fx-border-color: #5BC4F5;
+}
+
+.kpi-card-header {
+    -fx-spacing: 8;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.kpi-icon-container--primary {
+    -fx-background-color: #EFF6FF;
+    -fx-background-radius: 8;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-alignment: CENTER;
+}
+
+.kpi-icon-container--info {
+    -fx-background-color: #E0F4FD;
+    -fx-background-radius: 8;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-alignment: CENTER;
+}
+
+.kpi-icon-container--warning {
+    -fx-background-color: #E8F7FD;
+    -fx-background-radius: 8;
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-alignment: CENTER;
+}
+
+.kpi-icon--primary {
+    -fx-icon-color: #1A365D;
+}
+
+.kpi-icon--info {
+    -fx-icon-color: #00A8E8;
+}
+
+.kpi-icon--warning {
+    -fx-icon-color: #5BC4F5;
 }
 
 .kpi-title {
     -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
     -fx-font-size: 12px;
+    -fx-font-weight: bold;
     -fx-text-fill: #64748B;
 }
 
 .kpi-value {
     -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
-    -fx-font-size: 28px;
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A365D;
+    -fx-line-height: 1;
+}
+
+.kpi-separator {
+    -fx-background-color: #F1F5F9;
+    -fx-pref-height: 1px;
+    -fx-max-height: 1px;
+}
+
+.kpi-subtitle {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+    -fx-text-fill: #94A3B8;
+}
+
+.dashboard-btn-actualizar {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #1A365D;
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-color: #CBD5E1;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+}
+
+.dashboard-btn-actualizar:hover {
+    -fx-background-color: #F1F5F9;
+}
+
+.dashboard-btn-actualizar:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.dashboard-error-label {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #D32F2F;
+    -fx-background-color: rgba(211, 47, 47, 0.08);
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+}
+
+.dashboard-saludo {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+}
+
+.dashboard-subtitulo {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: #1A365D;
 }

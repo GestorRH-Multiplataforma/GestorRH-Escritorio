@@ -125,7 +125,19 @@ public class ShellController {
     @FXML
     private void handleMenuDashboard() {
         marcarMenuActivo(menuDashboardBtn);
-        NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml");
+        NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml", ctrl -> {
+            DashboardController dashboard = (DashboardController) ctrl;
+            dashboard.setOnNavegar(ruta -> {
+                if ("/fxml/empleados-view.fxml".equals(ruta)) {
+                    marcarMenuActivo(menuEmpleadosBtn);
+                } else if ("/fxml/turnos-view.fxml".equals(ruta)) {
+                    marcarMenuActivo(menuTurnosBtn);
+                } else if ("/fxml/ausencias-view.fxml".equals(ruta)) {
+                    marcarMenuActivo(menuAusenciasBtn);
+                }
+                NavigationManager.getInstance().navegar(ruta);
+            });
+        });
     }
 
     /** Navega a la sección Empleados. */
