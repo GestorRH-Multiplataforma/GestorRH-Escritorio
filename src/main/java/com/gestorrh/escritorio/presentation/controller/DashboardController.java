@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,7 +15,7 @@ import javafx.scene.control.Label;
  * @author Fco Javier García Cañero
  * @version 2.0
  */
-public class DashboardController {
+public class DashboardController implements Limpiable {
 
     @FXML private Label bienvenidaLabel;
     @FXML private Label subtituloLabel;

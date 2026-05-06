@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.data.network.dto.RespuestaAusenciaDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.AusenciasViewModel;
 
@@ -39,7 +40,7 @@ import java.util.logging.Logger;
  * @author Fco Javier García Cañero
  * @version 1.0
  */
-public class AusenciasController {
+public class AusenciasController implements Limpiable {
 
     private static final Logger LOGGER = Logger.getLogger(AusenciasController.class.getName());
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy");

@@ -22,6 +22,7 @@ public class NavigationManager {
     private static final Logger LOGGER = Logger.getLogger(NavigationManager.class.getName());
 
     private BorderPane panelContenido;
+    private Object controladorActual;
 
     /**
      * Constructor privado (Singleton).
@@ -77,12 +78,18 @@ public class NavigationManager {
             return;
         }
 
+        if (controladorActual instanceof Limpiable limpiable) {
+            limpiable.limpiar();
+        }
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFxml));
             Node vista = loader.load();
 
+            controladorActual = loader.getController();
+
             if (callbackControlador != null) {
-                callbackControlador.accept(loader.getController());
+                callbackControlador.accept(controladorActual);
             }
 
             panelContenido.setCenter(vista);
@@ -106,5 +113,16 @@ public class NavigationManager {
         } catch (IOException ex) {
             LOGGER.severe("NavigationManager: También falló la vista de error. Ruta original: " + rutaFallida);
         }
+    }
+
+    /**
+     * Limpia el controlador activo si implementa Limpiable.
+     * Debe llamarse antes de destruir el Shell (ej. al cerrar sesión).
+     */
+    public void limpiarControladorActual() {
+        if (controladorActual instanceof Limpiable limpiable) {
+            limpiable.limpiar();
+        }
+        controladorActual = null;
     }
 }

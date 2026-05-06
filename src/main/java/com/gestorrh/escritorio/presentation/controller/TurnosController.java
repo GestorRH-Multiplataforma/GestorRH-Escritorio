@@ -2,6 +2,7 @@ package com.gestorrh.escritorio.presentation.controller;
 
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
+import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.RespuestaAsignacionTurnoDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
@@ -53,7 +54,7 @@ import java.util.logging.Logger;
  * @author Fco Javier García Cañero
  * @version 2.0
  */
-public class TurnosController {
+public class TurnosController implements Limpiable {
 
     private static final Logger LOGGER = Logger.getLogger(TurnosController.class.getName());
 
@@ -99,6 +100,8 @@ public class TurnosController {
     private final TurnoViewModel turnoViewModel;
     private final AsignacionTurnosViewModel asignacionViewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
+    private final Runnable actualizadorMarcas =
+            () -> Platform.runLater(this::actualizarMarcasCalendario);
 
     /**
      * Constructor del controlador. Obtiene ambos ViewModels desde la fábrica.
@@ -136,6 +139,7 @@ public class TurnosController {
      */
     public void limpiar() {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
+        LanguageManager.getInstance().removeListener(actualizadorMarcas);
         if (calendarioAsignaciones != null) {
             calendarioAsignaciones.limpiar();
         }
@@ -267,9 +271,7 @@ public class TurnosController {
                 (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio ->
                         Platform.runLater(this::actualizarResumenDia)
         );
-        LanguageManager.getInstance().addListener(() ->
-                Platform.runLater(this::actualizarMarcasCalendario)
-        );
+        LanguageManager.getInstance().addListener(actualizadorMarcas);
     }
 
     /**

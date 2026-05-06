@@ -30,13 +30,21 @@ public abstract class BaseRepository {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 Response<T> response = call.execute();
-                if (response.isSuccessful() && response.body() != null) {
-                    return response.body();
+                if (response.isSuccessful()) {
+                    T body = response.body();
+                    if (body == null) {
+                        throw new ApiException("Respuesta vacía del servidor",
+                                response.code(), "error.unknown");
+                    }
+                    return body;
                 }
                 throw new ApiException("error.unknown", response.code(), "error.unknown");
             } catch (ApiException e) {
                 throw e;
             } catch (IOException e) {
+                if (e.getCause() instanceof ApiException apiEx) {
+                    throw apiEx;
+                }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
         });
@@ -62,6 +70,9 @@ public abstract class BaseRepository {
             } catch (ApiException e) {
                 throw e;
             } catch (IOException e) {
+                if (e.getCause() instanceof ApiException apiEx) {
+                    throw apiEx;
+                }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
         });
