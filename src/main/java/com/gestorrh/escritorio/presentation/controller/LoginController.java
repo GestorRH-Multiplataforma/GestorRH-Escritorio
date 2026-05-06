@@ -134,7 +134,18 @@ public class LoginController {
      */
     @FXML
     private void handleRegisterAction() {
-        // TODO: Navegación a pantalla de registro de empresa
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/registro-form.fxml"));
+            javafx.scene.Node formularioRegistro = loader.load();
+
+            javafx.scene.layout.HBox raiz = (javafx.scene.layout.HBox) emailField.getScene().getRoot();
+            cleanup();
+            raiz.getChildren().set(1, formularioRegistro);
+
+        } catch (IOException e) {
+            java.util.logging.Logger.getLogger(LoginController.class.getName())
+                    .severe("LoginController: Error al cargar el formulario de registro: " + e.getMessage());
+        }
     }
 
     /**
@@ -222,5 +233,16 @@ public class LoginController {
         } catch (IOException e) {
             viewModel.handleError(e);
         }
+    }
+
+    /**
+     * Pre-rellena el campo email con el valor indicado.
+     * Usado por RegistroController cuando el auto-login falla tras el registro,
+     * para que el usuario no tenga que escribir el email de nuevo.
+     *
+     * @param email Email a pre-rellenar en el campo de login.
+     */
+    public void preRellenarEmail(String email) {
+        emailField.setText(email);
     }
 }

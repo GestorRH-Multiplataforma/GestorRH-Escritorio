@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.RegistroController"
+      styleClass="login-right-panel"
+      spacing="0.0"
+      HBox.hgrow="ALWAYS">
+
+    <!-- Toggle de idioma arriba a la derecha -->
+    <HBox alignment="CENTER_RIGHT" styleClass="login-lang-container">
+        <Button fx:id="langEsButton" text="ES"
+                styleClass="login-lang-btn"
+                onAction="#handleLangEs"/>
+        <Button fx:id="langEnButton" text="EN"
+                styleClass="login-lang-btn"
+                onAction="#handleLangEn"/>
+    </HBox>
+
+    <!-- Formulario centrado verticalmente -->
+    <VBox alignment="CENTER" VBox.vgrow="ALWAYS" spacing="16.0">
+        <VBox maxWidth="420.0" spacing="16.0">
+
+            <!-- Título y subtítulo -->
+            <VBox spacing="6.0">
+                <Label fx:id="tituloLabel" styleClass="login-form-title"/>
+                <Label fx:id="subtituloLabel" styleClass="login-form-subtitle"/>
+            </VBox>
+
+            <!-- Error general -->
+            <Label fx:id="errorLabel"
+                   styleClass="login-error-label"
+                   wrapText="true"
+                   visible="false"
+                   managed="false"/>
+
+            <!-- Nombre -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelNombre" styleClass="login-field-label"/>
+                <TextField fx:id="fieldNombre" styleClass="login-text-field"/>
+                <Label fx:id="errorNombre"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Email -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelEmail" styleClass="login-field-label"/>
+                <TextField fx:id="fieldEmail" styleClass="login-text-field"/>
+                <Label fx:id="errorEmail"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Contraseña -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelPassword" styleClass="login-field-label"/>
+                <PasswordField fx:id="fieldPassword" styleClass="login-text-field"/>
+                <Label fx:id="errorPassword"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Confirmar contraseña -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelConfirmarPassword" styleClass="login-field-label"/>
+                <PasswordField fx:id="fieldConfirmarPassword" styleClass="login-text-field"/>
+                <Label fx:id="errorConfirmarPassword"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Dirección -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelDireccion" styleClass="login-field-label"/>
+                <TextField fx:id="fieldDireccion" styleClass="login-text-field"/>
+                <Label fx:id="errorDireccion"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Teléfono -->
+            <VBox spacing="4.0">
+                <Label fx:id="labelTelefono" styleClass="login-field-label"/>
+                <TextField fx:id="fieldTelefono" styleClass="login-text-field"/>
+                <Label fx:id="errorTelefono"
+                       styleClass="modal-field-error"
+                       visible="false"
+                       managed="false"/>
+            </VBox>
+
+            <!-- Botón + ProgressIndicator -->
+            <StackPane>
+                <Button fx:id="btnCrearCuenta"
+                        styleClass="login-primary-button"
+                        maxWidth="Infinity"
+                        onAction="#handleCrearCuenta"/>
+                <ProgressIndicator fx:id="loadingIndicator"
+                                   visible="false"
+                                   maxWidth="24.0"
+                                   maxHeight="24.0"/>
+            </StackPane>
+
+            <!-- Volver al login -->
+            <VBox alignment="CENTER">
+                <Hyperlink fx:id="volverLoginLink"
+                           styleClass="login-hyperlink"
+                           onAction="#handleVolverLogin"/>
+            </VBox>
+
+        </VBox>
+    </VBox>
+
+</VBox>
