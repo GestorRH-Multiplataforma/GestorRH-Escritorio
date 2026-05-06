@@ -189,6 +189,8 @@ public class ShellController {
 
             stage.setFullScreen(false);
             stage.setMaximized(false);
+            stage.setMinWidth(0);
+            stage.setMinHeight(0);
             stage.setResizable(false);
             stage.setWidth(1100.0);
             stage.setHeight(660.0);

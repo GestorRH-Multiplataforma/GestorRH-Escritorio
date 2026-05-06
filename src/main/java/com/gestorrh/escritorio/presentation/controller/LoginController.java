@@ -206,9 +206,18 @@ public class LoginController {
             Stage stage = (Stage) loginButton.getScene().getWindow();
             cleanup();
 
+            stage.setMinWidth(1024.0);
+            stage.setMinHeight(640.0);
             stage.setResizable(true);
             stage.setScene(escenaShell);
-            stage.setMaximized(true);
+
+            String os = System.getProperty("os.name").toLowerCase();
+            if (os.contains("mac")) {
+                stage.setFullScreen(true);
+                stage.setFullScreenExitHint("");
+            } else {
+                stage.setMaximized(true);
+            }
 
         } catch (IOException e) {
             viewModel.handleError(e);
