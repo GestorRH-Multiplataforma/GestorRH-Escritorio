@@ -11,19 +11,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * Controlador para la vista del panel central del Dashboard.
- * Gestiona las tarjetas KPI, el indicador de carga, el panel de error
- * y el botón de actualización manual.
+ * Gestiona las tarjetas KPI, el indicador de carga, el panel de error,
+ * los tooltips de cada tarjeta y el botón de actualización manual.
  * El header, sidebar y footer son responsabilidad del ShellController.
  *
  * @author Fco Javier García Cañero
- * @version 2.0
+ * @version 2.1
  */
 public class DashboardController implements Limpiable {
 
-    @FXML private Label saludoLabel;
     @FXML private Label subtituloLabel;
     @FXML private Button btnActualizar;
     @FXML private Label btnActualizarLabel;
@@ -31,14 +31,17 @@ public class DashboardController implements Limpiable {
     @FXML private HBox kpiContainer;
     @FXML private ProgressIndicator indicadorCarga;
 
+    @FXML private VBox cardTotalEmpleados;
     @FXML private Label kpiTotalEmpleadosTitulo;
     @FXML private Label kpiTotalEmpleadosValor;
     @FXML private Label kpiTotalEmpleadosSubtitulo;
 
+    @FXML private VBox cardPlanificadosHoy;
     @FXML private Label kpiPlanificadosHoyTitulo;
     @FXML private Label kpiPlanificadosHoyValor;
     @FXML private Label kpiPlanificadosHoySubtitulo;
 
+    @FXML private VBox cardAusentesHoy;
     @FXML private Label kpiAusentesHoyTitulo;
     @FXML private Label kpiAusentesHoyValor;
     @FXML private Label kpiAusentesHoySubtitulo;
@@ -57,7 +60,8 @@ public class DashboardController implements Limpiable {
 
     /**
      * Inicializa los bindings, configura los listeners reactivos,
-     * registra el listener de idioma y lanza la carga inicial de KPIs.
+     * instala los tooltips, registra el listener de idioma
+     * y lanza la carga inicial de KPIs.
      */
     @FXML
     public void initialize() {
@@ -128,26 +132,41 @@ public class DashboardController implements Limpiable {
     }
 
     /**
+     * Instala los tooltips en las tres tarjetas KPI con el texto
+     * del idioma activo. Se llama cada vez que cambia el idioma
+     * para mantener los textos sincronizados.
+     *
+     * @param lang Gestor de idiomas activo.
+     */
+    private void instalarTooltips(LanguageManager lang) {
+        Tooltip.install(cardTotalEmpleados,
+                new Tooltip(lang.getString("dashboard.kpi.totalEmpleados.tooltip")));
+        Tooltip.install(cardPlanificadosHoy,
+                new Tooltip(lang.getString("dashboard.kpi.planificadosHoy.tooltip")));
+        Tooltip.install(cardAusentesHoy,
+                new Tooltip(lang.getString("dashboard.kpi.ausentesHoy.tooltip")));
+    }
+
+    /**
      * Actualiza todos los textos de la vista con el idioma activo.
      * Se ejecuta al inicializar y cada vez que cambia el idioma.
      */
     private void actualizarTextos() {
         LanguageManager lang = LanguageManager.getInstance();
 
-        saludoLabel.setText(lang.getString("dashboard.saludo"));
         subtituloLabel.setText(lang.getString("dashboard.subtitulo"));
         btnActualizarLabel.setText(lang.getString("dashboard.btn.actualizar"));
         actividadRecienteLabel.setText(lang.getString("dashboard.recent.activity"));
 
         kpiTotalEmpleadosTitulo.setText(lang.getString("dashboard.kpi.totalEmpleados"));
-        kpiTotalEmpleadosSubtitulo.setText(lang.getString("dashboard.kpi.totalEmpleados"));
+        kpiTotalEmpleadosSubtitulo.setText(lang.getString("dashboard.kpi.totalEmpleados.subtitulo"));
 
         kpiPlanificadosHoyTitulo.setText(lang.getString("dashboard.kpi.planificadosHoy"));
-        kpiPlanificadosHoySubtitulo.setText(lang.getString("dashboard.kpi.planificadosHoy.tooltip"));
-        Tooltip.install(kpiPlanificadosHoyValor.getParent(),
-                new Tooltip(lang.getString("dashboard.kpi.planificadosHoy.tooltip")));
+        kpiPlanificadosHoySubtitulo.setText(lang.getString("dashboard.kpi.planificadosHoy.subtitulo"));
 
         kpiAusentesHoyTitulo.setText(lang.getString("dashboard.kpi.ausentesHoy"));
-        kpiAusentesHoySubtitulo.setText(lang.getString("dashboard.kpi.ausentesHoy"));
+        kpiAusentesHoySubtitulo.setText(lang.getString("dashboard.kpi.ausentesHoy.subtitulo"));
+
+        instalarTooltips(lang);
     }
 }

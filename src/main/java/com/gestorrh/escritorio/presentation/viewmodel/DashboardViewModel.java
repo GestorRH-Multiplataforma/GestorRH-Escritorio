@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
+import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.data.repository.EstadisticasRepository;
 import javafx.application.Platform;
@@ -52,8 +53,9 @@ public class DashboardViewModel {
                 .exceptionally(error -> {
                     Platform.runLater(() -> {
                         cargando.set(false);
-                        Throwable causa = error.getCause() != null ? error.getCause() : error;
-                        mensajeError.set(causa.getMessage());
+                        mensajeError.set(
+                                LanguageManager.getInstance().getString("dashboard.error.cargaKpis")
+                        );
                         errorVisible.set(true);
                     });
                     return null;

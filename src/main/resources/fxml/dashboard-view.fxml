@@ -15,18 +15,15 @@
         <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
     </padding>
 
-    <HBox alignment="CENTER_LEFT">
-        <VBox spacing="4.0" HBox.hgrow="ALWAYS">
-            <Label fx:id="saludoLabel"    styleClass="dashboard-saludo"/>
-            <Label fx:id="subtituloLabel" styleClass="dashboard-subtitulo"/>
-        </VBox>
+    <HBox alignment="CENTER_LEFT" spacing="12.0">
+        <Label fx:id="subtituloLabel" styleClass="dashboard-subtitulo"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Button fx:id="btnActualizar"
                 styleClass="dashboard-btn-actualizar"
                 onAction="#handleActualizar">
             <graphic>
                 <HBox spacing="6.0" alignment="CENTER">
-                    <FontIcon fx:id="iconoActualizar"
-                              iconLiteral="mdi2r-refresh"
+                    <FontIcon iconLiteral="mdi2r-refresh"
                               iconSize="15"
                               styleClass="kpi-icon--primary"/>
                     <Label fx:id="btnActualizarLabel" styleClass="dashboard-saludo"/>
@@ -43,7 +40,8 @@
 
     <StackPane>
         <HBox fx:id="kpiContainer" spacing="16.0">
-            <VBox styleClass="kpi-card, kpi-card--primary" HBox.hgrow="ALWAYS">
+
+            <VBox fx:id="cardTotalEmpleados" styleClass="kpi-card, kpi-card--primary" HBox.hgrow="ALWAYS">
                 <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
                     <StackPane styleClass="kpi-icon-container--primary" HBox.hgrow="NEVER">
                         <FontIcon iconLiteral="mdi2a-account-group"
@@ -60,10 +58,15 @@
                 </HBox>
                 <Label fx:id="kpiTotalEmpleadosValor" text="—" styleClass="kpi-value"/>
                 <Region styleClass="kpi-separator" maxWidth="Infinity"/>
-                <Label fx:id="kpiTotalEmpleadosSubtitulo" styleClass="kpi-subtitle"/>
+                <HBox spacing="4.0" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="mdi2i-information-outline"
+                              iconSize="13"
+                              styleClass="kpi-icon--primary"/>
+                    <Label fx:id="kpiTotalEmpleadosSubtitulo" styleClass="kpi-subtitle"/>
+                </HBox>
             </VBox>
 
-            <VBox styleClass="kpi-card, kpi-card--info" HBox.hgrow="ALWAYS">
+            <VBox fx:id="cardPlanificadosHoy" styleClass="kpi-card, kpi-card--info" HBox.hgrow="ALWAYS">
                 <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
                     <StackPane styleClass="kpi-icon-container--info" HBox.hgrow="NEVER">
                         <FontIcon iconLiteral="mdi2c-calendar-check"
@@ -88,7 +91,7 @@
                 </HBox>
             </VBox>
 
-            <VBox styleClass="kpi-card, kpi-card--warning" HBox.hgrow="ALWAYS">
+            <VBox fx:id="cardAusentesHoy" styleClass="kpi-card, kpi-card--warning" HBox.hgrow="ALWAYS">
                 <HBox styleClass="kpi-card-header" alignment="CENTER_LEFT">
                     <StackPane styleClass="kpi-icon-container--warning" HBox.hgrow="NEVER">
                         <FontIcon iconLiteral="mdi2a-account-off"
@@ -105,8 +108,14 @@
                 </HBox>
                 <Label fx:id="kpiAusentesHoyValor" text="—" styleClass="kpi-value"/>
                 <Region styleClass="kpi-separator" maxWidth="Infinity"/>
-                <Label fx:id="kpiAusentesHoySubtitulo" styleClass="kpi-subtitle"/>
+                <HBox spacing="4.0" alignment="CENTER_LEFT">
+                    <FontIcon iconLiteral="mdi2i-information-outline"
+                              iconSize="13"
+                              styleClass="kpi-icon--warning"/>
+                    <Label fx:id="kpiAusentesHoySubtitulo" styleClass="kpi-subtitle"/>
+                </HBox>
             </VBox>
+
         </HBox>
 
         <ProgressIndicator fx:id="indicadorCarga"

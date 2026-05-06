@@ -356,7 +356,7 @@
 }
 
 .kpi-card--warning {
-    -fx-border-color: #0F2240;
+    -fx-border-color: #5BC4F5;
 }
 
 .kpi-card-header {
@@ -389,7 +389,7 @@
 }
 
 .kpi-icon-container--warning {
-    -fx-background-color: #E8EEF5;
+    -fx-background-color: #E8F7FD;
     -fx-background-radius: 8;
     -fx-pref-width: 32px;
     -fx-pref-height: 32px;
@@ -409,7 +409,7 @@
 }
 
 .kpi-icon--warning {
-    -fx-icon-color: #0F2240;
+    -fx-icon-color: #5BC4F5;
 }
 
 .kpi-title {
