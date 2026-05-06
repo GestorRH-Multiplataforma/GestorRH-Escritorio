@@ -3,6 +3,7 @@ package com.gestorrh.escritorio.data.repository;
 import com.gestorrh.escritorio.data.network.EmpresaService;
 import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.PeticionCambiarPasswordEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.PeticionRegistroEmpresaDTO;
 import com.gestorrh.escritorio.data.network.dto.RespuestaEmpresaDTO;
 
 import java.util.concurrent.CompletableFuture;
@@ -55,5 +56,16 @@ public class EmpresaRepository extends BaseRepository {
      */
     public CompletableFuture<Void> cambiarPassword(PeticionCambiarPasswordEmpresaDTO dto) {
         return executeAsyncVoid(service.cambiarPassword(dto));
+    }
+
+    /**
+     * Registra una nueva empresa de forma asíncrona.
+     * Endpoint público, no requiere token JWT.
+     *
+     * @param dto DTO con los datos de registro de la nueva empresa.
+     * @return CompletableFuture con el perfil de la empresa creada o ApiException si falla.
+     */
+    public CompletableFuture<RespuestaEmpresaDTO> registrar(PeticionRegistroEmpresaDTO dto) {
+        return executeAsync(service.registrar(dto));
     }
 }
