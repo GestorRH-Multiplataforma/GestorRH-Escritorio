@@ -36,6 +36,7 @@ public class BajaConfirmacionModalController {
      */
     public enum Modo { BAJA, READMITIR }
 
+    private String nombreEmpleado;
     private Modo modo;
     private Consumer<String> onConfirmado;
     private final Runnable actualizadorTextos = this::actualizarTextos;
@@ -61,6 +62,7 @@ public class BajaConfirmacionModalController {
     public void inicializar(Modo modo, String nombreCompleto, Consumer<String> onConfirmado) {
         this.modo = modo;
         this.onConfirmado = onConfirmado;
+        this.nombreEmpleado = nombreCompleto;
 
         LanguageManager lang = LanguageManager.getInstance();
 
@@ -138,9 +140,7 @@ public class BajaConfirmacionModalController {
      */
     private void actualizarTextos() {
         if (modo != null) {
-            inicializar(modo,
-                    mensajeLabel.getText(),
-                    onConfirmado);
+            inicializar(modo, nombreEmpleado, onConfirmado);
         }
     }
 }
