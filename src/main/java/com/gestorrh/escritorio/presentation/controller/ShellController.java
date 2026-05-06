@@ -138,9 +138,7 @@ public class ShellController {
     @FXML
     private void handleMenuAusencias() {
         marcarMenuActivo(menuAusenciasBtn);
-        NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.absences.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml");
     }
 
     /** Navega a la sección Informes. */

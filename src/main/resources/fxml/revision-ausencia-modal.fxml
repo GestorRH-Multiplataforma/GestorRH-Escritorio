@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.RevisionAusenciaModalController"
+      styleClass="modal-root"
+      prefWidth="480.0"
+      spacing="0.0">
+
+    <!-- Header -->
+    <HBox styleClass="modal-header" alignment="CENTER_LEFT">
+        <Label fx:id="lblTitulo" styleClass="modal-titulo"/>
+    </HBox>
+
+    <!-- Contenido -->
+    <VBox styleClass="modal-tab-content" spacing="16.0">
+
+        <!-- Error general -->
+        <Label fx:id="lblError"
+               styleClass="modal-error-label"
+               wrapText="true"
+               visible="false"
+               managed="false"/>
+
+        <!-- Resumen de la ausencia -->
+        <VBox styleClass="reset-password-panel" spacing="10.0">
+
+            <HBox spacing="24.0">
+                <VBox spacing="3.0">
+                    <Label styleClass="modal-field-label-opcional" text="Empleado"/>
+                    <Label fx:id="lblEmpleado" styleClass="modal-field-label"/>
+                </VBox>
+                <VBox spacing="3.0">
+                    <Label styleClass="modal-field-label-opcional" text="Tipo"/>
+                    <Label fx:id="lblTipo" styleClass="modal-field-label"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="24.0">
+                <VBox spacing="3.0">
+                    <Label styleClass="modal-field-label-opcional" text="Fechas"/>
+                    <Label fx:id="lblFechas" styleClass="modal-field-label"/>
+                </VBox>
+                <VBox spacing="3.0">
+                    <Label styleClass="modal-field-label-opcional" text="Días"/>
+                    <Label fx:id="lblDias" styleClass="modal-field-label"/>
+                </VBox>
+            </HBox>
+
+        </VBox>
+
+        <!-- Observaciones -->
+        <VBox spacing="6.0">
+            <Label fx:id="lblObservaciones" styleClass="modal-field-label"/>
+            <TextArea fx:id="textObservaciones"
+                      styleClass="modal-text-field"
+                      prefRowCount="3"
+                      wrapText="true"/>
+        </VBox>
+
+    </VBox>
+
+    <!-- Footer -->
+    <HBox styleClass="modal-footer" alignment="CENTER_RIGHT" spacing="10.0">
+        <Button fx:id="btnCancelar"
+                styleClass="modal-btn-cancelar"
+                onAction="#handleCancelar"/>
+        <Button fx:id="btnConfirmar"
+                styleClass="modal-btn-guardar"
+                onAction="#handleConfirmar"/>
+    </HBox>
+
+</VBox>
