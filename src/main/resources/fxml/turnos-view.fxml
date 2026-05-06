@@ -16,6 +16,8 @@
              VBox.vgrow="ALWAYS">
 
         <Tab fx:id="tabAsignaciones">
+            <ScrollPane fitToWidth="true" fitToHeight="false"
+                        styleClass="configuracion-scroll">
             <VBox spacing="0.0">
 
                 <HBox fx:id="bannerSedeNoConfigurada"
@@ -140,9 +142,12 @@
                 </HBox>
 
             </VBox>
+            </ScrollPane>
         </Tab>
 
         <Tab fx:id="tabCatalogo">
+            <ScrollPane fitToWidth="true" fitToHeight="false"
+                        styleClass="configuracion-scroll">
             <VBox spacing="16.0">
                 <padding>
                     <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
@@ -186,6 +191,7 @@
                 </StackPane>
 
             </VBox>
+            </ScrollPane>
         </Tab>
 
     </TabPane>
