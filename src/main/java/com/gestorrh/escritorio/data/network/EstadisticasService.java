@@ -1,15 +1,17 @@
 package com.gestorrh.escritorio.data.network;
 
+import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
+import java.util.List;
 import java.util.Map;
 
 /**
  * Interfaz de Retrofit para las operaciones de red de la entidad Estadisticas.
  *
  * @author Fco Javier García Cañero
- * @version 1.1
+ * @version 1.2
  */
 public interface EstadisticasService {
 
@@ -22,4 +24,13 @@ public interface EstadisticasService {
      */
     @GET("api/estadisticas/kpis")
     Call<Map<String, Long>> getKpis();
+
+    /**
+     * Obtiene el ranking de los empleados con mayor número de retrasos acumulados
+     * en sus fichajes de entrada. La API limita la respuesta a los 5 primeros.
+     *
+     * @return Llamada Retrofit con la lista de datos del ranking.
+     */
+    @GET("api/estadisticas/top-retrasos")
+    Call<List<DatoGraficoDTO>> getTopRetrasos();
 }

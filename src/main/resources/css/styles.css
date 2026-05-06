@@ -483,6 +483,10 @@
     -fx-text-fill: #1A365D;
 }
 
+.dashboard-topRetrasos-icono-alerta {
+    -fx-icon-color: #F59E0B;
+}
+
 .content-placeholder {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
