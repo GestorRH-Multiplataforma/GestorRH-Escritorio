@@ -37,6 +37,9 @@ public abstract class BaseRepository {
             } catch (ApiException e) {
                 throw e;
             } catch (IOException e) {
+                if (e.getCause() instanceof ApiException apiEx) {
+                    throw apiEx;
+                }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
         });
@@ -62,6 +65,9 @@ public abstract class BaseRepository {
             } catch (ApiException e) {
                 throw e;
             } catch (IOException e) {
+                if (e.getCause() instanceof ApiException apiEx) {
+                    throw apiEx;
+                }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
         });
