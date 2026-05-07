@@ -84,6 +84,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>com.gestorrh.escritorio.GestorRhApp</mainClass>
+                    <options>
+                        <option>-Xdock:icon=${project.basedir}/src/main/resources/images/icon-512.png</option>
+                    </options>
                 </configuration>
             </plugin>
         </plugins>
