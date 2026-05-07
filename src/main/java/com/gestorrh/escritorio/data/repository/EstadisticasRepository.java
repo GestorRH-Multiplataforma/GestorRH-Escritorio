@@ -63,4 +63,22 @@ public class EstadisticasRepository extends BaseRepository {
                 mapa.getOrDefault("ausentesHoy", 0L)
         );
     }
+
+    /**
+     * Obtiene el volumen de ausencias agrupadas por estado de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getAusenciasPorEstado() {
+        return executeAsync(service.getAusenciasPorEstado());
+    }
+
+    /**
+     * Obtiene la distribución de empleados agrupados por departamento de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getEmpleadosPorDepartamento() {
+        return executeAsync(service.getEmpleadosPorDepartamento());
+    }
 }

@@ -5,6 +5,10 @@
 <?import javafx.geometry.Insets?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController"
@@ -127,14 +131,81 @@
 
     <HBox spacing="16.0" VBox.vgrow="ALWAYS">
 
-        <VBox VBox.vgrow="ALWAYS"
-              styleClass="content-placeholder"
+        <VBox styleClass="content-placeholder"
               spacing="12.0"
-              HBox.hgrow="ALWAYS">
+              HBox.hgrow="ALWAYS"
+              VBox.vgrow="NEVER"
+              alignment="CENTER_LEFT">
             <padding>
                 <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
             </padding>
-            <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
+
+            <Label fx:id="lblEmpleadosDepartamentoTitulo" styleClass="section-title"/>
+
+            <Separator/>
+
+            <StackPane VBox.vgrow="NEVER">
+                <ProgressIndicator fx:id="indicadorEmpleadosDepartamento"
+                                   maxWidth="32.0"
+                                   maxHeight="32.0"
+                                   visible="false"
+                                   managed="false"/>
+            </StackPane>
+
+            <StackPane fx:id="contenedorGraficaDepartamento"
+                       VBox.vgrow="ALWAYS"
+                       prefHeight="220.0"/>
+
+            <Label fx:id="lblEmpleadosDepartamentoVacio"
+                   styleClass="empleados-tabla-placeholder"
+                   wrapText="true"
+                   visible="false"
+                   managed="false"/>
+
+        </VBox>
+
+        <VBox styleClass="content-placeholder"
+              spacing="12.0"
+              HBox.hgrow="ALWAYS"
+              VBox.vgrow="NEVER">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
+
+            <Label fx:id="lblAusenciasEstadoTitulo" styleClass="section-title"/>
+
+            <Separator/>
+
+            <StackPane VBox.vgrow="NEVER">
+                <ProgressIndicator fx:id="indicadorAusenciasEstado"
+                                   maxWidth="32.0"
+                                   maxHeight="32.0"
+                                   visible="false"
+                                   managed="false"/>
+            </StackPane>
+
+            <BarChart fx:id="graficaAusenciasEstado"
+                      animated="false"
+                      legendVisible="false"
+                      styleClass="ausencias-barchart"
+                      VBox.vgrow="NEVER">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis fx:id="ejeYEstado"
+                                side="LEFT"
+                                minorTickVisible="false"
+                                tickUnit="1"/>
+                </yAxis>
+            </BarChart>
+
+            <Label fx:id="lblAusenciasEstadoVacio"
+                   styleClass="empleados-tabla-placeholder"
+                   wrapText="true"
+                   visible="false"
+                   managed="false"/>
+
         </VBox>
 
         <VBox styleClass="content-placeholder"

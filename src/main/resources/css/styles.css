@@ -487,6 +487,56 @@
     -fx-icon-color: #F59E0B;
 }
 
+.ausencias-barchart .chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.ausencias-barchart .chart-vertical-grid-lines {
+    -fx-stroke: #F1F5F9;
+}
+
+.ausencias-barchart .chart-horizontal-grid-lines {
+    -fx-stroke: #F1F5F9;
+}
+
+.ausencias-barchart .axis-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #64748B;
+}
+
+/* Tarta empleados por departamento — paleta azules corporativos */
+.departamento-color-1 .pie { -fx-pie-color: #042C53; }
+.departamento-color-2 .pie { -fx-pie-color: #1A365D; }
+.departamento-color-3 .pie { -fx-pie-color: #185FA5; }
+.departamento-color-4 .pie { -fx-pie-color: #00A8E8; }
+.departamento-color-5 .pie { -fx-pie-color: #5BC4F5; }
+.departamento-color-6 .pie { -fx-pie-color: #B5D4F4; }
+
+/* Anular colores por defecto del PieChart */
+.chart-pie.default-color0 { -fx-pie-color: #042C53; }
+.chart-pie.default-color1 { -fx-pie-color: #1A365D; }
+.chart-pie.default-color2 { -fx-pie-color: #185FA5; }
+.chart-pie.default-color3 { -fx-pie-color: #00A8E8; }
+.chart-pie.default-color4 { -fx-pie-color: #5BC4F5; }
+.chart-pie.default-color5 { -fx-pie-color: #B5D4F4; }
+.chart-pie.default-color6 { -fx-pie-color: #042C53; }
+.chart-pie.default-color7 { -fx-pie-color: #1A365D; }
+
+/* Leyenda del PieChart */
+.chart-legend-item-symbol.default-color0 { -fx-background-color: #042C53; }
+.chart-legend-item-symbol.default-color1 { -fx-background-color: #1A365D; }
+.chart-legend-item-symbol.default-color2 { -fx-background-color: #185FA5; }
+.chart-legend-item-symbol.default-color3 { -fx-background-color: #00A8E8; }
+.chart-legend-item-symbol.default-color4 { -fx-background-color: #5BC4F5; }
+.chart-legend-item-symbol.default-color5 { -fx-background-color: #B5D4F4; }
+.chart-legend-item-symbol.default-color6 { -fx-background-color: #042C53; }
+.chart-legend-item-symbol.default-color7 { -fx-background-color: #1A365D; }
+
+/* Barras verticales ausencias por estado */
+.ausencias-barra-solicitada .bar { -fx-background-color: #5BC4F5; }
+.ausencias-barra-aprobada .bar   { -fx-background-color: #1A365D; }
+.ausencias-barra-rechazada .bar  { -fx-background-color: #B5D4F4; }
+
 .content-placeholder {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;

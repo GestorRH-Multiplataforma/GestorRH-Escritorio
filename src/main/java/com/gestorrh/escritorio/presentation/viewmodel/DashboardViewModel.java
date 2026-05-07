@@ -38,6 +38,12 @@ public class DashboardViewModel {
     private final StringProperty mensajeError = new SimpleStringProperty("");
     private final BooleanProperty errorVisible = new SimpleBooleanProperty(false);
     private final BooleanProperty topRetrasosVacio = new SimpleBooleanProperty(false);
+    private final ObservableList<DatoGraficoDTO> ausenciasPorEstado = FXCollections.observableArrayList();
+    private final BooleanProperty ausenciasEstadoCargando = new SimpleBooleanProperty(false);
+    private final BooleanProperty ausenciasEstadoVacio = new SimpleBooleanProperty(false);
+    private final ObservableList<DatoGraficoDTO> empleadosPorDepartamento = FXCollections.observableArrayList();
+    private final BooleanProperty empleadosDepartamentoCargando = new SimpleBooleanProperty(false);
+    private final BooleanProperty empleadosDepartamentoVacio = new SimpleBooleanProperty(false);
 
     /**
      * Constructor con inyección de dependencias.
@@ -103,6 +109,52 @@ public class DashboardViewModel {
     }
 
     /**
+     * Solicita la distribución de empleados por departamento a la API de forma asíncrona.
+     * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     */
+    public void cargarEmpleadosPorDepartamento() {
+        empleadosDepartamentoCargando.set(true);
+
+        estadisticasRepository.getEmpleadosPorDepartamento()
+                .thenAccept(lista -> Platform.runLater(() -> {
+                    empleadosPorDepartamento.setAll(lista);
+                    empleadosDepartamentoVacio.set(lista.isEmpty());
+                    empleadosDepartamentoCargando.set(false);
+                }))
+                .exceptionally(error -> {
+                    Platform.runLater(() -> {
+                        empleadosPorDepartamento.clear();
+                        empleadosDepartamentoVacio.set(true);
+                        empleadosDepartamentoCargando.set(false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
+     * Solicita las ausencias por estado a la API de forma asíncrona.
+     * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     */
+    public void cargarAusenciasPorEstado() {
+        ausenciasEstadoCargando.set(true);
+
+        estadisticasRepository.getAusenciasPorEstado()
+                .thenAccept(lista -> Platform.runLater(() -> {
+                    ausenciasPorEstado.setAll(lista);
+                    ausenciasEstadoVacio.set(lista.isEmpty());
+                    ausenciasEstadoCargando.set(false);
+                }))
+                .exceptionally(error -> {
+                    Platform.runLater(() -> {
+                        ausenciasPorEstado.clear();
+                        ausenciasEstadoVacio.set(true);
+                        ausenciasEstadoCargando.set(false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
      * Indica si el número de retrasos de un empleado supera el umbral de advertencia.
      *
      * @param valor Número de retrasos del empleado.
@@ -133,4 +185,22 @@ public class DashboardViewModel {
 
     /** @return Property que indica si el ranking de retrasos está vacío. */
     public BooleanProperty topRetrasosVacioProperty() { return topRetrasosVacio; }
+
+    /** @return Lista observable de ausencias agrupadas por estado. */
+    public ObservableList<DatoGraficoDTO> getAusenciasPorEstado() { return ausenciasPorEstado; }
+
+    /** @return Property que indica si se están cargando las ausencias por estado. */
+    public BooleanProperty ausenciasEstadoCargandoProperty() { return ausenciasEstadoCargando; }
+
+    /** @return Property que indica si la lista de ausencias por estado está vacía. */
+    public BooleanProperty ausenciasEstadoVacioProperty() { return ausenciasEstadoVacio; }
+
+    /** @return Lista observable de empleados agrupados por departamento. */
+    public ObservableList<DatoGraficoDTO> getEmpleadosPorDepartamento() { return empleadosPorDepartamento; }
+
+    /** @return Property que indica si se están cargando los empleados por departamento. */
+    public BooleanProperty empleadosDepartamentoCargandoProperty() { return empleadosDepartamentoCargando; }
+
+    /** @return Property que indica si la lista de empleados por departamento está vacía. */
+    public BooleanProperty empleadosDepartamentoVacioProperty() { return empleadosDepartamentoVacio; }
 }

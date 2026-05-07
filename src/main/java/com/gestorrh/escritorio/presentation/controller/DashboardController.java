@@ -7,10 +7,15 @@ import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -19,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -54,8 +60,6 @@ public class DashboardController implements Limpiable {
     @FXML private Label kpiAusentesHoyValor;
     @FXML private Label kpiAusentesHoySubtitulo;
 
-    @FXML private Label actividadRecienteLabel;
-
     @FXML private Label lblTopRetrasosTitulo;
     @FXML private TableView<DatoGraficoDTO> tablaTopRetrasos;
     @FXML private TableColumn<DatoGraficoDTO, Integer> colPosicion;
@@ -63,6 +67,17 @@ public class DashboardController implements Limpiable {
     @FXML private TableColumn<DatoGraficoDTO, Number> colTotal;
     @FXML private Label lblTopRetrasosVacio;
     @FXML private ProgressIndicator indicadorTopRetrasos;
+
+    @FXML private ProgressIndicator indicadorAusenciasEstado;
+    @FXML private Label lblAusenciasEstadoTitulo;
+    @FXML private Label lblAusenciasEstadoVacio;
+    @FXML private BarChart<String, Number> graficaAusenciasEstado;
+    @FXML private NumberAxis ejeYEstado;
+
+    @FXML private ProgressIndicator indicadorEmpleadosDepartamento;
+    @FXML private Label lblEmpleadosDepartamentoTitulo;
+    @FXML private Label lblEmpleadosDepartamentoVacio;
+    @FXML private StackPane contenedorGraficaDepartamento;
 
     private java.util.function.Consumer<String> onNavegar;
     private final DashboardViewModel viewModel;
@@ -95,6 +110,8 @@ public class DashboardController implements Limpiable {
         configurarNavegacion();
         configurarTablaTopRetrasos();
         configurarListenerTopRetrasos();
+        configurarWidgetEmpleadosDepartamento();
+        configurarWidgetAusenciasEstado();
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
         cargarDashboard();
@@ -122,6 +139,8 @@ public class DashboardController implements Limpiable {
     private void cargarDashboard() {
         viewModel.cargarKpis();
         viewModel.cargarTopRetrasos();
+        viewModel.cargarEmpleadosPorDepartamento();
+        viewModel.cargarAusenciasPorEstado();
     }
 
     /**
@@ -306,6 +325,158 @@ public class DashboardController implements Limpiable {
     }
 
     /**
+     * Configura los bindings y el listener reactivo del widget de empleados por departamento.
+     */
+    private void configurarWidgetEmpleadosDepartamento() {
+        indicadorEmpleadosDepartamento.visibleProperty().bind(viewModel.empleadosDepartamentoCargandoProperty());
+        indicadorEmpleadosDepartamento.managedProperty().bind(viewModel.empleadosDepartamentoCargandoProperty());
+
+        contenedorGraficaDepartamento.visibleProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
+        contenedorGraficaDepartamento.managedProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
+
+        lblEmpleadosDepartamentoVacio.visibleProperty().bind(viewModel.empleadosDepartamentoVacioProperty());
+        lblEmpleadosDepartamentoVacio.managedProperty().bind(viewModel.empleadosDepartamentoVacioProperty());
+
+        viewModel.getEmpleadosPorDepartamento().addListener(
+                (javafx.collections.ListChangeListener<DatoGraficoDTO>) cambio ->
+                        Platform.runLater(this::actualizarGraficaEmpleadosDepartamento)
+        );
+    }
+
+    /**
+     * Configura los bindings y el listener reactivo del widget de ausencias por estado.
+     */
+    private void configurarWidgetAusenciasEstado() {
+        indicadorAusenciasEstado.visibleProperty().bind(viewModel.ausenciasEstadoCargandoProperty());
+        indicadorAusenciasEstado.managedProperty().bind(viewModel.ausenciasEstadoCargandoProperty());
+
+        graficaAusenciasEstado.visibleProperty().bind(viewModel.ausenciasEstadoVacioProperty().not());
+        graficaAusenciasEstado.managedProperty().bind(viewModel.ausenciasEstadoVacioProperty().not());
+
+        lblAusenciasEstadoVacio.visibleProperty().bind(viewModel.ausenciasEstadoVacioProperty());
+        lblAusenciasEstadoVacio.managedProperty().bind(viewModel.ausenciasEstadoVacioProperty());
+
+        viewModel.getAusenciasPorEstado().addListener(
+                (javafx.collections.ListChangeListener<DatoGraficoDTO>) cambio ->
+                        Platform.runLater(this::actualizarGraficaAusenciasEstado)
+        );
+    }
+
+    /**
+     * Recrea el PieChart de empleados por departamento desde cero en cada actualización.
+     * Necesario para evitar el caché de etiquetas del PieChart de JavaFX al cambiar idioma.
+     */
+    private void actualizarGraficaEmpleadosDepartamento() {
+        contenedorGraficaDepartamento.getChildren().clear();
+        LanguageManager lang = LanguageManager.getInstance();
+
+        if (viewModel.getEmpleadosPorDepartamento().isEmpty()) return;
+
+        PieChart grafica = new PieChart();
+        grafica.setAnimated(false);
+        grafica.setLegendVisible(false);
+        grafica.setLabelsVisible(true);
+
+        String[] coloresPaleta = {
+                "departamento-color-1",
+                "departamento-color-2",
+                "departamento-color-3",
+                "departamento-color-4",
+                "departamento-color-5",
+                "departamento-color-6"
+        };
+
+        int indice = 0;
+        for (DatoGraficoDTO dato : viewModel.getEmpleadosPorDepartamento()) {
+            if (dato == null) continue;
+
+            PieChart.Data sector = new PieChart.Data(
+                    dato.etiqueta() + " (" + dato.valor().intValue() + ")",
+                    dato.valor().doubleValue()
+            );
+
+            grafica.getData().add(sector);
+
+            String claseColor = coloresPaleta[indice % coloresPaleta.length];
+            indice++;
+
+            sector.nodeProperty().addListener((obs, oldNode, node) -> {
+                if (node != null) {
+                    node.getStyleClass().add(claseColor);
+                    Tooltip tooltip = new Tooltip(
+                            dato.etiqueta() + ": " + dato.valor().intValue() + " "
+                                    + lang.getString("dashboard.departamento.tooltip.sufijo")
+                    );
+                    Tooltip.install(node, tooltip);
+                }
+            });
+        }
+
+        grafica.getStylesheets().add(
+                getClass().getResource("/css/styles.css").toExternalForm()
+        );
+        grafica.setMaxHeight(Double.MAX_VALUE);
+        grafica.setMaxWidth(Double.MAX_VALUE);
+        StackPane.setAlignment(grafica, javafx.geometry.Pos.CENTER);
+
+        contenedorGraficaDepartamento.getChildren().add(grafica);
+    }
+
+    /**
+     * Reconstruye las series de la gráfica de ausencias por estado con los datos actuales del ViewModel.
+     * Usa una sola serie con múltiples categorías para que las barras queden centradas.
+     * Aplica color inline directamente sobre el nodo para garantizar que se muestra
+     * independientemente del orden de carga del CSS.
+     */
+    private void actualizarGraficaAusenciasEstado() {
+        graficaAusenciasEstado.getData().clear();
+        ejeYEstado.setAutoRanging(false);
+        ejeYEstado.setTickUnit(1);
+        ejeYEstado.setMinorTickVisible(false);
+        ejeYEstado.setLowerBound(0);
+
+        int maxValor = viewModel.getAusenciasPorEstado().stream()
+                .filter(d -> d != null)
+                .mapToInt(d -> d.valor().intValue())
+                .max()
+                .orElse(5);
+        ejeYEstado.setUpperBound(maxValor + 1);
+        LanguageManager lang = LanguageManager.getInstance();
+
+        XYChart.Series<String, Number> serie = new XYChart.Series<>();
+
+        for (DatoGraficoDTO dato : viewModel.getAusenciasPorEstado()) {
+            if (dato == null) continue;
+            String claveEstado = dato.etiqueta().toLowerCase();
+            String etiqueta    = lang.getString("ausencias.estado." + claveEstado);
+
+            String color = switch (claveEstado) {
+                case "aprobada"   -> "#1A365D";
+                case "rechazada"  -> "#B5D4F4";
+                case "solicitada" -> "#5BC4F5";
+                default           -> "#8B8B8B";
+            };
+
+            XYChart.Data<String, Number> barra = new XYChart.Data<>(etiqueta, dato.valor());
+
+            barra.nodeProperty().addListener((obs, oldNode, node) -> {
+                if (node != null) {
+                    node.setStyle("-fx-bar-fill: " + color + ";");
+                    Tooltip tooltip = new Tooltip(
+                            etiqueta + ": " + dato.valor().intValue() + " "
+                                    + lang.getString("dashboard.ausencias.tooltip.sufijo")
+                    );
+                    Tooltip.install(node, tooltip);
+                }
+            });
+
+            serie.getData().add(barra);
+        }
+
+        graficaAusenciasEstado.getData().add(serie);
+    }
+
+    /**
      * Actualiza todos los textos de la vista con el idioma activo.
      */
     private void actualizarTextos() {
@@ -313,7 +484,6 @@ public class DashboardController implements Limpiable {
 
         subtituloLabel.setText(lang.getString("dashboard.subtitulo"));
         btnActualizarLabel.setText(lang.getString("dashboard.btn.actualizar"));
-        actividadRecienteLabel.setText(lang.getString("dashboard.recent.activity"));
 
         kpiTotalEmpleadosTitulo.setText(lang.getString("dashboard.kpi.totalEmpleados"));
         kpiTotalEmpleadosSubtitulo.setText(lang.getString("dashboard.kpi.totalEmpleados.subtitulo"));
@@ -330,6 +500,13 @@ public class DashboardController implements Limpiable {
         colPosicion.setText(lang.getString("dashboard.topRetrasos.col.posicion"));
         colEmpleado.setText(lang.getString("dashboard.topRetrasos.col.empleado"));
         colTotal.setText(lang.getString("dashboard.topRetrasos.col.total"));
+
+        lblAusenciasEstadoTitulo.setText(lang.getString("dashboard.ausencias.estado.titulo"));
+        lblAusenciasEstadoVacio.setText(lang.getString("dashboard.ausencias.vacio"));
+        actualizarGraficaAusenciasEstado();
+        lblEmpleadosDepartamentoTitulo.setText(lang.getString("dashboard.departamento.titulo"));
+        lblEmpleadosDepartamentoVacio.setText(lang.getString("dashboard.departamento.vacio"));
+        actualizarGraficaEmpleadosDepartamento();
 
         instalarTooltips(lang);
         tablaTopRetrasos.refresh();

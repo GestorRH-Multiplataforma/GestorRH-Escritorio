@@ -33,4 +33,20 @@ public interface EstadisticasService {
      */
     @GET("api/estadisticas/top-retrasos")
     Call<List<DatoGraficoDTO>> getTopRetrasos();
+
+    /**
+     * Obtiene el volumen de ausencias agrupadas por estado actual.
+     *
+     * @return Llamada Retrofit con la lista de datos para el gráfico.
+     */
+    @GET("api/estadisticas/ausencias-estado")
+    Call<List<DatoGraficoDTO>> getAusenciasPorEstado();
+
+    /**
+     * Obtiene la distribución de empleados agrupados por departamento.
+     *
+     * @return Llamada Retrofit con la lista de datos para el gráfico.
+     */
+    @GET("api/estadisticas/empleados-departamento")
+    Call<List<DatoGraficoDTO>> getEmpleadosPorDepartamento();
 }
