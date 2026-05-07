@@ -24,6 +24,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -76,7 +77,7 @@ public class DashboardController implements Limpiable {
     @FXML private ProgressIndicator indicadorEmpleadosDepartamento;
     @FXML private Label lblEmpleadosDepartamentoTitulo;
     @FXML private Label lblEmpleadosDepartamentoVacio;
-    @FXML private PieChart graficaEmpleadosDepartamento;
+    @FXML private StackPane contenedorGraficaDepartamento;
 
     private java.util.function.Consumer<String> onNavegar;
     private final DashboardViewModel viewModel;
@@ -330,8 +331,8 @@ public class DashboardController implements Limpiable {
         indicadorEmpleadosDepartamento.visibleProperty().bind(viewModel.empleadosDepartamentoCargandoProperty());
         indicadorEmpleadosDepartamento.managedProperty().bind(viewModel.empleadosDepartamentoCargandoProperty());
 
-        graficaEmpleadosDepartamento.visibleProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
-        graficaEmpleadosDepartamento.managedProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
+        contenedorGraficaDepartamento.visibleProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
+        contenedorGraficaDepartamento.managedProperty().bind(viewModel.empleadosDepartamentoVacioProperty().not());
 
         lblEmpleadosDepartamentoVacio.visibleProperty().bind(viewModel.empleadosDepartamentoVacioProperty());
         lblEmpleadosDepartamentoVacio.managedProperty().bind(viewModel.empleadosDepartamentoVacioProperty());
@@ -362,12 +363,19 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Reconstruye el gráfico de tarta de empleados por departamento con los datos actuales.
-     * Aplica la paleta de azules corporativos rotando entre los colores disponibles.
+     * Recrea el PieChart de empleados por departamento desde cero en cada actualización.
+     * Necesario para evitar el caché de etiquetas del PieChart de JavaFX al cambiar idioma.
      */
     private void actualizarGraficaEmpleadosDepartamento() {
-        graficaEmpleadosDepartamento.getData().clear();
+        contenedorGraficaDepartamento.getChildren().clear();
         LanguageManager lang = LanguageManager.getInstance();
+
+        if (viewModel.getEmpleadosPorDepartamento().isEmpty()) return;
+
+        PieChart grafica = new PieChart();
+        grafica.setAnimated(false);
+        grafica.setLegendVisible(false);
+        grafica.setLabelsVisible(true);
 
         String[] coloresPaleta = {
                 "departamento-color-1",
@@ -387,7 +395,7 @@ public class DashboardController implements Limpiable {
                     dato.valor().doubleValue()
             );
 
-            graficaEmpleadosDepartamento.getData().add(sector);
+            grafica.getData().add(sector);
 
             String claseColor = coloresPaleta[indice % coloresPaleta.length];
             indice++;
@@ -403,6 +411,15 @@ public class DashboardController implements Limpiable {
                 }
             });
         }
+
+        grafica.getStylesheets().add(
+                getClass().getResource("/css/styles.css").toExternalForm()
+        );
+        grafica.setMaxHeight(Double.MAX_VALUE);
+        grafica.setMaxWidth(Double.MAX_VALUE);
+        StackPane.setAlignment(grafica, javafx.geometry.Pos.CENTER);
+
+        contenedorGraficaDepartamento.getChildren().add(grafica);
     }
 
     /**

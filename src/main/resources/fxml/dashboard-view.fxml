@@ -152,12 +152,9 @@
                                    managed="false"/>
             </StackPane>
 
-            <PieChart fx:id="graficaEmpleadosDepartamento"
-                      animated="false"
-                      legendVisible="false"
-                      labelsVisible="true"
-                      VBox.vgrow="ALWAYS"
-                      prefHeight="220.0"/>
+            <StackPane fx:id="contenedorGraficaDepartamento"
+                       VBox.vgrow="ALWAYS"
+                       prefHeight="220.0"/>
 
             <Label fx:id="lblEmpleadosDepartamentoVacio"
                    styleClass="empleados-tabla-placeholder"
