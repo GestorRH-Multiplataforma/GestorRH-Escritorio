@@ -84,7 +84,11 @@ public class DashboardViewModel {
         estadisticasRepository.getTopRetrasos()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     List<DatoGraficoDTO> truncada = lista.subList(0, Math.min(lista.size(), MAX_TOP_RETRASOS));
-                    topRetrasos.setAll(truncada);
+                    List<DatoGraficoDTO> rellena = new java.util.ArrayList<>(truncada);
+                    while (rellena.size() < MAX_TOP_RETRASOS) {
+                        rellena.add(null);
+                    }
+                    topRetrasos.setAll(rellena);
                     topRetrasosVacio.set(truncada.isEmpty());
                     topRetrasosCargando.set(false);
                 }))

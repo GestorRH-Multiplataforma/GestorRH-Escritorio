@@ -182,29 +182,51 @@ public class DashboardController implements Limpiable {
         tablaTopRetrasos.setItems(viewModel.getTopRetrasos());
         tablaTopRetrasos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
-        colPosicion.setCellValueFactory(data -> {
-            int indice = tablaTopRetrasos.getItems().indexOf(data.getValue());
-            return new SimpleIntegerProperty(indice + 1).asObject();
+        colPosicion.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer valor, boolean empty) {
+                super.updateItem(valor, empty);
+                setAlignment(javafx.geometry.Pos.CENTER);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
+                    setGraphic(null);
+                } else {
+                    setText(String.valueOf(getIndex() + 1));
+                    setGraphic(null);
+                }
+            }
         });
 
-        colEmpleado.setCellValueFactory(data ->
-                new SimpleStringProperty(data.getValue().etiqueta())
-        );
+        colEmpleado.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String valor, boolean empty) {
+                super.updateItem(valor, empty);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
+                    setGraphic(null);
+                } else {
+                    setText(dato.etiqueta());
+                    setGraphic(null);
+                }
+            }
+        });
 
-        colTotal.setCellValueFactory(data ->
-                new javafx.beans.property.SimpleObjectProperty<>(data.getValue().valor())
-        );
+        colTotal.getStyleClass().add("col-centrada");
 
         colTotal.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(Number valor, boolean empty) {
                 super.updateItem(valor, empty);
-                if (empty || valor == null) {
+                setAlignment(javafx.geometry.Pos.CENTER);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
                     setGraphic(null);
-                    setText(null);
                     return;
                 }
-                if (viewModel.superaUmbralAdvertencia(valor)) {
+                if (viewModel.superaUmbralAdvertencia(dato.valor())) {
                     FontIcon icono = new FontIcon("mdi2a-alert");
                     icono.setIconSize(14);
                     icono.getStyleClass().add("dashboard-topRetrasos-icono-alerta");
@@ -213,16 +235,23 @@ public class DashboardController implements Limpiable {
                                     .getString("dashboard.topRetrasos.advertencia.tooltip")
                     );
                     Tooltip.install(icono, tooltip);
-                    HBox contenedor = new HBox(6, new Label(String.valueOf(valor.intValue())), icono);
-                    contenedor.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+                    HBox contenedor = new HBox(6, new Label(String.valueOf(dato.valor().intValue())), icono);
+                    contenedor.setAlignment(javafx.geometry.Pos.CENTER);
                     setGraphic(contenedor);
                     setText(null);
                 } else {
                     setGraphic(null);
-                    setText(String.valueOf(valor.intValue()));
+                    setText(String.valueOf(dato.valor().intValue()));
                 }
             }
         });
+        tablaTopRetrasos.setFixedCellSize(46.0);
+        tablaTopRetrasos.prefHeightProperty().bind(
+                tablaTopRetrasos.fixedCellSizeProperty().multiply(5).add(36)
+        );
+        tablaTopRetrasos.maxHeightProperty().bind(
+                tablaTopRetrasos.fixedCellSizeProperty().multiply(5).add(36)
+        );
     }
 
     /**
