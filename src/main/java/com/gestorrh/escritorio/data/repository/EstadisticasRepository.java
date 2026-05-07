@@ -1,8 +1,10 @@
 package com.gestorrh.escritorio.data.repository;
 
 import com.gestorrh.escritorio.data.network.EstadisticasService;
+import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -12,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
  * construyendo DTOs tipados a partir de las respuestas de la API.
  *
  * @author Fco Javier García Cañero
- * @version 1.1
+ * @version 1.2
  */
 public class EstadisticasRepository extends BaseRepository {
 
@@ -36,6 +38,15 @@ public class EstadisticasRepository extends BaseRepository {
     public CompletableFuture<KpisDTO> getKpis() {
         return executeAsync(service.getKpis())
                 .thenApply(this::mapearKpis);
+    }
+
+    /**
+     * Obtiene el ranking de empleados con más retrasos de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos del ranking, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getTopRetrasos() {
+        return executeAsync(service.getTopRetrasos());
     }
 
     /**

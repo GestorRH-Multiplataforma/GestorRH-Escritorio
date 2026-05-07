@@ -125,13 +125,60 @@
                            managed="false"/>
     </StackPane>
 
-    <VBox VBox.vgrow="ALWAYS"
-          styleClass="content-placeholder"
-          spacing="12.0">
-        <padding>
-            <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-        </padding>
-        <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
-    </VBox>
+    <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+
+        <VBox VBox.vgrow="ALWAYS"
+              styleClass="content-placeholder"
+              spacing="12.0"
+              HBox.hgrow="ALWAYS">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
+            <Label fx:id="actividadRecienteLabel" styleClass="section-title"/>
+        </VBox>
+
+        <VBox styleClass="content-placeholder"
+              spacing="12.0"
+              minWidth="300.0"
+              maxWidth="340.0"
+              VBox.vgrow="NEVER">
+            <padding>
+                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+            </padding>
+
+            <Label fx:id="lblTopRetrasosTitulo" styleClass="section-title"/>
+
+            <Separator/>
+
+            <StackPane VBox.vgrow="NEVER">
+                <ProgressIndicator fx:id="indicadorTopRetrasos"
+                                   maxWidth="32.0"
+                                   maxHeight="32.0"
+                                   visible="false"
+                                   managed="false"/>
+            </StackPane>
+
+            <TableView fx:id="tablaTopRetrasos"
+                       styleClass="empleados-table"
+                       VBox.vgrow="NEVER">
+                <columns>
+                    <TableColumn fx:id="colPosicion" prefWidth="40.0" maxWidth="40.0"/>
+                    <TableColumn fx:id="colEmpleado" prefWidth="160.0"/>
+                    <TableColumn fx:id="colTotal"    prefWidth="90.0"/>
+                </columns>
+                <placeholder>
+                    <Label styleClass="empleados-tabla-placeholder"/>
+                </placeholder>
+            </TableView>
+
+            <Label fx:id="lblTopRetrasosVacio"
+                   styleClass="empleados-tabla-placeholder"
+                   wrapText="true"
+                   visible="false"
+                   managed="false"/>
+
+        </VBox>
+
+    </HBox>
 
 </VBox>

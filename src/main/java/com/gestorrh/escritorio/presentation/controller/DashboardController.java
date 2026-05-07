@@ -4,25 +4,31 @@ import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.navigation.Limpiable;
 import com.gestorrh.escritorio.core.navigation.NavigationManager;
+import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 /**
  * Controlador para la vista del panel central del Dashboard.
- * Gestiona las tarjetas KPI, el indicador de carga, el panel de error,
- * los tooltips de cada tarjeta y el botón de actualización manual.
- * El header, sidebar y footer son responsabilidad del ShellController.
+ * Gestiona las tarjetas KPI, el widget de top retrasos, el indicador de carga,
+ * el panel de error y el botón de actualización manual.
  *
  * @author Fco Javier García Cañero
- * @version 2.1
+ * @version 2.2
  */
 public class DashboardController implements Limpiable {
 
@@ -50,6 +56,14 @@ public class DashboardController implements Limpiable {
 
     @FXML private Label actividadRecienteLabel;
 
+    @FXML private Label lblTopRetrasosTitulo;
+    @FXML private TableView<DatoGraficoDTO> tablaTopRetrasos;
+    @FXML private TableColumn<DatoGraficoDTO, Integer> colPosicion;
+    @FXML private TableColumn<DatoGraficoDTO, String> colEmpleado;
+    @FXML private TableColumn<DatoGraficoDTO, Number> colTotal;
+    @FXML private Label lblTopRetrasosVacio;
+    @FXML private ProgressIndicator indicadorTopRetrasos;
+
     private java.util.function.Consumer<String> onNavegar;
     private final DashboardViewModel viewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
@@ -63,7 +77,6 @@ public class DashboardController implements Limpiable {
 
     /**
      * Registra el callback que se ejecutará cuando el usuario pulse una tarjeta KPI.
-     * El ShellController lo usa para actualizar el sidebar y navegar correctamente.
      *
      * @param callback Consumer que recibe la ruta FXML destino.
      */
@@ -72,18 +85,19 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Inicializa los bindings, configura los listeners reactivos,
-     * instala los tooltips, registra el listener de idioma
-     * y lanza la carga inicial de KPIs.
+     * Inicializa los bindings, configura los listeners reactivos, instala los tooltips,
+     * registra el listener de idioma y lanza la carga inicial de datos en paralelo.
      */
     @FXML
     public void initialize() {
         configurarBindings();
         configurarListenerKpis();
         configurarNavegacion();
+        configurarTablaTopRetrasos();
+        configurarListenerTopRetrasos();
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
-        viewModel.cargarKpis();
+        cargarDashboard();
     }
 
     /**
@@ -95,12 +109,19 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Gestiona el evento del botón Actualizar.
-     * Recarga los KPIs desde la API manualmente.
+     * Gestiona el evento del botón Actualizar. Recarga todos los datos del Dashboard.
      */
     @FXML
     private void handleActualizar() {
+        cargarDashboard();
+    }
+
+    /**
+     * Lanza en paralelo la carga de KPIs y el ranking de retrasos.
+     */
+    private void cargarDashboard() {
         viewModel.cargarKpis();
+        viewModel.cargarTopRetrasos();
     }
 
     /**
@@ -119,10 +140,19 @@ public class DashboardController implements Limpiable {
         errorLabel.managedProperty().bind(viewModel.errorVisibleProperty());
 
         btnActualizar.disableProperty().bind(viewModel.cargandoProperty());
+
+        indicadorTopRetrasos.visibleProperty().bind(viewModel.topRetrasosCargandoProperty());
+        indicadorTopRetrasos.managedProperty().bind(viewModel.topRetrasosCargandoProperty());
+
+        tablaTopRetrasos.visibleProperty().bind(viewModel.topRetrasosVacioProperty().not());
+        tablaTopRetrasos.managedProperty().bind(viewModel.topRetrasosVacioProperty().not());
+
+        lblTopRetrasosVacio.visibleProperty().bind(viewModel.topRetrasosVacioProperty());
+        lblTopRetrasosVacio.managedProperty().bind(viewModel.topRetrasosVacioProperty());
     }
 
     /**
-     * Registra el listener que actualiza los valores de las tarjetas
+     * Registra el listener que actualiza los valores de las tarjetas KPI
      * cada vez que el ViewModel recibe nuevos datos de la API.
      */
     private void configurarListenerKpis() {
@@ -131,6 +161,97 @@ public class DashboardController implements Limpiable {
                 actualizarValoresKpis(newVal);
             }
         });
+    }
+
+    /**
+     * Registra el listener que actualiza la tabla de top retrasos
+     * cada vez que cambia la lista en el ViewModel.
+     */
+    private void configurarListenerTopRetrasos() {
+        viewModel.getTopRetrasos().addListener(
+                (javafx.collections.ListChangeListener<DatoGraficoDTO>) cambio ->
+                        tablaTopRetrasos.refresh()
+        );
+    }
+
+    /**
+     * Configura las columnas de la tabla de top retrasos con sus CellValueFactory
+     * y CellFactory personalizados.
+     */
+    private void configurarTablaTopRetrasos() {
+        tablaTopRetrasos.setItems(viewModel.getTopRetrasos());
+        tablaTopRetrasos.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
+
+        colPosicion.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Integer valor, boolean empty) {
+                super.updateItem(valor, empty);
+                setAlignment(javafx.geometry.Pos.CENTER);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
+                    setGraphic(null);
+                } else {
+                    setText(String.valueOf(getIndex() + 1));
+                    setGraphic(null);
+                }
+            }
+        });
+
+        colEmpleado.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String valor, boolean empty) {
+                super.updateItem(valor, empty);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
+                    setGraphic(null);
+                } else {
+                    setText(dato.etiqueta());
+                    setGraphic(null);
+                }
+            }
+        });
+
+        colTotal.getStyleClass().add("col-centrada");
+
+        colTotal.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(Number valor, boolean empty) {
+                super.updateItem(valor, empty);
+                setAlignment(javafx.geometry.Pos.CENTER);
+                DatoGraficoDTO dato = empty ? null : getTableView().getItems().get(getIndex());
+                if (empty || dato == null) {
+                    setText("—");
+                    setGraphic(null);
+                    return;
+                }
+                if (viewModel.superaUmbralAdvertencia(dato.valor())) {
+                    FontIcon icono = new FontIcon("mdi2a-alert");
+                    icono.setIconSize(14);
+                    icono.getStyleClass().add("dashboard-topRetrasos-icono-alerta");
+                    Tooltip tooltip = new Tooltip(
+                            LanguageManager.getInstance()
+                                    .getString("dashboard.topRetrasos.advertencia.tooltip")
+                    );
+                    Tooltip.install(icono, tooltip);
+                    HBox contenedor = new HBox(6, new Label(String.valueOf(dato.valor().intValue())), icono);
+                    contenedor.setAlignment(javafx.geometry.Pos.CENTER);
+                    setGraphic(contenedor);
+                    setText(null);
+                } else {
+                    setGraphic(null);
+                    setText(String.valueOf(dato.valor().intValue()));
+                }
+            }
+        });
+        tablaTopRetrasos.setFixedCellSize(46.0);
+        tablaTopRetrasos.prefHeightProperty().bind(
+                tablaTopRetrasos.fixedCellSizeProperty().multiply(5).add(36)
+        );
+        tablaTopRetrasos.maxHeightProperty().bind(
+                tablaTopRetrasos.fixedCellSizeProperty().multiply(5).add(36)
+        );
     }
 
     /**
@@ -144,8 +265,7 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Aplica el cursor de mano y el listener de clic a una tarjeta KPI
-     * para que navegue a la ruta FXML indicada al pulsarla.
+     * Aplica el cursor de mano y el listener de clic a una tarjeta KPI.
      *
      * @param tarjeta  VBox de la tarjeta KPI a configurar.
      * @param rutaFxml Ruta del FXML destino de la navegación.
@@ -172,9 +292,7 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Instala los tooltips en las tres tarjetas KPI con el texto
-     * del idioma activo. Se llama cada vez que cambia el idioma
-     * para mantener los textos sincronizados.
+     * Instala los tooltips en las tres tarjetas KPI con el texto del idioma activo.
      *
      * @param lang Gestor de idiomas activo.
      */
@@ -189,7 +307,6 @@ public class DashboardController implements Limpiable {
 
     /**
      * Actualiza todos los textos de la vista con el idioma activo.
-     * Se ejecuta al inicializar y cada vez que cambia el idioma.
      */
     private void actualizarTextos() {
         LanguageManager lang = LanguageManager.getInstance();
@@ -207,6 +324,14 @@ public class DashboardController implements Limpiable {
         kpiAusentesHoyTitulo.setText(lang.getString("dashboard.kpi.ausentesHoy"));
         kpiAusentesHoySubtitulo.setText(lang.getString("dashboard.kpi.ausentesHoy.subtitulo"));
 
+        lblTopRetrasosTitulo.setText(lang.getString("dashboard.topRetrasos.titulo"));
+        lblTopRetrasosVacio.setText(lang.getString("dashboard.topRetrasos.vacio"));
+
+        colPosicion.setText(lang.getString("dashboard.topRetrasos.col.posicion"));
+        colEmpleado.setText(lang.getString("dashboard.topRetrasos.col.empleado"));
+        colTotal.setText(lang.getString("dashboard.topRetrasos.col.total"));
+
         instalarTooltips(lang);
+        tablaTopRetrasos.refresh();
     }
 }
