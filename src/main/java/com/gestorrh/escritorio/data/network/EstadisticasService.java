@@ -33,4 +33,20 @@ public interface EstadisticasService {
      */
     @GET("api/estadisticas/top-retrasos")
     Call<List<DatoGraficoDTO>> getTopRetrasos();
+
+    /**
+     * Obtiene las ausencias aprobadas agrupadas por tipo de ausencia.
+     *
+     * @return Llamada Retrofit con la lista de datos para el gráfico.
+     */
+    @GET("api/estadisticas/ausencias-tipo")
+    Call<List<DatoGraficoDTO>> getAusenciasAprobadasPorTipo();
+
+    /**
+     * Obtiene el volumen de ausencias agrupadas por estado actual.
+     *
+     * @return Llamada Retrofit con la lista de datos para el gráfico.
+     */
+    @GET("api/estadisticas/ausencias-estado")
+    Call<List<DatoGraficoDTO>> getAusenciasPorEstado();
 }

@@ -63,4 +63,22 @@ public class EstadisticasRepository extends BaseRepository {
                 mapa.getOrDefault("ausentesHoy", 0L)
         );
     }
+
+    /**
+     * Obtiene las ausencias aprobadas agrupadas por tipo de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getAusenciasAprobadasPorTipo() {
+        return executeAsync(service.getAusenciasAprobadasPorTipo());
+    }
+
+    /**
+     * Obtiene el volumen de ausencias agrupadas por estado de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getAusenciasPorEstado() {
+        return executeAsync(service.getAusenciasPorEstado());
+    }
 }
