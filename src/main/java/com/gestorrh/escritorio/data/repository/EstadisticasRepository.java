@@ -65,20 +65,20 @@ public class EstadisticasRepository extends BaseRepository {
     }
 
     /**
-     * Obtiene las ausencias aprobadas agrupadas por tipo de forma asíncrona.
-     *
-     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
-     */
-    public CompletableFuture<List<DatoGraficoDTO>> getAusenciasAprobadasPorTipo() {
-        return executeAsync(service.getAusenciasAprobadasPorTipo());
-    }
-
-    /**
      * Obtiene el volumen de ausencias agrupadas por estado de forma asíncrona.
      *
      * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
      */
     public CompletableFuture<List<DatoGraficoDTO>> getAusenciasPorEstado() {
         return executeAsync(service.getAusenciasPorEstado());
+    }
+
+    /**
+     * Obtiene la distribución de empleados agrupados por departamento de forma asíncrona.
+     *
+     * @return CompletableFuture con la lista de datos para el gráfico, o ApiException si falla.
+     */
+    public CompletableFuture<List<DatoGraficoDTO>> getEmpleadosPorDepartamento() {
+        return executeAsync(service.getEmpleadosPorDepartamento());
     }
 }

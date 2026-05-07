@@ -504,52 +504,38 @@
     -fx-text-fill: #64748B;
 }
 
-/* Colores por tipo de ausencia */
-.ausencias-barra-vacaciones .bar {
-    -fx-background-color: #1A365D;
-    -fx-background-radius: 0 4 4 0;
-}
+/* Tarta empleados por departamento — paleta azules corporativos */
+.departamento-color-1 .pie { -fx-pie-color: #042C53; }
+.departamento-color-2 .pie { -fx-pie-color: #1A365D; }
+.departamento-color-3 .pie { -fx-pie-color: #185FA5; }
+.departamento-color-4 .pie { -fx-pie-color: #00A8E8; }
+.departamento-color-5 .pie { -fx-pie-color: #5BC4F5; }
+.departamento-color-6 .pie { -fx-pie-color: #B5D4F4; }
 
-.ausencias-barra-medica .bar {
-    -fx-background-color: #D32F2F;
-    -fx-background-radius: 0 4 4 0;
-}
+/* Anular colores por defecto del PieChart */
+.chart-pie.default-color0 { -fx-pie-color: #042C53; }
+.chart-pie.default-color1 { -fx-pie-color: #1A365D; }
+.chart-pie.default-color2 { -fx-pie-color: #185FA5; }
+.chart-pie.default-color3 { -fx-pie-color: #00A8E8; }
+.chart-pie.default-color4 { -fx-pie-color: #5BC4F5; }
+.chart-pie.default-color5 { -fx-pie-color: #B5D4F4; }
+.chart-pie.default-color6 { -fx-pie-color: #042C53; }
+.chart-pie.default-color7 { -fx-pie-color: #1A365D; }
 
-.ausencias-barra-motivo_personal .bar {
-    -fx-background-color: #F57C00;
-    -fx-background-radius: 0 4 4 0;
-}
+/* Leyenda del PieChart */
+.chart-legend-item-symbol.default-color0 { -fx-background-color: #042C53; }
+.chart-legend-item-symbol.default-color1 { -fx-background-color: #1A365D; }
+.chart-legend-item-symbol.default-color2 { -fx-background-color: #185FA5; }
+.chart-legend-item-symbol.default-color3 { -fx-background-color: #00A8E8; }
+.chart-legend-item-symbol.default-color4 { -fx-background-color: #5BC4F5; }
+.chart-legend-item-symbol.default-color5 { -fx-background-color: #B5D4F4; }
+.chart-legend-item-symbol.default-color6 { -fx-background-color: #042C53; }
+.chart-legend-item-symbol.default-color7 { -fx-background-color: #1A365D; }
 
-.ausencias-barra-otros .bar {
-    -fx-background-color: #8B8B8B;
-    -fx-background-radius: 0 4 4 0;
-}
-
-/* Fallback para tipos no reconocidos */
-.ausencias-barchart .default-color0.bar,
-.ausencias-barchart .default-color1.bar,
-.ausencias-barchart .default-color2.bar,
-.ausencias-barchart .default-color3.bar,
-.ausencias-barchart .default-color4.bar {
-    -fx-background-color: #8B8B8B;
-    -fx-background-radius: 0 4 4 0;
-}
-
-/* Colores por estado de ausencia */
-.ausencias-barra-solicitada .bar {
-    -fx-background-color: #FBC02D;
-    -fx-background-radius: 0 4 4 0;
-}
-
-.ausencias-barra-aprobada .bar {
-    -fx-background-color: #2E7D32;
-    -fx-background-radius: 0 4 4 0;
-}
-
-.ausencias-barra-rechazada .bar {
-    -fx-background-color: #D32F2F;
-    -fx-background-radius: 0 4 4 0;
-}
+/* Barras verticales ausencias por estado */
+.ausencias-barra-solicitada .bar { -fx-background-color: #5BC4F5; }
+.ausencias-barra-aprobada .bar   { -fx-background-color: #1A365D; }
+.ausencias-barra-rechazada .bar  { -fx-background-color: #B5D4F4; }
 
 .content-placeholder {
     -fx-background-color: #FFFFFF;
