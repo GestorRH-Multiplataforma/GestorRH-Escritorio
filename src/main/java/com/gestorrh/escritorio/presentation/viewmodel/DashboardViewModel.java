@@ -38,6 +38,12 @@ public class DashboardViewModel {
     private final StringProperty mensajeError = new SimpleStringProperty("");
     private final BooleanProperty errorVisible = new SimpleBooleanProperty(false);
     private final BooleanProperty topRetrasosVacio = new SimpleBooleanProperty(false);
+    private final ObservableList<DatoGraficoDTO> ausenciasPorTipo = FXCollections.observableArrayList();
+    private final ObservableList<DatoGraficoDTO> ausenciasPorEstado = FXCollections.observableArrayList();
+    private final BooleanProperty ausenciasTipoCargando = new SimpleBooleanProperty(false);
+    private final BooleanProperty ausenciasEstadoCargando = new SimpleBooleanProperty(false);
+    private final BooleanProperty ausenciasTipoVacio = new SimpleBooleanProperty(false);
+    private final BooleanProperty ausenciasEstadoVacio = new SimpleBooleanProperty(false);
 
     /**
      * Constructor con inyección de dependencias.
@@ -103,6 +109,52 @@ public class DashboardViewModel {
     }
 
     /**
+     * Solicita las ausencias aprobadas por tipo a la API de forma asíncrona.
+     * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     */
+    public void cargarAusenciasAprobadasPorTipo() {
+        ausenciasTipoCargando.set(true);
+
+        estadisticasRepository.getAusenciasAprobadasPorTipo()
+                .thenAccept(lista -> Platform.runLater(() -> {
+                    ausenciasPorTipo.setAll(lista);
+                    ausenciasTipoVacio.set(lista.isEmpty());
+                    ausenciasTipoCargando.set(false);
+                }))
+                .exceptionally(error -> {
+                    Platform.runLater(() -> {
+                        ausenciasPorTipo.clear();
+                        ausenciasTipoVacio.set(true);
+                        ausenciasTipoCargando.set(false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
+     * Solicita las ausencias por estado a la API de forma asíncrona.
+     * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     */
+    public void cargarAusenciasPorEstado() {
+        ausenciasEstadoCargando.set(true);
+
+        estadisticasRepository.getAusenciasPorEstado()
+                .thenAccept(lista -> Platform.runLater(() -> {
+                    ausenciasPorEstado.setAll(lista);
+                    ausenciasEstadoVacio.set(lista.isEmpty());
+                    ausenciasEstadoCargando.set(false);
+                }))
+                .exceptionally(error -> {
+                    Platform.runLater(() -> {
+                        ausenciasPorEstado.clear();
+                        ausenciasEstadoVacio.set(true);
+                        ausenciasEstadoCargando.set(false);
+                    });
+                    return null;
+                });
+    }
+
+    /**
      * Indica si el número de retrasos de un empleado supera el umbral de advertencia.
      *
      * @param valor Número de retrasos del empleado.
@@ -133,4 +185,22 @@ public class DashboardViewModel {
 
     /** @return Property que indica si el ranking de retrasos está vacío. */
     public BooleanProperty topRetrasosVacioProperty() { return topRetrasosVacio; }
+
+    /** @return Lista observable de ausencias aprobadas agrupadas por tipo. */
+    public ObservableList<DatoGraficoDTO> getAusenciasPorTipo() { return ausenciasPorTipo; }
+
+    /** @return Lista observable de ausencias agrupadas por estado. */
+    public ObservableList<DatoGraficoDTO> getAusenciasPorEstado() { return ausenciasPorEstado; }
+
+    /** @return Property que indica si se están cargando las ausencias por tipo. */
+    public BooleanProperty ausenciasTipoCargandoProperty() { return ausenciasTipoCargando; }
+
+    /** @return Property que indica si se están cargando las ausencias por estado. */
+    public BooleanProperty ausenciasEstadoCargandoProperty() { return ausenciasEstadoCargando; }
+
+    /** @return Property que indica si la lista de ausencias por tipo está vacía. */
+    public BooleanProperty ausenciasTipoVacioProperty() { return ausenciasTipoVacio; }
+
+    /** @return Property que indica si la lista de ausencias por estado está vacía. */
+    public BooleanProperty ausenciasEstadoVacioProperty() { return ausenciasEstadoVacio; }
 }

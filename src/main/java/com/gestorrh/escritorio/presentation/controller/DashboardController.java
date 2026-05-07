@@ -7,10 +7,13 @@ import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
@@ -54,8 +57,6 @@ public class DashboardController implements Limpiable {
     @FXML private Label kpiAusentesHoyValor;
     @FXML private Label kpiAusentesHoySubtitulo;
 
-    @FXML private Label actividadRecienteLabel;
-
     @FXML private Label lblTopRetrasosTitulo;
     @FXML private TableView<DatoGraficoDTO> tablaTopRetrasos;
     @FXML private TableColumn<DatoGraficoDTO, Integer> colPosicion;
@@ -63,6 +64,15 @@ public class DashboardController implements Limpiable {
     @FXML private TableColumn<DatoGraficoDTO, Number> colTotal;
     @FXML private Label lblTopRetrasosVacio;
     @FXML private ProgressIndicator indicadorTopRetrasos;
+
+    @FXML private ProgressIndicator indicadorAusenciasTipo;
+    @FXML private ProgressIndicator indicadorAusenciasEstado;
+    @FXML private Label lblAusenciasTipoTitulo;
+    @FXML private Label lblAusenciasEstadoTitulo;
+    @FXML private Label lblAusenciasTipoVacio;
+    @FXML private Label lblAusenciasEstadoVacio;
+    @FXML private BarChart<Number, String> graficaAusenciasTipo;
+    @FXML private BarChart<Number, String> graficaAusenciasEstado;
 
     private java.util.function.Consumer<String> onNavegar;
     private final DashboardViewModel viewModel;
@@ -95,6 +105,8 @@ public class DashboardController implements Limpiable {
         configurarNavegacion();
         configurarTablaTopRetrasos();
         configurarListenerTopRetrasos();
+        configurarWidgetAusenciasTipo();
+        configurarWidgetAusenciasEstado();
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
         cargarDashboard();
@@ -122,6 +134,8 @@ public class DashboardController implements Limpiable {
     private void cargarDashboard() {
         viewModel.cargarKpis();
         viewModel.cargarTopRetrasos();
+        viewModel.cargarAusenciasAprobadasPorTipo();
+        viewModel.cargarAusenciasPorEstado();
     }
 
     /**
@@ -306,6 +320,110 @@ public class DashboardController implements Limpiable {
     }
 
     /**
+     * Configura los bindings y el listener reactivo del widget de ausencias por tipo.
+     */
+    private void configurarWidgetAusenciasTipo() {
+        indicadorAusenciasTipo.visibleProperty().bind(viewModel.ausenciasTipoCargandoProperty());
+        indicadorAusenciasTipo.managedProperty().bind(viewModel.ausenciasTipoCargandoProperty());
+
+        graficaAusenciasTipo.visibleProperty().bind(viewModel.ausenciasTipoVacioProperty().not());
+        graficaAusenciasTipo.managedProperty().bind(viewModel.ausenciasTipoVacioProperty().not());
+
+        lblAusenciasTipoVacio.visibleProperty().bind(viewModel.ausenciasTipoVacioProperty());
+        lblAusenciasTipoVacio.managedProperty().bind(viewModel.ausenciasTipoVacioProperty());
+
+        viewModel.getAusenciasPorTipo().addListener(
+                (javafx.collections.ListChangeListener<DatoGraficoDTO>) cambio ->
+                        Platform.runLater(this::actualizarGraficaAusenciasTipo)
+        );
+    }
+
+    /**
+     * Configura los bindings y el listener reactivo del widget de ausencias por estado.
+     */
+    private void configurarWidgetAusenciasEstado() {
+        indicadorAusenciasEstado.visibleProperty().bind(viewModel.ausenciasEstadoCargandoProperty());
+        indicadorAusenciasEstado.managedProperty().bind(viewModel.ausenciasEstadoCargandoProperty());
+
+        graficaAusenciasEstado.visibleProperty().bind(viewModel.ausenciasEstadoVacioProperty().not());
+        graficaAusenciasEstado.managedProperty().bind(viewModel.ausenciasEstadoVacioProperty().not());
+
+        lblAusenciasEstadoVacio.visibleProperty().bind(viewModel.ausenciasEstadoVacioProperty());
+        lblAusenciasEstadoVacio.managedProperty().bind(viewModel.ausenciasEstadoVacioProperty());
+
+        viewModel.getAusenciasPorEstado().addListener(
+                (javafx.collections.ListChangeListener<DatoGraficoDTO>) cambio ->
+                        Platform.runLater(this::actualizarGraficaAusenciasEstado)
+        );
+    }
+
+    /**
+     * Reconstruye las series de la gráfica de ausencias por tipo con los datos actuales del ViewModel.
+     * Aplica la clase CSS correspondiente a cada barra según el tipo de ausencia.
+     * Se invoca también al cambiar el idioma para relocalizar las etiquetas.
+     */
+    private void actualizarGraficaAusenciasTipo() {
+        graficaAusenciasTipo.getData().clear();
+        LanguageManager lang = LanguageManager.getInstance();
+
+        for (DatoGraficoDTO dato : viewModel.getAusenciasPorTipo()) {
+            if (dato == null) continue;
+            String claveTipo = dato.etiqueta().toLowerCase();
+            String etiqueta  = lang.getString("ausencias.tipo." + claveTipo);
+
+            XYChart.Series<Number, String> serie = new XYChart.Series<>();
+            XYChart.Data<Number, String> barra = new XYChart.Data<>(dato.valor(), etiqueta);
+
+            barra.nodeProperty().addListener((obs, oldNode, node) -> {
+                if (node != null) {
+                    node.getStyleClass().add("ausencias-barra-" + claveTipo);
+                    Tooltip tooltip = new Tooltip(
+                            etiqueta + ": " + dato.valor().intValue() + " "
+                                    + lang.getString("dashboard.ausencias.tooltip.sufijo")
+                    );
+                    Tooltip.install(node, tooltip);
+                }
+            });
+
+            serie.getData().add(barra);
+            graficaAusenciasTipo.getData().add(serie);
+        }
+    }
+
+    /**
+     * Reconstruye las series de la gráfica de ausencias por estado con los datos actuales del ViewModel.
+     * Aplica la clase CSS correspondiente a cada barra según el estado de la ausencia.
+     * Se invoca también al cambiar el idioma para relocalizar las etiquetas.
+     */
+    private void actualizarGraficaAusenciasEstado() {
+        graficaAusenciasEstado.getData().clear();
+        LanguageManager lang = LanguageManager.getInstance();
+
+        for (DatoGraficoDTO dato : viewModel.getAusenciasPorEstado()) {
+            if (dato == null) continue;
+            String claveEstado = dato.etiqueta().toLowerCase();
+            String etiqueta    = lang.getString("ausencias.estado." + claveEstado);
+
+            XYChart.Series<Number, String> serie = new XYChart.Series<>();
+            XYChart.Data<Number, String> barra = new XYChart.Data<>(dato.valor(), etiqueta);
+
+            barra.nodeProperty().addListener((obs, oldNode, node) -> {
+                if (node != null) {
+                    node.getStyleClass().add("ausencias-barra-" + claveEstado);
+                    Tooltip tooltip = new Tooltip(
+                            etiqueta + ": " + dato.valor().intValue() + " "
+                                    + lang.getString("dashboard.ausencias.tooltip.sufijo")
+                    );
+                    Tooltip.install(node, tooltip);
+                }
+            });
+
+            serie.getData().add(barra);
+            graficaAusenciasEstado.getData().add(serie);
+        }
+    }
+
+    /**
      * Actualiza todos los textos de la vista con el idioma activo.
      */
     private void actualizarTextos() {
@@ -313,7 +431,6 @@ public class DashboardController implements Limpiable {
 
         subtituloLabel.setText(lang.getString("dashboard.subtitulo"));
         btnActualizarLabel.setText(lang.getString("dashboard.btn.actualizar"));
-        actividadRecienteLabel.setText(lang.getString("dashboard.recent.activity"));
 
         kpiTotalEmpleadosTitulo.setText(lang.getString("dashboard.kpi.totalEmpleados"));
         kpiTotalEmpleadosSubtitulo.setText(lang.getString("dashboard.kpi.totalEmpleados.subtitulo"));
@@ -330,6 +447,13 @@ public class DashboardController implements Limpiable {
         colPosicion.setText(lang.getString("dashboard.topRetrasos.col.posicion"));
         colEmpleado.setText(lang.getString("dashboard.topRetrasos.col.empleado"));
         colTotal.setText(lang.getString("dashboard.topRetrasos.col.total"));
+
+        lblAusenciasTipoTitulo.setText(lang.getString("dashboard.ausencias.tipo.titulo"));
+        lblAusenciasEstadoTitulo.setText(lang.getString("dashboard.ausencias.estado.titulo"));
+        lblAusenciasTipoVacio.setText(lang.getString("dashboard.ausencias.vacio"));
+        lblAusenciasEstadoVacio.setText(lang.getString("dashboard.ausencias.vacio"));
+        actualizarGraficaAusenciasTipo();
+        actualizarGraficaAusenciasEstado();
 
         instalarTooltips(lang);
         tablaTopRetrasos.refresh();
