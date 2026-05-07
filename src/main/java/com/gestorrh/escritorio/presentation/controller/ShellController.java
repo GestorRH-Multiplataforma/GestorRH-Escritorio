@@ -9,13 +9,18 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -45,8 +50,10 @@ public class ShellController {
 
     @FXML private Label headerLogoLabel;
     @FXML private Label headerNombreEmpresaLabel;
+    @FXML private Label headerSeccionLabel;
     @FXML private Button headerLangEsBtn;
     @FXML private Button headerLangEnBtn;
+    @FXML private HBox headerAvatarContainer;
 
     @FXML private VBox sidebar;
     @FXML private Button btnColapsarSidebar;
@@ -88,6 +95,7 @@ public class ShellController {
     private final AusenciaRepository ausenciaRepository =
             RepositoryFactory.getInstance().getAusenciaRepository();
     private final Runnable actualizadorTextos = this::actualizarTextos;
+    private String claveSeccionActual = "menu.dashboard";
 
     /**
      * Inicializa el Shell: registra el ContentPane en el NavigationManager,
@@ -99,6 +107,8 @@ public class ShellController {
         NavigationManager.getInstance().setPanelContenido(panelContenido);
 
         headerNombreEmpresaLabel.setText(SessionManager.getInstance().getNombreEmpresa());
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
+        construirAvatar();
 
         actualizarTextos();
         actualizarToggleIdioma();
@@ -124,6 +134,8 @@ public class ShellController {
     /** Navega a la sección Dashboard. */
     @FXML
     private void handleMenuDashboard() {
+        claveSeccionActual = "menu.dashboard";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuDashboardBtn);
         NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml", ctrl -> {
             DashboardController dashboard = (DashboardController) ctrl;
@@ -143,6 +155,8 @@ public class ShellController {
     /** Navega a la sección Empleados. */
     @FXML
     private void handleMenuEmpleados() {
+        claveSeccionActual = "menu.employees";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuEmpleadosBtn);
         NavigationManager.getInstance().navegar("/fxml/empleados-view.fxml");
     }
@@ -150,6 +164,8 @@ public class ShellController {
     /** Navega a la sección Turnos. */
     @FXML
     private void handleMenuTurnos() {
+        claveSeccionActual = "menu.shifts";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuTurnosBtn);
         NavigationManager.getInstance().navegar("/fxml/turnos-view.fxml");
     }
@@ -157,6 +173,8 @@ public class ShellController {
     /** Navega a la sección Ausencias. */
     @FXML
     private void handleMenuAusencias() {
+        claveSeccionActual = "menu.absences";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuAusenciasBtn);
         NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml", ctrl -> {
             AusenciasController ausenciasController = (AusenciasController) ctrl;
@@ -169,6 +187,8 @@ public class ShellController {
     /** Navega a la sección Informes. */
     @FXML
     private void handleMenuInformes() {
+        claveSeccionActual = "menu.reports";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuInformesBtn);
         NavigationManager.getInstance().navegar("/fxml/informes-view.fxml", ctrl ->
                 ((PlaceholderController) ctrl).setTituloSeccion("placeholder.reports.title")
@@ -178,6 +198,8 @@ public class ShellController {
     /** Navega a la sección Configuración. */
     @FXML
     private void handleMenuConfiguracion() {
+        claveSeccionActual = "menu.settings";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuConfiguracionBtn);
         NavigationManager.getInstance().navegar("/fxml/configuracion-view.fxml");
     }
@@ -231,6 +253,42 @@ public class ShellController {
     private void handleLangEn() {
         LanguageManager.getInstance().setLocale(Locale.of("en"));
         actualizarToggleIdioma();
+    }
+
+    /**
+     * Construye el avatar circular con las iniciales de la empresa
+     * y lo inserta al inicio del contenedor del header.
+     */
+    private void construirAvatar() {
+        String nombre = SessionManager.getInstance().getNombreEmpresa();
+        String iniciales = obtenerIniciales(nombre);
+
+        javafx.scene.shape.Circle circulo = new javafx.scene.shape.Circle(16);
+        circulo.getStyleClass().add("shell-avatar-circulo");
+
+        Label lblIniciales = new Label(iniciales);
+        lblIniciales.getStyleClass().add("shell-avatar-iniciales");
+
+        StackPane avatar = new StackPane(circulo, lblIniciales);
+        avatar.getStyleClass().add("shell-avatar");
+        avatar.setCursor(javafx.scene.Cursor.HAND);
+
+        headerAvatarContainer.getChildren().add(0, avatar);
+    }
+
+    /**
+     * Extrae las iniciales del nombre de empresa (máximo 2 caracteres).
+     *
+     * @param nombre Nombre completo de la empresa.
+     * @return Iniciales en mayúsculas.
+     */
+    private String obtenerIniciales(String nombre) {
+        if (nombre == null || nombre.isBlank()) return "?";
+        String[] palabras = nombre.trim().split("\\s+");
+        if (palabras.length == 1) {
+            return palabras[0].substring(0, Math.min(2, palabras[0].length())).toUpperCase();
+        }
+        return (String.valueOf(palabras[0].charAt(0)) + String.valueOf(palabras[1].charAt(0))).toUpperCase();
     }
 
     /**
@@ -307,6 +365,7 @@ public class ShellController {
         menuCerrarSesionLabel.setText(lang.getString("menu.logout"));
 
         footerVersionLabel.setText(lang.getString("shell.footer.version"));
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
 
         actualizarToggleIdioma();
     }
