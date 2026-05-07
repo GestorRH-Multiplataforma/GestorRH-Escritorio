@@ -22,8 +22,6 @@
 
             <Region HBox.hgrow="ALWAYS"/>
 
-            <Label fx:id="headerNombreEmpresaLabel" styleClass="shell-header-empresa"/>
-
             <HBox spacing="0" alignment="CENTER_RIGHT">
                 <Button fx:id="headerLangEsBtn" text="ES"
                         styleClass="shell-lang-btn, shell-lang-btn-active"
@@ -31,6 +29,13 @@
                 <Button fx:id="headerLangEnBtn" text="EN"
                         styleClass="shell-lang-btn"
                         onAction="#handleLangEn"/>
+            </HBox>
+
+            <HBox fx:id="headerAvatarContainer"
+                  alignment="CENTER"
+                  spacing="8.0"
+                  styleClass="shell-header-avatar-container">
+                <Label fx:id="headerNombreEmpresaLabel" styleClass="shell-header-empresa"/>
             </HBox>
 
             <HBox.margin>

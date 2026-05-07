@@ -590,17 +590,41 @@
     -fx-opacity: 0.6;
 }
 
-.shell-header-empresa {
-    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
-    -fx-font-size: 13px;
-    -fx-text-fill: #64748B;
-}
-
 .shell-header-seccion {
     -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
     -fx-font-size: 13px;
     -fx-text-fill: #64748B;
     -fx-padding: 0 0 0 4;
+}
+
+.shell-header-avatar-container {
+    -fx-background-color: transparent;
+    -fx-padding: 4 0 4 8;
+    -fx-cursor: hand;
+}
+
+.shell-avatar {
+    -fx-cursor: hand;
+}
+
+.shell-avatar-circulo {
+    -fx-fill: #1A365D;
+    -fx-stroke: rgba(0, 168, 232, 0.30);
+    -fx-stroke-width: 1.5;
+}
+
+.shell-avatar-iniciales {
+    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.shell-header-empresa {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1A365D;
+    -fx-font-weight: bold;
 }
 
 /* Toggle de idioma en el header */
