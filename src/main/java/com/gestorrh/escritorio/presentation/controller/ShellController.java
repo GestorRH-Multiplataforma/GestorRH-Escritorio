@@ -9,6 +9,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -45,6 +47,7 @@ public class ShellController {
 
     @FXML private Label headerLogoLabel;
     @FXML private Label headerNombreEmpresaLabel;
+    @FXML private Label headerSeccionLabel;
     @FXML private Button headerLangEsBtn;
     @FXML private Button headerLangEnBtn;
 
@@ -88,6 +91,7 @@ public class ShellController {
     private final AusenciaRepository ausenciaRepository =
             RepositoryFactory.getInstance().getAusenciaRepository();
     private final Runnable actualizadorTextos = this::actualizarTextos;
+    private String claveSeccionActual = "menu.dashboard";
 
     /**
      * Inicializa el Shell: registra el ContentPane en el NavigationManager,
@@ -99,6 +103,7 @@ public class ShellController {
         NavigationManager.getInstance().setPanelContenido(panelContenido);
 
         headerNombreEmpresaLabel.setText(SessionManager.getInstance().getNombreEmpresa());
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
 
         actualizarTextos();
         actualizarToggleIdioma();
@@ -124,6 +129,8 @@ public class ShellController {
     /** Navega a la sección Dashboard. */
     @FXML
     private void handleMenuDashboard() {
+        claveSeccionActual = "menu.dashboard";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuDashboardBtn);
         NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml", ctrl -> {
             DashboardController dashboard = (DashboardController) ctrl;
@@ -143,6 +150,8 @@ public class ShellController {
     /** Navega a la sección Empleados. */
     @FXML
     private void handleMenuEmpleados() {
+        claveSeccionActual = "menu.employees";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuEmpleadosBtn);
         NavigationManager.getInstance().navegar("/fxml/empleados-view.fxml");
     }
@@ -150,6 +159,8 @@ public class ShellController {
     /** Navega a la sección Turnos. */
     @FXML
     private void handleMenuTurnos() {
+        claveSeccionActual = "menu.shifts";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuTurnosBtn);
         NavigationManager.getInstance().navegar("/fxml/turnos-view.fxml");
     }
@@ -157,6 +168,8 @@ public class ShellController {
     /** Navega a la sección Ausencias. */
     @FXML
     private void handleMenuAusencias() {
+        claveSeccionActual = "menu.absences";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuAusenciasBtn);
         NavigationManager.getInstance().navegar("/fxml/ausencias-view.fxml", ctrl -> {
             AusenciasController ausenciasController = (AusenciasController) ctrl;
@@ -169,6 +182,8 @@ public class ShellController {
     /** Navega a la sección Informes. */
     @FXML
     private void handleMenuInformes() {
+        claveSeccionActual = "menu.reports";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuInformesBtn);
         NavigationManager.getInstance().navegar("/fxml/informes-view.fxml", ctrl ->
                 ((PlaceholderController) ctrl).setTituloSeccion("placeholder.reports.title")
@@ -178,6 +193,8 @@ public class ShellController {
     /** Navega a la sección Configuración. */
     @FXML
     private void handleMenuConfiguracion() {
+        claveSeccionActual = "menu.settings";
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuConfiguracionBtn);
         NavigationManager.getInstance().navegar("/fxml/configuracion-view.fxml");
     }
@@ -307,6 +324,7 @@ public class ShellController {
         menuCerrarSesionLabel.setText(lang.getString("menu.logout"));
 
         footerVersionLabel.setText(lang.getString("shell.footer.version"));
+        headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
 
         actualizarToggleIdioma();
     }

@@ -596,6 +596,13 @@
     -fx-text-fill: #64748B;
 }
 
+.shell-header-seccion {
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-text-fill: #64748B;
+    -fx-padding: 0 0 0 4;
+}
+
 /* Toggle de idioma en el header */
 
 .shell-lang-btn {

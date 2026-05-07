@@ -18,8 +18,11 @@
 
             <Separator orientation="VERTICAL" styleClass="shell-header-separator"/>
 
-            <Label fx:id="headerNombreEmpresaLabel" styleClass="shell-header-empresa"
-                   HBox.hgrow="ALWAYS"/>
+            <Label fx:id="headerSeccionLabel" styleClass="shell-header-seccion"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="headerNombreEmpresaLabel" styleClass="shell-header-empresa"/>
 
             <HBox spacing="0" alignment="CENTER_RIGHT">
                 <Button fx:id="headerLangEsBtn" text="ES"
