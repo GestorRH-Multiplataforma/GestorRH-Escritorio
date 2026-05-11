@@ -22,53 +22,124 @@
                 <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
             </padding>
 
-            <HBox spacing="20.0" VBox.vgrow="NEVER">
+            <!-- Gráfico de fichajes del mes actual -->
+            <VBox styleClass="content-placeholder" spacing="12.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
 
-                <VBox styleClass="content-placeholder"
-                      spacing="12.0"
-                      HBox.hgrow="ALWAYS">
+                <Label fx:id="lblTituloGraficoFichajes" styleClass="section-title"/>
+
+                <Separator/>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorFichajes"
+                                       maxWidth="40.0"
+                                       maxHeight="40.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+                <BarChart fx:id="graficaFichajes"
+                          animated="false"
+                          legendVisible="false"
+                          styleClass="fichajes-barchart"
+                          prefHeight="280.0"
+                          barGap="0"
+                          categoryGap="2"
+                          VBox.vgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="ejeYFichajes"
+                                    side="LEFT"
+                                    minorTickVisible="false"
+                                    tickUnit="1"/>
+                    </yAxis>
+                </BarChart>
+
+                <Label fx:id="lblFichajesVacio"
+                       styleClass="empleados-tabla-placeholder"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+                <Label fx:id="lblErrorFichajes"
+                       styleClass="empleados-error-label"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+            </VBox>
+
+            <!-- Sección de informes de control horario -->
+            <VBox styleClass="content-placeholder" spacing="0.0">
+
+                <VBox spacing="12.0">
                     <padding>
-                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                        <Insets top="20.0" right="20.0" bottom="16.0" left="20.0"/>
                     </padding>
 
-                    <Label fx:id="lblTituloGraficoFichajes" styleClass="section-title"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8.0">
+                        <Label fx:id="lblSeccionTitulo" styleClass="section-title"/>
+                    </HBox>
 
                     <Separator/>
 
-                    <StackPane VBox.vgrow="NEVER">
-                        <ProgressIndicator fx:id="indicadorFichajes"
-                                           maxWidth="40.0"
-                                           maxHeight="40.0"
-                                           visible="false"
-                                           managed="false"/>
-                    </StackPane>
+                    <!-- Fila de controles -->
+                    <HBox spacing="12.0" alignment="BOTTOM_LEFT">
 
-                    <BarChart fx:id="graficaFichajes"
-                              animated="false"
-                              legendVisible="false"
-                              styleClass="fichajes-barchart"
-                              prefHeight="280.0"
-                              barGap="0"
-                              categoryGap="2"
-                              VBox.vgrow="ALWAYS">
-                        <xAxis>
-                            <CategoryAxis side="BOTTOM"/>
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis fx:id="ejeYFichajes"
-                                        side="LEFT"
-                                        minorTickVisible="false"
-                                        tickUnit="1"/>
-                        </yAxis>
-                    </BarChart>
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblTipoInforme" styleClass="modal-field-label"/>
+                            <ComboBox fx:id="comboTipoInforme"
+                                      styleClass="modal-combo-box"
+                                      prefWidth="170.0"/>
+                        </VBox>
 
-                    <Label fx:id="lblFichajesVacio"
-                           styleClass="empleados-tabla-placeholder"
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblEmpleado" styleClass="modal-field-label"/>
+                            <ComboBox fx:id="comboEmpleado"
+                                      styleClass="modal-combo-box"
+                                      prefWidth="170.0"/>
+                        </VBox>
+
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblFechaInicio" styleClass="modal-field-label"/>
+                            <DatePicker fx:id="dpFechaInicio"
+                                        styleClass="modal-text-field"
+                                        prefWidth="140.0"/>
+                        </VBox>
+
+                        <VBox spacing="4.0">
+                            <Label fx:id="lblFechaFin" styleClass="modal-field-label"/>
+                            <DatePicker fx:id="dpFechaFin"
+                                        styleClass="modal-text-field"
+                                        prefWidth="140.0"/>
+                        </VBox>
+
+                        <Region HBox.hgrow="ALWAYS"/>
+
+                        <HBox spacing="8.0" alignment="BOTTOM_RIGHT">
+                            <Button fx:id="btnPrevisualizar"
+                                    styleClass="modal-btn-cancelar"
+                                    onAction="#handlePrevisualizar"/>
+                            <Button fx:id="btnDescargarPdf"
+                                    styleClass="empleados-btn-nuevo"
+                                    onAction="#handleDescargarPdf"/>
+                        </HBox>
+
+                    </HBox>
+
+                    <!-- Error de rango de fechas -->
+                    <Label fx:id="lblErrorRango"
+                           styleClass="modal-field-error"
                            wrapText="true"
                            visible="false"
                            managed="false"/>
 
-                    <Label fx:id="lblErrorFichajes"
+                    <!-- Error de informe -->
+                    <Label fx:id="lblErrorInforme"
                            styleClass="empleados-error-label"
                            wrapText="true"
                            visible="false"
@@ -76,22 +147,79 @@
 
                 </VBox>
 
-                <VBox styleClass="content-placeholder"
-                      spacing="12.0"
-                      HBox.hgrow="ALWAYS">
+                <!-- Barra de estado de la tabla -->
+                <HBox fx:id="barraTabla"
+                      spacing="8.0"
+                      alignment="CENTER_LEFT"
+                      visible="false"
+                      managed="false">
                     <padding>
-                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                        <Insets top="8.0" right="20.0" bottom="8.0" left="20.0"/>
                     </padding>
-                </VBox>
+                    <Label fx:id="lblPrevia" styleClass="modal-field-label-opcional"/>
+                    <Label fx:id="lblBadgeTipo"
+                           styleClass="badge badge-supervisor"/>
+                    <Label fx:id="lblConteoRegistros"
+                           styleClass="modal-field-label-opcional"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <ProgressIndicator fx:id="indicadorPrevia"
+                                       maxWidth="18.0"
+                                       maxHeight="18.0"
+                                       visible="false"
+                                       managed="false"/>
+                </HBox>
 
-            </HBox>
+                <Separator fx:id="separadorTabla"
+                           visible="false"
+                           managed="false"/>
 
-            <VBox styleClass="content-placeholder"
-                  spacing="12.0"
-                  minHeight="160.0">
-                <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-                </padding>
+                <!-- Tabla detalle -->
+                <TableView fx:id="tablaDetalle"
+                           styleClass="empleados-table"
+                           visible="false"
+                           managed="false"
+                           prefHeight="280.0">
+                    <padding>
+                        <Insets top="0.0" right="0.0" bottom="0.0" left="0.0"/>
+                    </padding>
+                    <columns>
+                        <TableColumn fx:id="colDetEmpleado"     prefWidth="150.0"/>
+                        <TableColumn fx:id="colDetDepartamento" prefWidth="100.0"/>
+                        <TableColumn fx:id="colDetFecha"        prefWidth="90.0"/>
+                        <TableColumn fx:id="colDetTurno"        prefWidth="130.0"/>
+                        <TableColumn fx:id="colDetEntrada"      prefWidth="80.0"/>
+                        <TableColumn fx:id="colDetSalida"       prefWidth="80.0"/>
+                        <TableColumn fx:id="colDetTiempoReal"   prefWidth="90.0"/>
+                        <TableColumn fx:id="colDetTiempoTeorico" prefWidth="90.0"/>
+                        <TableColumn fx:id="colDetExtras"       prefWidth="80.0"/>
+                        <TableColumn fx:id="colDetIncidencias"  prefWidth="120.0"/>
+                    </columns>
+                    <placeholder>
+                        <Label fx:id="lblTablaDetallVacia"
+                               styleClass="empleados-tabla-placeholder"/>
+                    </placeholder>
+                </TableView>
+
+                <!-- Tabla resumen -->
+                <TableView fx:id="tablaResumen"
+                           styleClass="empleados-table"
+                           visible="false"
+                           managed="false"
+                           prefHeight="280.0">
+                    <columns>
+                        <TableColumn fx:id="colResEmpleado"        prefWidth="170.0"/>
+                        <TableColumn fx:id="colResDepartamento"    prefWidth="120.0"/>
+                        <TableColumn fx:id="colResDias"            prefWidth="90.0"/>
+                        <TableColumn fx:id="colResTiempoTeorico"   prefWidth="120.0"/>
+                        <TableColumn fx:id="colResTiempoReal"      prefWidth="120.0"/>
+                        <TableColumn fx:id="colResExtras"          prefWidth="110.0"/>
+                    </columns>
+                    <placeholder>
+                        <Label fx:id="lblTablaResumenVacia"
+                               styleClass="empleados-tabla-placeholder"/>
+                    </placeholder>
+                </TableView>
+
             </VBox>
 
         </VBox>
