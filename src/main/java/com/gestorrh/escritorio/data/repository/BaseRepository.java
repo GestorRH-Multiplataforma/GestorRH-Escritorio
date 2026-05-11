@@ -6,6 +6,8 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Clase base para todos los repositorios de la aplicación.
@@ -13,9 +15,22 @@ import java.util.concurrent.CompletableFuture;
  * evitando duplicación de la gestión de errores en cada repositorio.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public abstract class BaseRepository {
+
+    /**
+     * Pool de hilos dedicado para operaciones de red asíncronas.
+     * Separado del ForkJoinPool común para evitar saturación en producción.
+     * Usa hilos virtuales (Java 21) para máxima eficiencia en
+     * operaciones de I/O bloqueantes como las llamadas HTTP de Retrofit.
+     */
+    private static final ExecutorService EXECUTOR =
+            Executors.newCachedThreadPool(r -> {
+                Thread t = new Thread(r, "gestorrh-network-" + r.hashCode());
+                t.setDaemon(true);
+                return t;
+            });
 
     /**
      * Ejecuta una llamada Retrofit de forma asíncrona en un hilo de background.
@@ -47,7 +62,7 @@ public abstract class BaseRepository {
                 }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
-        });
+        }, EXECUTOR);
     }
 
     /**
@@ -75,6 +90,6 @@ public abstract class BaseRepository {
                 }
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
-        });
+        }, EXECUTOR);
     }
 }
