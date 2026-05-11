@@ -6,26 +6,29 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * Interceptor encargado de inyectar el token JWT en las cabeceras HTTP.
- * Excluye dinámicamente las rutas de autenticación públicas.
+ * Excluye dinámicamente las rutas de autenticación públicas usando
+ * coincidencia por sufijo para mayor robustez ante cambios de versión en la API.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
 public class AuthInterceptor implements Interceptor {
 
-    private static final java.util.Set<String> RUTAS_PUBLICAS = java.util.Set.of(
+    private static final Set<String> SUFIJOS_RUTAS_PUBLICAS = Set.of(
             "/api/auth/login-empresa",
             "/api/empresas/registro"
     );
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         String path = request.url().encodedPath();
 
-        if (RUTAS_PUBLICAS.stream().anyMatch(path::equals)) {
+        if (esRutaPublica(path)) {
             return chain.proceed(request);
         }
 
@@ -38,5 +41,17 @@ public class AuthInterceptor implements Interceptor {
         }
 
         return chain.proceed(request);
+    }
+
+    /**
+     * Determina si una ruta es pública comprobando si termina con alguno
+     * de los sufijos registrados. Esto la hace robusta ante prefijos de
+     * versión como /v1/, /v2/, etc.
+     *
+     * @param path Ruta codificada de la petición.
+     * @return true si la ruta es pública y no requiere token JWT.
+     */
+    private boolean esRutaPublica(String path) {
+        return SUFIJOS_RUTAS_PUBLICAS.stream().anyMatch(path::endsWith);
     }
 }
