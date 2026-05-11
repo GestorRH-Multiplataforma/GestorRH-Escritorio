@@ -12,8 +12,6 @@ import com.gestorrh.escritorio.data.repository.*;
  */
 public class RepositoryFactory {
 
-    private static RepositoryFactory instance;
-
     private EmpleadoRepository empleadoRepository;
     private EmpresaRepository empresaRepository;
     private AusenciaRepository ausenciaRepository;
@@ -28,11 +26,16 @@ public class RepositoryFactory {
     /**
      * @return Instancia única de RepositoryFactory.
      */
-    public static synchronized RepositoryFactory getInstance() {
-        if (instance == null) {
-            instance = new RepositoryFactory();
-        }
-        return instance;
+    public static RepositoryFactory getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final RepositoryFactory INSTANCE = new RepositoryFactory();
     }
 
     public EmpleadoRepository getEmpleadoRepository() {
