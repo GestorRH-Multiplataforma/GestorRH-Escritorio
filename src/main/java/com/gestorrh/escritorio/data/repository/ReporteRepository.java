@@ -132,8 +132,10 @@ public class ReporteRepository extends BaseRepository {
                 }
                 return null;
             } catch (ApiException e) {
+                try { java.nio.file.Files.deleteIfExists(destino); } catch (Exception ignored) {}
                 throw e;
             } catch (IOException e) {
+                try { java.nio.file.Files.deleteIfExists(destino); } catch (Exception ignored) {}
                 throw new ApiException("error.timeout", 0, "error.timeout");
             }
         }, IO_EXECUTOR);

@@ -94,28 +94,28 @@
                             <Label fx:id="lblTipoInforme" styleClass="modal-field-label"/>
                             <ComboBox fx:id="comboTipoInforme"
                                       styleClass="modal-combo-box"
-                                      prefWidth="170.0"/>
+                                      prefWidth="160.0"/>
                         </VBox>
 
                         <VBox spacing="4.0">
                             <Label fx:id="lblEmpleado" styleClass="modal-field-label"/>
                             <ComboBox fx:id="comboEmpleado"
                                       styleClass="modal-combo-box"
-                                      prefWidth="170.0"/>
+                                      prefWidth="160.0"/>
                         </VBox>
 
                         <VBox spacing="4.0">
                             <Label fx:id="lblFechaInicio" styleClass="modal-field-label"/>
                             <DatePicker fx:id="dpFechaInicio"
-                                        styleClass="modal-text-field"
-                                        prefWidth="140.0"/>
+                                        prefWidth="160.0"
+                                        promptText="dd/MM/yyyy"/>
                         </VBox>
 
                         <VBox spacing="4.0">
                             <Label fx:id="lblFechaFin" styleClass="modal-field-label"/>
                             <DatePicker fx:id="dpFechaFin"
-                                        styleClass="modal-text-field"
-                                        prefWidth="140.0"/>
+                                        prefWidth="160.0"
+                                        promptText="dd/MM/yyyy"/>
                         </VBox>
 
                         <Region HBox.hgrow="ALWAYS"/>

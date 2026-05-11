@@ -385,11 +385,37 @@ public class AnalisisReportesController implements Limpiable {
 
     /**
      * Gestiona el evento del botón Descargar PDF.
-     * Abre el FileChooser con el nombre por defecto, descarga el PDF y
-     * lo abre en el visor del sistema operativo.
+     * Si aún no hay datos previsualizados, lanza primero la previsualización
+     * para validar que existe información en el rango indicado. Solo si hay
+     * datos abre el FileChooser y procede con la descarga.
      */
     @FXML
     private void handleDescargarPdf() {
+        if (!viewModel.hayDatosPreviaProperty().get()) {
+            viewModel.previsualizar()
+                    .thenRun(() -> Platform.runLater(() -> {
+                        if (viewModel.hayDatosPreviaProperty().get()) {
+                            abrirFileChooserYDescargar();
+                        }
+                    }))
+                    .exceptionally(ex -> {
+                        Platform.runLater(() -> {
+                            Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
+                            viewModel.mensajeErrorInformeProperty().set(causa.getMessage());
+                            viewModel.errorInformeVisibleProperty().set(true);
+                        });
+                        return null;
+                    });
+        } else {
+            abrirFileChooserYDescargar();
+        }
+    }
+
+    /**
+     * Abre el FileChooser con el nombre de archivo por defecto y lanza
+     * la descarga del PDF en la ruta elegida por el usuario.
+     */
+    private void abrirFileChooserYDescargar() {
         LanguageManager lang = LanguageManager.getInstance();
 
         FileChooser fileChooser = new FileChooser();
@@ -410,43 +436,19 @@ public class AnalisisReportesController implements Limpiable {
         if (destino == null) return;
 
         viewModel.descargarPdf(destino.toPath())
-                .thenRun(() -> Platform.runLater(() ->
-                        mostrarAlertaExito(destino, lang)))
+                .thenRun(() -> Platform.runLater(() -> {
+                    try {
+                        Desktop.getDesktop().open(destino);
+                    } catch (Exception ignored) {}
+                }))
                 .exceptionally(ex -> {
                     Platform.runLater(() -> {
                         Throwable causa = ex.getCause() != null ? ex.getCause() : ex;
-                        mostrarAlertaError(causa.getMessage());
+                        viewModel.mensajeErrorInformeProperty().set(causa.getMessage());
+                        viewModel.errorInformeVisibleProperty().set(true);
                     });
                     return null;
                 });
-    }
-
-    /**
-     * Muestra el Alert de éxito tras la descarga con la ruta del archivo
-     * y un botón para abrir la carpeta en el explorador del sistema operativo.
-     *
-     * @param destino Archivo descargado.
-     * @param lang    Gestor de idiomas activo.
-     */
-    private void mostrarAlertaExito(File destino, LanguageManager lang) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(lang.getString("dialog.confirm.title"));
-        alert.setHeaderText(null);
-        alert.setContentText(
-                lang.getString("analisis.informeHorario.exito")
-                        .replace("{0}", destino.getAbsolutePath()));
-
-        ButtonType btnAbrir = new ButtonType(
-                lang.getString("analisis.btn.abrirCarpeta"));
-        alert.getButtonTypes().add(btnAbrir);
-
-        alert.showAndWait().ifPresent(bt -> {
-            if (bt == btnAbrir) {
-                try {
-                    Desktop.getDesktop().open(destino.getParentFile());
-                } catch (Exception ignored) {}
-            }
-        });
     }
 
     /**
@@ -680,8 +682,53 @@ public class AnalisisReportesController implements Limpiable {
         lblTablaResumenVacia.setText(lang.getString("analisis.informeHorario.tabla.vacia"));
 
         actualizarLocalizacionDatePickers();
-        comboTipoInforme.setConverter(comboTipoInforme.getConverter());
-        comboEmpleado.setConverter(comboEmpleado.getConverter());
+        comboTipoInforme.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(TipoInforme tipo) {
+                if (tipo == null) return "";
+                LanguageManager l = LanguageManager.getInstance();
+                return tipo == TipoInforme.DETALLE
+                        ? l.getString("analisis.informeHorario.tipo.detalle")
+                        : l.getString("analisis.informeHorario.tipo.resumen");
+            }
+            @Override
+            public TipoInforme fromString(String s) { return null; }
+        });
+        comboTipoInforme.setButtonCell(new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(TipoInforme tipo, boolean empty) {
+                super.updateItem(tipo, empty);
+                if (empty || tipo == null) { setText(""); return; }
+                LanguageManager l = LanguageManager.getInstance();
+                setText(tipo == TipoInforme.DETALLE
+                        ? l.getString("analisis.informeHorario.tipo.detalle")
+                        : l.getString("analisis.informeHorario.tipo.resumen"));
+            }
+        });
+
+        comboEmpleado.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(RespuestaEmpleadoDTO emp) {
+                if (emp == null) return LanguageManager.getInstance()
+                        .getString("analisis.informeHorario.empleado.todos");
+                return emp.nombre() + " " + emp.apellidos();
+            }
+            @Override
+            public RespuestaEmpleadoDTO fromString(String s) { return null; }
+        });
+        comboEmpleado.setButtonCell(new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(RespuestaEmpleadoDTO emp, boolean empty) {
+                super.updateItem(emp, empty);
+                if (empty) { setText(""); return; }
+                if (emp == null) {
+                    setText(LanguageManager.getInstance()
+                            .getString("analisis.informeHorario.empleado.todos"));
+                } else {
+                    setText(emp.nombre() + " " + emp.apellidos());
+                }
+            }
+        });
         actualizarGraficaFichajes();
 
         if (viewModel.hayDatosPreviaProperty().get()) {
