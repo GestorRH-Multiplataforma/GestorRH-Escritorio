@@ -94,12 +94,43 @@ public class ServiceFactory {
         private static final ServiceFactory INSTANCE = new ServiceFactory();
     }
 
+    /**
+     * @return Servicio de red Retrofit para la entidad Empleado.
+     */
     public EmpleadoService getEmpleadoService() { return empleadoService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad Empresa.
+     */
     public EmpresaService getEmpresaService() { return empresaService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad Ausencia.
+     */
     public AusenciaService getAusenciaService() { return ausenciaService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad Turno.
+     */
     public TurnoService getTurnoService() { return turnoService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad Fichaje.
+     */
     public FichajeService getFichajeService() { return fichajeService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad AsignacionTurno.
+     */
     public AsignacionTurnoService getAsignacionTurnoService() { return asignacionTurnoService; }
+
+    /**
+     * @return Servicio de red Retrofit para la entidad Estadisticas.
+     */
     public EstadisticasService getEstadisticasService() { return estadisticasService; }
+
+    /**
+     * @return Servicio de red Retrofit para la autenticación.
+     */
     public AutenticacionService getAutenticacionService() { return autenticacionService; }
 }

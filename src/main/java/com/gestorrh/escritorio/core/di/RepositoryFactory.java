@@ -38,6 +38,9 @@ public class RepositoryFactory {
         private static final RepositoryFactory INSTANCE = new RepositoryFactory();
     }
 
+    /**
+     * @return Instancia del repositorio de empleados.
+     */
     public EmpleadoRepository getEmpleadoRepository() {
         if (empleadoRepository == null) {
             empleadoRepository = new EmpleadoRepository(ServiceFactory.getInstance().getEmpleadoService());
@@ -45,6 +48,9 @@ public class RepositoryFactory {
         return empleadoRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de empresas.
+     */
     public EmpresaRepository getEmpresaRepository() {
         if (empresaRepository == null) {
             empresaRepository = new EmpresaRepository(ServiceFactory.getInstance().getEmpresaService());
@@ -52,6 +58,9 @@ public class RepositoryFactory {
         return empresaRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de ausencias.
+     */
     public AusenciaRepository getAusenciaRepository() {
         if (ausenciaRepository == null) {
             ausenciaRepository = new AusenciaRepository(ServiceFactory.getInstance().getAusenciaService());
@@ -59,12 +68,19 @@ public class RepositoryFactory {
         return ausenciaRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de turnos.
+     */
     public TurnoRepository getTurnoRepository() {
         if (turnoRepository == null) {
             turnoRepository = new TurnoRepository(ServiceFactory.getInstance().getTurnoService());
         }
         return turnoRepository;
     }
+
+    /**
+     * @return Instancia del repositorio de fichajes.
+     */
 
     public FichajeRepository getFichajeRepository() {
         if (fichajeRepository == null) {
@@ -73,6 +89,9 @@ public class RepositoryFactory {
         return fichajeRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de asignaciones de turno.
+     */
     public AsignacionTurnoRepository getAsignacionTurnoRepository() {
         if (asignacionTurnoRepository == null) {
             asignacionTurnoRepository = new AsignacionTurnoRepository(ServiceFactory.getInstance().getAsignacionTurnoService());
@@ -80,6 +99,9 @@ public class RepositoryFactory {
         return asignacionTurnoRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de estadísticas.
+     */
     public EstadisticasRepository getEstadisticasRepository() {
         if (estadisticasRepository == null) {
             estadisticasRepository = new EstadisticasRepository(ServiceFactory.getInstance().getEstadisticasService());
@@ -87,6 +109,9 @@ public class RepositoryFactory {
         return estadisticasRepository;
     }
 
+    /**
+     * @return Instancia del repositorio de autenticación.
+     */
     public AuthRepository getAuthRepository() {
         if (authRepository == null) {
             authRepository = new AuthRepository(ServiceFactory.getInstance().getAutenticacionService());

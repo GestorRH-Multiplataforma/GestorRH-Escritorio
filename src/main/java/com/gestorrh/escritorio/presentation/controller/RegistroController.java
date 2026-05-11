@@ -88,8 +88,6 @@ public class RegistroController {
         LanguageManager.getInstance().removeListener(textUpdater);
     }
 
-    // Handlers FXML
-
     /** Cambia el idioma a Español. */
     @FXML
     private void handleLangEs() {
@@ -122,7 +120,6 @@ public class RegistroController {
         navegarALogin(null);
     }
 
-    // Configuración interna
 
     /**
      * Configura los bindings bidireccionales entre los campos de la vista
@@ -146,7 +143,6 @@ public class RegistroController {
                         .or(viewModel.registrandoProperty())
         );
 
-        // Limpiar error general al escribir en cualquier campo
         fieldNombre.textProperty().addListener((obs, o, n) -> viewModel.limpiarError());
         fieldEmail.textProperty().addListener((obs, o, n) -> viewModel.limpiarError());
         fieldPassword.textProperty().addListener((obs, o, n) -> viewModel.limpiarError());
@@ -191,8 +187,6 @@ public class RegistroController {
         });
     }
 
-    // Validación inline
-
     /**
      * Actualiza los mensajes de error inline debajo de cada campo
      * según el estado actual de las Properties del ViewModel.
@@ -200,13 +194,11 @@ public class RegistroController {
     private void actualizarErrores() {
         LanguageManager lang = LanguageManager.getInstance();
 
-        // Nombre
         mostrarErrorCampo(errorNombre,
                 campoTocado(fieldNombre),
                 viewModel.nombreProperty().get().isBlank(),
                 lang.getString("empleados.modal.error.campos.requeridos"));
 
-        // Email
         String emailVal = viewModel.emailProperty().get();
         boolean emailVacio = emailVal.isBlank();
         boolean emailInvalido = !emailVacio && !emailVal.trim().matches(
@@ -226,7 +218,6 @@ public class RegistroController {
             }
         }
 
-        // Password
         String pass = viewModel.passwordProperty().get();
         boolean passCorta = !pass.isEmpty() && pass.length() < 8;
         mostrarErrorCampo(errorPassword,
@@ -234,7 +225,6 @@ public class RegistroController {
                 passCorta,
                 lang.getString("registro.error.passwordCorta"));
 
-        // Confirmar password
         String confirmar = viewModel.confirmarPasswordProperty().get();
         boolean noCoincide = !confirmar.isEmpty() && !pass.equals(confirmar);
         mostrarErrorCampo(errorConfirmarPassword,
@@ -242,13 +232,11 @@ public class RegistroController {
                 noCoincide,
                 lang.getString("registro.error.passwordNoCoincide"));
 
-        // Dirección
         mostrarErrorCampo(errorDireccion,
                 campoTocado(fieldDireccion),
                 viewModel.direccionProperty().get().isBlank(),
                 lang.getString("empleados.modal.error.campos.requeridos"));
 
-        // Teléfono
         mostrarErrorCampo(errorTelefono,
                 campoTocado(fieldTelefono),
                 viewModel.telefonoProperty().get().isBlank(),
@@ -302,8 +290,6 @@ public class RegistroController {
     private boolean campoTocado(TextField field) {
         return camposTocados.contains(field) || !field.getText().isEmpty();
     }
-
-    // Navegación
 
     /**
      * Navega al shell principal tras un registro y auto-login exitosos.
@@ -379,10 +365,6 @@ public class RegistroController {
             navegarALogin(viewModel.emailProperty().get());
         });
     }
-
-    // -------------------------------------------------------------------------
-    // Internacionalización
-    // -------------------------------------------------------------------------
 
     /**
      * Actualiza todos los textos de la vista con el idioma activo.

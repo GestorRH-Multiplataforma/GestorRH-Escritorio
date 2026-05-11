@@ -16,6 +16,11 @@ public class AuthRepository extends BaseRepository{
 
     private final AutenticacionService service;
 
+    /**
+     * Constructor con inyección manual de dependencias.
+     *
+     * @param service Servicio de red de Retrofit para la autenticación.
+     */
     public AuthRepository(AutenticacionService service) {
         this.service = service;
     }

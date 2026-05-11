@@ -19,16 +19,27 @@ public class ErrorViewController implements Limpiable {
 
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
+    /**
+     * Inicializa el controlador actualizando los textos con el idioma activo
+     * y registrando el listener de internacionalización.
+     */
     @FXML
     public void initialize() {
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
     }
 
+    /**
+     * Elimina el listener de idioma para evitar memory leaks.
+     * Debe llamarse cuando la vista se destruye.
+     */
     public void limpiar() {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
     }
 
+    /**
+     * Actualiza los textos de la vista con el idioma activo.
+     */
     private void actualizarTextos() {
         LanguageManager lang = LanguageManager.getInstance();
         tituloLabel.setText(lang.getString("error.vista.titulo"));
