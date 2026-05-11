@@ -149,7 +149,9 @@ public class ViewModelFactory {
      */
     public AnalisisReportesViewModel createAnalisisReportesViewModel() {
         return new AnalisisReportesViewModel(
-                RepositoryFactory.getInstance().getFichajeRepository()
+                RepositoryFactory.getInstance().getFichajeRepository(),
+                RepositoryFactory.getInstance().getEmpleadoRepository(),
+                RepositoryFactory.getInstance().getReporteRepository()
         );
     }
 }

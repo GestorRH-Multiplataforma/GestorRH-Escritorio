@@ -30,6 +30,7 @@ public class ServiceFactory {
     private final AsignacionTurnoService asignacionTurnoService;
     private final EstadisticasService estadisticasService;
     private final AutenticacionService autenticacionService;
+    private final ReporteService reporteService;
 
     /**
      * Constructor privado. Inicializa el cliente Retrofit con la configuración global,
@@ -77,6 +78,7 @@ public class ServiceFactory {
         this.asignacionTurnoService = retrofit.create(AsignacionTurnoService.class);
         this.estadisticasService = retrofit.create(EstadisticasService.class);
         this.autenticacionService = retrofit.create(AutenticacionService.class);
+        this.reporteService = retrofit.create(ReporteService.class);
     }
 
     /**
@@ -133,4 +135,9 @@ public class ServiceFactory {
      * @return Servicio de red Retrofit para la autenticación.
      */
     public AutenticacionService getAutenticacionService() { return autenticacionService; }
+
+    /**
+     * @return Servicio de red Retrofit para los endpoints de reportes.
+     */
+    public ReporteService getReporteService() { return reporteService; }
 }

@@ -20,6 +20,7 @@ public class RepositoryFactory {
     private AsignacionTurnoRepository asignacionTurnoRepository;
     private EstadisticasRepository estadisticasRepository;
     private AuthRepository authRepository;
+    private ReporteRepository reporteRepository;
 
     private RepositoryFactory() {}
 
@@ -117,5 +118,16 @@ public class RepositoryFactory {
             authRepository = new AuthRepository(ServiceFactory.getInstance().getAutenticacionService());
         }
         return authRepository;
+    }
+
+    /**
+     * @return Instancia del repositorio de reportes.
+     */
+    public ReporteRepository getReporteRepository() {
+        if (reporteRepository == null) {
+            reporteRepository = new ReporteRepository(
+                    ServiceFactory.getInstance().getReporteService());
+        }
+        return reporteRepository;
     }
 }
