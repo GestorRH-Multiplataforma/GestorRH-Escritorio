@@ -1,5 +1,8 @@
 package com.gestorrh.escritorio.core.security;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Gestor de sesión centralizado en memoria.
  * Implementa el patrón Singleton para garantizar que toda la aplicación
@@ -21,6 +24,8 @@ public class SessionManager {
     private record DatosSesion(String token, Long empresaId, String nombreEmpresa) {}
 
     private volatile DatosSesion sesionActual;
+
+    private final List<Runnable> listenersSesionExpirada = new ArrayList<>();
 
     /**
      * Constructor privado para evitar instanciación directa (Singleton).
@@ -91,9 +96,40 @@ public class SessionManager {
 
     /**
      * Cierra la sesión eliminando los datos de la memoria.
+     * Si había sesión activa, notifica a los listeners registrados
+     * para que la UI pueda reaccionar (ej. navegar al login).
      */
     public void clearSession() {
+        boolean habiaSession = sesionActual != null;
         this.sesionActual = null;
+        if (habiaSession) {
+            notificarSesionExpirada();
+        }
+    }
+
+    /**
+     * Registra un listener que se ejecutará cuando la sesión se cierre.
+     *
+     * @param listener Acción a ejecutar al expirar la sesión.
+     */
+    public void addListenerSesionExpirada(Runnable listener) {
+        listenersSesionExpirada.add(listener);
+    }
+
+    /**
+     * Elimina un listener de expiración de sesión.
+     *
+     * @param listener Listener a eliminar.
+     */
+    public void removeListenerSesionExpirada(Runnable listener) {
+        listenersSesionExpirada.remove(listener);
+    }
+
+    /**
+     * Notifica a todos los listeners que la sesión ha expirado.
+     */
+    private void notificarSesionExpirada() {
+        listenersSesionExpirada.forEach(Runnable::run);
     }
 
     /**

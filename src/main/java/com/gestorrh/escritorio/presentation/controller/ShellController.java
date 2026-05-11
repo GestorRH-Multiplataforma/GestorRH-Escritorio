@@ -90,6 +90,8 @@ public class ShellController {
     private Timeline animacionSidebar;
     private Timeline relojTimeline;
 
+    private Runnable listenerSesionExpirada;
+
     private int totalAusenciasPendientes = 0;
 
     private final AusenciaRepository ausenciaRepository =
@@ -118,6 +120,59 @@ public class ShellController {
 
         NavigationManager.getInstance().navegar("/fxml/dashboard-view.fxml");
         cargarBadgeAusenciasInicial();
+
+        registrarListenerSesionExpirada();
+    }
+
+    /**
+     * Registra el listener que navega al login cuando el token JWT expira.
+     * Se ejecuta desde el hilo de JavaFX para poder manipular la UI.
+     */
+    private void registrarListenerSesionExpirada() {
+        listenerSesionExpirada = () ->
+                javafx.application.Platform.runLater(this::navegarAlLoginPorExpiracion);
+        SessionManager.getInstance().addListenerSesionExpirada(listenerSesionExpirada);
+    }
+
+    /**
+     * Navega a la pantalla de login cuando la sesión expira por token inválido.
+     * Muestra un mensaje informativo al usuario antes de redirigir.
+     */
+    private void navegarAlLoginPorExpiracion() {
+        if (!SessionManager.getInstance().isAuthenticated()) {
+            try {
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                        getClass().getResource("/fxml/login-view.fxml"));
+                javafx.scene.Scene escenaLogin = new javafx.scene.Scene(loader.load());
+
+                javafx.stage.Stage stage = (javafx.stage.Stage)
+                        panelContenido.getScene().getWindow();
+
+                limpiar();
+
+                stage.setFullScreen(false);
+                stage.setMaximized(false);
+                stage.setMinWidth(0);
+                stage.setMinHeight(0);
+                stage.setResizable(false);
+                stage.setWidth(1100.0);
+                stage.setHeight(660.0);
+                stage.setScene(escenaLogin);
+                stage.centerOnScreen();
+
+                javafx.scene.control.Alert alerta = new javafx.scene.control.Alert(
+                        javafx.scene.control.Alert.AlertType.WARNING);
+                alerta.setTitle(LanguageManager.getInstance().getString("dialog.error.title"));
+                alerta.setHeaderText(null);
+                alerta.setContentText(
+                        LanguageManager.getInstance().getString("sesion.expirada.mensaje"));
+                alerta.showAndWait();
+
+            } catch (java.io.IOException e) {
+                LOGGER.severe("ShellController: Error al navegar al login por expiración: "
+                        + e.getMessage());
+            }
+        }
     }
 
     /**
@@ -128,6 +183,9 @@ public class ShellController {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
         if (relojTimeline != null) {
             relojTimeline.stop();
+        }
+        if (listenerSesionExpirada != null) {
+            SessionManager.getInstance().removeListenerSesionExpirada(listenerSesionExpirada);
         }
     }
 
