@@ -92,8 +92,6 @@ public class EmpleadosController implements Limpiable {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
     }
 
-    // Configuración inicial
-
     /**
      * Configura los CellValueFactory de cada columna de la tabla.
      */
@@ -344,8 +342,6 @@ public class EmpleadosController implements Limpiable {
         });
     }
 
-    // Paginación
-
     /**
      * Configura los botones de paginación y el estado inicial.
      */
@@ -442,8 +438,6 @@ public class EmpleadosController implements Limpiable {
 
         actualizarPagina();
     }
-
-    // Handlers FXML
 
     /**
      * Abre el modal en modo Alta con todos los campos vacíos.

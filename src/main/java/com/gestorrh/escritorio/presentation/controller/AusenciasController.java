@@ -123,8 +123,6 @@ public class AusenciasController implements Limpiable {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
     }
 
-    // Configuración de tablas
-
     /**
      * Configura columnas, bindings y CellFactory de la tabla Pendientes.
      */
@@ -385,8 +383,6 @@ public class AusenciasController implements Limpiable {
         });
     }
 
-    // Handlers
-
     /**
      * Abre el modal de revisión para aprobar o rechazar una ausencia.
      *
@@ -461,8 +457,6 @@ public class AusenciasController implements Limpiable {
                     return null;
                 });
     }
-
-    // Utilidades
 
     /**
      * Actualiza el badge contador de la pestaña Pendientes.

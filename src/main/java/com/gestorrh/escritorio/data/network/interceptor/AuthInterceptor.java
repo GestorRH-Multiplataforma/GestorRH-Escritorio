@@ -23,6 +23,14 @@ public class AuthInterceptor implements Interceptor {
             "/api/empresas/registro"
     );
 
+    /**
+     * Intercepta cada petición HTTP y añade el token JWT en la cabecera
+     * Authorization si la ruta no es pública.
+     *
+     * @param chain Cadena de interceptores de OkHttp.
+     * @return Respuesta HTTP tras procesar la petición.
+     * @throws IOException Si ocurre un error de red durante la ejecución.
+     */
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
