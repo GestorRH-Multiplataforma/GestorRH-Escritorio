@@ -242,15 +242,13 @@ public class ShellController {
         });
     }
 
-    /** Navega a la sección Informes. */
+    /** Navega a la sección Análisis y Reportes. */
     @FXML
     private void handleMenuInformes() {
         claveSeccionActual = "menu.reports";
         headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
         marcarMenuActivo(menuInformesBtn);
-        NavigationManager.getInstance().navegar("/fxml/informes-view.fxml", ctrl ->
-                ((PlaceholderController) ctrl).setTituloSeccion("placeholder.reports.title")
-        );
+        NavigationManager.getInstance().navegar("/fxml/informes-view.fxml");
     }
 
     /** Navega a la sección Configuración. */

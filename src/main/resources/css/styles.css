@@ -2151,3 +2151,36 @@
     -fx-min-width: 18px;
     -fx-alignment: CENTER;
 }
+
+/* ANÁLISIS Y REPORTES — Gráfico de fichajes */
+
+.fichajes-barchart .chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.fichajes-barchart .chart-vertical-grid-lines {
+    -fx-stroke: #F1F5F9;
+}
+
+.fichajes-barchart .chart-horizontal-grid-lines {
+    -fx-stroke: #F1F5F9;
+}
+
+.fichajes-barchart .axis-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #64748B;
+}
+
+.fichajes-barchart .tick-label {
+    -fx-font-size: 10px;
+    -fx-text-fill: #94A3B8;
+}
+
+.chart-bar--primary .bar {
+    -fx-background-color: #1A365D;
+    -fx-background-radius: 3 3 0 0;
+}
+
+.chart-bar--primary .bar:hover {
+    -fx-background-color: #00A8E8;
+}
