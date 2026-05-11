@@ -338,6 +338,21 @@ public class ConfiguracionViewModel {
         errorVisible.set(false);
     }
 
+    /**
+     * @return Valor mínimo permitido para el radio de validez en metros.
+     */
+    public static int getRadioMin() { return RADIO_MIN; }
+
+    /**
+     * @return Valor máximo permitido para el radio de validez en metros.
+     */
+    public static int getRadioMax() { return RADIO_MAX; }
+
+    /**
+     * @return Valor por defecto para el radio de validez en metros.
+     */
+    public static int getRadioDefault() { return RADIO_DEFAULT; }
+
     /** @return Property del nombre de la empresa. */
     public StringProperty nombreProperty() { return nombre; }
 

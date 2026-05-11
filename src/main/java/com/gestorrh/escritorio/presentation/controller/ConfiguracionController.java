@@ -122,7 +122,10 @@ public class ConfiguracionController implements Limpiable {
      */
     private void configurarSpinner() {
         SpinnerValueFactory<Integer> factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                25, 500, 50, 25
+                ConfiguracionViewModel.getRadioMin(),
+                ConfiguracionViewModel.getRadioMax(),
+                ConfiguracionViewModel.getRadioDefault(),
+                25
         );
         spinnerRadio.setValueFactory(factory);
 
