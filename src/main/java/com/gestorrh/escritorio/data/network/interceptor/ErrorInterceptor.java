@@ -37,8 +37,8 @@ public class ErrorInterceptor implements Interceptor {
                 try {
                     String errorJson = body.string();
                     RespuestaErrorDTO errorDTO = gson.fromJson(errorJson, RespuestaErrorDTO.class);
-                    if (errorDTO != null && errorDTO.getMensaje() != null) {
-                        errorMsg = errorDTO.getMensaje();
+                    if (errorDTO != null && errorDTO.mensaje() != null) {
+                        errorMsg = errorDTO.mensaje();
                     }
                 } catch (Exception e) {
                     errorMsg = "Error en el servidor: " + response.message();
