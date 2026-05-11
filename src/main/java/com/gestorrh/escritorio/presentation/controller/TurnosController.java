@@ -97,6 +97,9 @@ public class TurnosController implements Limpiable {
 
     @FXML private VBox panelTips;
 
+    private boolean asignacionesInicializado = false;
+    private boolean catalogoInicializado = false;
+
     private TurnoViewModel turnoViewModel;
     private AsignacionTurnosViewModel asignacionViewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
@@ -117,15 +120,7 @@ public class TurnosController implements Limpiable {
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
 
-        turnoViewModel.cargarTurnos();
-        asignacionViewModel.inicializar();
-        asignacionViewModel.getAsignacionesMes().addListener(
-                (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio -> {
-                    if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
-                        Platform.runLater(() -> handleDiaClick(LocalDate.now()));
-                    }
-                }
-        );
+        configurarLazyLoadingPestanas();
         mostrarTips();
     }
 
@@ -138,6 +133,43 @@ public class TurnosController implements Limpiable {
         if (calendarioAsignaciones != null) {
             calendarioAsignaciones.limpiar();
         }
+    }
+
+    /**
+     * Configura el lazy loading de las pestañas de turnos.
+     * Cada pestaña carga sus datos solo la primera vez que se selecciona,
+     * evitando peticiones HTTP innecesarias al abrir la vista.
+     * La pestaña visible inicialmente (asignaciones) se carga de inmediato.
+     */
+    private void configurarLazyLoadingPestanas() {
+        tabPane.getSelectionModel().selectedItemProperty().addListener(
+                (obs, anterior, nueva) -> {
+                    if (nueva == tabAsignaciones && !asignacionesInicializado) {
+                        asignacionesInicializado = true;
+                        asignacionViewModel.inicializar();
+                        asignacionViewModel.getAsignacionesMes().addListener(
+                                (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio -> {
+                                    if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
+                                        Platform.runLater(() -> handleDiaClick(LocalDate.now()));
+                                    }
+                                }
+                        );
+                    } else if (nueva == tabCatalogo && !catalogoInicializado) {
+                        catalogoInicializado = true;
+                        turnoViewModel.cargarTurnos();
+                    }
+                }
+        );
+
+        asignacionesInicializado = true;
+        asignacionViewModel.inicializar();
+        asignacionViewModel.getAsignacionesMes().addListener(
+                (javafx.collections.ListChangeListener<RespuestaAsignacionTurnoDTO>) cambio -> {
+                    if (asignacionViewModel.diaSeleccionadoProperty().get() == null) {
+                        Platform.runLater(() -> handleDiaClick(LocalDate.now()));
+                    }
+                }
+        );
     }
 
     /**
