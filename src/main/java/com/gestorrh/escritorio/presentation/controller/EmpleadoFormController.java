@@ -24,6 +24,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controlador para el modal de alta y edición de empleados.
@@ -85,6 +87,7 @@ public class EmpleadoFormController {
     @FXML private Label errorPuesto;
 
     private EmpleadoFormViewModel viewModel;
+    private final Set<javafx.scene.control.TextField> camposTocados = new HashSet<>();
     private Runnable onGuardadoExitoso;
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
@@ -194,6 +197,13 @@ public class EmpleadoFormController {
         // Validación inline del panel de reset
         viewModel.nuevaPasswordProperty().addListener((obs, o, n) -> actualizarErrorReset());
         viewModel.confirmarPasswordProperty().addListener((obs, o, n) -> actualizarErrorReset());
+
+        registrarListenerFoco(fieldNombre);
+        registrarListenerFoco(fieldApellidos);
+        registrarListenerFoco(fieldEmail);
+        registrarListenerFoco(fieldTelefono);
+        registrarListenerFoco(fieldDepartamento);
+        registrarListenerFoco(fieldPuesto);
     }
 
     /**
@@ -501,6 +511,14 @@ public class EmpleadoFormController {
         errorLabel.setManaged(false);
     }
 
+    private void registrarListenerFoco(TextField field) {
+        field.focusedProperty().addListener((obs, tenieFoco, tieneFoco) -> {
+            if (!tieneFoco) {
+                camposTocados.add(field);
+            }
+        });
+    }
+
     /**
      * Indica si el usuario ha interactuado con un campo (si no está vacío o ha perdido el foco).
      *
@@ -508,6 +526,6 @@ public class EmpleadoFormController {
      * @return true si el campo ha sido tocado.
      */
     private boolean campoTocado(TextField field) {
-        return field.isFocused() || !field.getText().isEmpty();
+        return camposTocados.contains(field) || !field.getText().isEmpty();
     }
 }

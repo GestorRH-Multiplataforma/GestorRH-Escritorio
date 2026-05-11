@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controlador para el modal de alta y edición de turnos.
@@ -43,6 +45,7 @@ public class TurnoFormController {
     @FXML private Button btnCancelar;
 
     private TurnoFormViewModel viewModel;
+    private final Set<javafx.scene.control.TextField> camposTocados = new HashSet<>();
     private Runnable onGuardadoExitoso;
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
@@ -113,6 +116,10 @@ public class TurnoFormController {
         viewModel.descripcionProperty().addListener((obs, o, n) -> actualizarErrores());
         viewModel.horaInicioProperty().addListener((obs, o, n)  -> actualizarErrores());
         viewModel.horaFinProperty().addListener((obs, o, n)     -> actualizarErrores());
+
+        registrarListenerFoco(fieldDescripcion);
+        registrarListenerFoco(fieldHoraInicio);
+        registrarListenerFoco(fieldHoraFin);
     }
 
     /**
@@ -259,6 +266,14 @@ public class TurnoFormController {
         errorLabel.setManaged(false);
     }
 
+    private void registrarListenerFoco(TextField field) {
+        field.focusedProperty().addListener((obs, tenieFoco, tieneFoco) -> {
+            if (!tieneFoco) {
+                camposTocados.add(field);
+            }
+        });
+    }
+
     /**
      * Indica si el usuario ha interactuado con un campo de texto.
      *
@@ -266,7 +281,7 @@ public class TurnoFormController {
      * @return true si el campo tiene contenido o está enfocado.
      */
     private boolean campoTocado(TextField field) {
-        return field.isFocused() || !field.getText().isEmpty();
+        return camposTocados.contains(field) || !field.getText().isEmpty();
     }
 
     /**
