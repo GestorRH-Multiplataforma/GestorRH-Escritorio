@@ -30,22 +30,22 @@
 
             <HBox spacing="24.0">
                 <VBox spacing="3.0">
-                    <Label styleClass="modal-field-label-opcional" text="Empleado"/>
+                    <Label fx:id="lblEtiquetaEmpleado" styleClass="modal-field-label-opcional"/>
                     <Label fx:id="lblEmpleado" styleClass="modal-field-label"/>
                 </VBox>
                 <VBox spacing="3.0">
-                    <Label styleClass="modal-field-label-opcional" text="Tipo"/>
+                    <Label fx:id="lblEtiquetaTipo" styleClass="modal-field-label-opcional"/>
                     <Label fx:id="lblTipo" styleClass="modal-field-label"/>
                 </VBox>
             </HBox>
 
             <HBox spacing="24.0">
                 <VBox spacing="3.0">
-                    <Label styleClass="modal-field-label-opcional" text="Fechas"/>
+                    <Label fx:id="lblEtiquetaFechas" styleClass="modal-field-label-opcional"/>
                     <Label fx:id="lblFechas" styleClass="modal-field-label"/>
                 </VBox>
                 <VBox spacing="3.0">
-                    <Label styleClass="modal-field-label-opcional" text="Días"/>
+                    <Label fx:id="lblEtiquetaDias" styleClass="modal-field-label-opcional"/>
                     <Label fx:id="lblDias" styleClass="modal-field-label"/>
                 </VBox>
             </HBox>

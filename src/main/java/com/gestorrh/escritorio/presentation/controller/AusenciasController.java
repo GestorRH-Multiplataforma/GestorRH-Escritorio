@@ -61,6 +61,9 @@ public class AusenciasController implements Limpiable {
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colPendDescripcion;
     @FXML private ProgressIndicator indicadorPendientes;
     @FXML private Label lblErrorPendientes;
+    @FXML private Label lblPlaceholderPendientes;
+    @FXML private Label lblPlaceholderAprobadas;
+    @FXML private Label lblPlaceholderRechazadas;
 
     @FXML private TableView<RespuestaAusenciaDTO> tablaAprobadas;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprEmpleado;
@@ -578,6 +581,10 @@ public class AusenciasController implements Limpiable {
         colPendDescripcion.setText(lang.getString("ausencias.col.descripcion"));
         colAprDescripcion.setText(lang.getString("ausencias.col.descripcion"));
         colRecDescripcion.setText(lang.getString("ausencias.col.descripcion"));
+
+        lblPlaceholderPendientes.setText(lang.getString("ausencias.tabla.pendientes.vacia"));
+        lblPlaceholderAprobadas.setText(lang.getString("ausencias.tabla.aprobadas.vacia"));
+        lblPlaceholderRechazadas.setText(lang.getString("ausencias.tabla.rechazadas.vacia"));
 
         tablaPendientes.refresh();
         tablaAprobadas.refresh();
