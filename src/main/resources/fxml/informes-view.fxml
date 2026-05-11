@@ -2,22 +2,98 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.PlaceholderController"
-      styleClass="placeholder-content"
-      alignment="CENTER"
-      spacing="16.0">
+      fx:controller="com.gestorrh.escritorio.presentation.controller.AnalisisReportesController"
+      styleClass="empleados-content"
+      spacing="0.0">
 
-    <padding>
-        <Insets top="32.0" right="32.0" bottom="32.0" left="32.0"/>
-    </padding>
+    <ScrollPane fitToWidth="true"
+                fitToHeight="false"
+                styleClass="configuracion-scroll"
+                VBox.vgrow="ALWAYS">
 
-    <FontIcon iconLiteral="mdi2c-clock-outline" iconSize="64"
-              styleClass="placeholder-icono"/>
-    <Label fx:id="tituloSeccionLabel" styleClass="placeholder-titulo"/>
-    <Label fx:id="proximamenteLabel"  styleClass="placeholder-subtitulo"/>
+        <VBox spacing="20.0">
+            <padding>
+                <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
+            </padding>
+
+            <HBox spacing="20.0" VBox.vgrow="NEVER">
+
+                <VBox styleClass="content-placeholder"
+                      spacing="12.0"
+                      HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+
+                    <Label fx:id="lblTituloGraficoFichajes" styleClass="section-title"/>
+
+                    <Separator/>
+
+                    <StackPane VBox.vgrow="NEVER">
+                        <ProgressIndicator fx:id="indicadorFichajes"
+                                           maxWidth="40.0"
+                                           maxHeight="40.0"
+                                           visible="false"
+                                           managed="false"/>
+                    </StackPane>
+
+                    <BarChart fx:id="graficaFichajes"
+                              animated="false"
+                              legendVisible="false"
+                              styleClass="fichajes-barchart"
+                              prefHeight="280.0"
+                              VBox.vgrow="ALWAYS">
+                        <xAxis>
+                            <CategoryAxis side="BOTTOM"/>
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="ejeYFichajes"
+                                        side="LEFT"
+                                        minorTickVisible="false"
+                                        tickUnit="1"/>
+                        </yAxis>
+                    </BarChart>
+
+                    <Label fx:id="lblFichajesVacio"
+                           styleClass="empleados-tabla-placeholder"
+                           wrapText="true"
+                           visible="false"
+                           managed="false"/>
+
+                    <Label fx:id="lblErrorFichajes"
+                           styleClass="empleados-error-label"
+                           wrapText="true"
+                           visible="false"
+                           managed="false"/>
+
+                </VBox>
+
+                <VBox styleClass="content-placeholder"
+                      spacing="12.0"
+                      HBox.hgrow="ALWAYS">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    </padding>
+                </VBox>
+
+            </HBox>
+
+            <VBox styleClass="content-placeholder"
+                  spacing="12.0"
+                  minHeight="160.0">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+            </VBox>
+
+        </VBox>
+
+    </ScrollPane>
 
 </VBox>
