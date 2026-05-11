@@ -72,8 +72,8 @@ public class LoginController {
         passwordField.textProperty().addListener((obs, oldVal, newVal) -> viewModel.clearError());
 
         if (ConfigManager.getInstance().isDev()) {
-            emailField.setText("admin@tech.com");
-            passwordField.setText("123456");
+            emailField.setText(ConfigManager.getInstance().getDevLoginEmail());
+            passwordField.setText(ConfigManager.getInstance().getDevLoginPassword());
         }
 
         updateLangToggle();
