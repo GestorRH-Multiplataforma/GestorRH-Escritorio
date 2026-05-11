@@ -108,6 +108,15 @@ public class SessionManager {
     }
 
     /**
+     * Cierra la sesión sin notificar a los listeners.
+     * Usar exclusivamente al cerrar la aplicación para evitar
+     * intentos de navegación sobre ventanas ya destruidas.
+     */
+    public void clearSessionSilencioso() {
+        this.sesionActual = null;
+    }
+
+    /**
      * Registra un listener que se ejecutará cuando la sesión se cierre.
      *
      * @param listener Acción a ejecutar al expirar la sesión.

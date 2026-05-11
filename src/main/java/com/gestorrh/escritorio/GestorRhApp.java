@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio;
 
+import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.core.security.SessionManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -77,8 +78,7 @@ public class GestorRhApp extends Application {
      */
     @Override
     public void stop() {
-        com.gestorrh.escritorio.core.navigation.NavigationManager.getInstance()
-                .limpiarControladorActual();
-        SessionManager.getInstance().clearSession();
+        NavigationManager.getInstance().limpiarControladorActual();
+        SessionManager.getInstance().clearSessionSilencioso();
     }
 }

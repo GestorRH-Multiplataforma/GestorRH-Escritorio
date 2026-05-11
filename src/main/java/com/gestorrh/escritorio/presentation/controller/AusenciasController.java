@@ -403,6 +403,7 @@ public class AusenciasController implements Limpiable {
             controller.setOnRevisionExitosa(() -> {
                 aprobadasCargadas  = false;
                 rechazadasCargadas = false;
+                recargarPestanaActivaSiNecesario();
             });
 
             Stage modal = new Stage();
@@ -531,6 +532,24 @@ public class AusenciasController implements Limpiable {
      */
     public void setOnPendientesActualizados(java.util.function.Consumer<Integer> callback) {
         this.onPendientesActualizados = callback;
+    }
+
+    /**
+     * Recarga la pestaña actualmente visible si sus datos han quedado obsoletos
+     * tras una revisión de ausencia. Necesario cuando el usuario está en la
+     * pestaña Aprobadas o Rechazadas en el momento de la revisión, ya que el
+     * listener de selección de pestaña no se vuelve a disparar.
+     */
+    private void recargarPestanaActivaSiNecesario() {
+        Tab pestanaActiva = tabPane.getSelectionModel().getSelectedItem();
+
+        if (pestanaActiva == tabAprobadas && !aprobadasCargadas) {
+            aprobadasCargadas = true;
+            viewModel.cargarAprobadas();
+        } else if (pestanaActiva == tabRechazadas && !rechazadasCargadas) {
+            rechazadasCargadas = true;
+            viewModel.cargarRechazadas();
+        }
     }
 
     /**
