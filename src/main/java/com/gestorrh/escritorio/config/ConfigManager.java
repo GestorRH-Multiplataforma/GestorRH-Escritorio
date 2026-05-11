@@ -126,4 +126,24 @@ public class ConfigManager {
     public boolean isDev() {
         return "dev".equalsIgnoreCase(resolverEntorno());
     }
+
+    /**
+     * Obtiene el email de desarrollo para pre-rellenar el formulario de login.
+     * Solo disponible en entorno dev.
+     *
+     * @return Email de desarrollo o cadena vacía si no está configurado.
+     */
+    public String getDevLoginEmail() {
+        return properties.getProperty("dev.login.email", "");
+    }
+
+    /**
+     * Obtiene la contraseña de desarrollo para pre-rellenar el formulario de login.
+     * Solo disponible en entorno dev.
+     *
+     * @return Contraseña de desarrollo o cadena vacía si no está configurado.
+     */
+    public String getDevLoginPassword() {
+        return properties.getProperty("dev.login.password", "");
+    }
 }

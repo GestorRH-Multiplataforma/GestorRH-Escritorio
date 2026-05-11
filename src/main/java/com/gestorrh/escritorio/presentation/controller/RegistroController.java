@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controlador para el formulario de registro de nueva empresa.
@@ -59,6 +61,7 @@ public class RegistroController {
     @FXML private Hyperlink volverLoginLink;
 
     private RegistroViewModel viewModel;
+    private final Set<javafx.scene.control.TextField> camposTocados = new HashSet<>();
     private final Runnable textUpdater = this::actualizarTextos;
 
     /**
@@ -85,9 +88,7 @@ public class RegistroController {
         LanguageManager.getInstance().removeListener(textUpdater);
     }
 
-    // -------------------------------------------------------------------------
     // Handlers FXML
-    // -------------------------------------------------------------------------
 
     /** Cambia el idioma a Español. */
     @FXML
@@ -121,9 +122,7 @@ public class RegistroController {
         navegarALogin(null);
     }
 
-    // -------------------------------------------------------------------------
     // Configuración interna
-    // -------------------------------------------------------------------------
 
     /**
      * Configura los bindings bidireccionales entre los campos de la vista
@@ -167,6 +166,11 @@ public class RegistroController {
         viewModel.confirmarPasswordProperty().addListener((obs, o, n) -> actualizarErrores());
         viewModel.direccionProperty().addListener((obs, o, n) -> actualizarErrores());
         viewModel.telefonoProperty().addListener((obs, o, n) -> actualizarErrores());
+
+        registrarListenerFoco(fieldNombre);
+        registrarListenerFoco(fieldEmail);
+        registrarListenerFoco(fieldDireccion);
+        registrarListenerFoco(fieldTelefono);
     }
 
     /**
@@ -187,9 +191,7 @@ public class RegistroController {
         });
     }
 
-    // -------------------------------------------------------------------------
     // Validación inline
-    // -------------------------------------------------------------------------
 
     /**
      * Actualiza los mensajes de error inline debajo de cada campo
@@ -282,6 +284,15 @@ public class RegistroController {
         errorLabel.setManaged(false);
     }
 
+
+    private void registrarListenerFoco(TextField field) {
+        field.focusedProperty().addListener((obs, tenieFoco, tieneFoco) -> {
+            if (!tieneFoco) {
+                camposTocados.add(field);
+            }
+        });
+    }
+
     /**
      * Indica si el usuario ha interactuado con un campo de texto.
      *
@@ -289,12 +300,10 @@ public class RegistroController {
      * @return true si el campo tiene contenido o está enfocado.
      */
     private boolean campoTocado(TextField field) {
-        return field.isFocused() || !field.getText().isEmpty();
+        return camposTocados.contains(field) || !field.getText().isEmpty();
     }
 
-    // -------------------------------------------------------------------------
     // Navegación
-    // -------------------------------------------------------------------------
 
     /**
      * Navega al shell principal tras un registro y auto-login exitosos.

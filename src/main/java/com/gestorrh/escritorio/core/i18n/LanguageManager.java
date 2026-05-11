@@ -7,6 +7,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 
 /**
  * Gestor centralizado de internacionalización (i18n).
@@ -102,11 +103,20 @@ public class LanguageManager {
     }
 
     /**
-     * Dispara la ejecución de todos los métodos registrados.
+     * Dispara la ejecución de todos los métodos registrados garantizando
+     * que se ejecutan en el hilo de JavaFX para evitar excepciones de UI.
      */
     private void notifyListeners() {
-        for (Runnable listener : listeners) {
-            listener.run();
+        if (Platform.isFxApplicationThread()) {
+            for (Runnable listener : listeners) {
+                listener.run();
+            }
+        } else {
+            Platform.runLater(() -> {
+                for (Runnable listener : listeners) {
+                    listener.run();
+                }
+            });
         }
     }
 

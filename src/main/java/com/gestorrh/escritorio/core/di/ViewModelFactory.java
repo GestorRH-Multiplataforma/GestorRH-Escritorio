@@ -12,18 +12,21 @@ import com.gestorrh.escritorio.presentation.viewmodel.*;
  */
 public class ViewModelFactory {
 
-    private static ViewModelFactory instance;
-
     private ViewModelFactory() {}
 
     /**
      * @return Instancia única de ViewModelFactory.
      */
-    public static synchronized ViewModelFactory getInstance() {
-        if (instance == null) {
-            instance = new ViewModelFactory();
-        }
-        return instance;
+    public static ViewModelFactory getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    /**
+     * Clase interna estática que garantiza la inicialización lazy y thread-safe
+     * del Singleton sin necesidad de sincronización explícita.
+     */
+    private static final class Holder {
+        private static final ViewModelFactory INSTANCE = new ViewModelFactory();
     }
 
     /**

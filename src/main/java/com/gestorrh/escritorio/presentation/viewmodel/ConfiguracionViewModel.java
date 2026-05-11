@@ -14,17 +14,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URLEncoder;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 
 /**
  * ViewModel encargado de gestionar el estado y la lógica de la vista de configuración
@@ -347,6 +337,21 @@ public class ConfiguracionViewModel {
         exitoVisible.set(false);
         errorVisible.set(false);
     }
+
+    /**
+     * @return Valor mínimo permitido para el radio de validez en metros.
+     */
+    public static int getRadioMin() { return RADIO_MIN; }
+
+    /**
+     * @return Valor máximo permitido para el radio de validez en metros.
+     */
+    public static int getRadioMax() { return RADIO_MAX; }
+
+    /**
+     * @return Valor por defecto para el radio de validez en metros.
+     */
+    public static int getRadioDefault() { return RADIO_DEFAULT; }
 
     /** @return Property del nombre de la empresa. */
     public StringProperty nombreProperty() { return nombre; }

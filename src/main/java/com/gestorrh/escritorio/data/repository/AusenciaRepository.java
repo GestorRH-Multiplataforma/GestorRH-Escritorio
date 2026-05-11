@@ -96,7 +96,8 @@ public class AusenciaRepository extends BaseRepository {
                 Files.createDirectories(destino);
                 Path rutaArchivo = destino.resolve(nombreArchivo);
 
-                try (InputStream input = response.body().byteStream();
+                try (ResponseBody body = response.body();
+                     InputStream input = body.byteStream();
                      OutputStream output = Files.newOutputStream(rutaArchivo)) {
                     byte[] buffer = new byte[8192];
                     int bytesLeidos;

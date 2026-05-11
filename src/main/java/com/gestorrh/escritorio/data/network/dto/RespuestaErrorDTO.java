@@ -3,29 +3,20 @@ package com.gestorrh.escritorio.data.network.dto;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Objeto de Transferencia de Datos (DTO) que mapea exactamente la estructura
- * de errores que devuelve la API REST de GestorRH.
+ * DTO que mapea exactamente la estructura de errores devuelta por la API REST de GestorRH.
+ * Gson puede deserializar records correctamente desde la versión 2.10+.
+ *
+ * @param mensaje   Mensaje de error devuelto por la API.
+ * @param status    Código de estado HTTP del error.
+ * @param timestamp Marca de tiempo del error.
+ * @param ruta      Ruta del endpoint que generó el error.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
-public class RespuestaErrorDTO {
-
-    @SerializedName("message")
-    private String mensaje;
-    private int status;
-    private String timestamp;
-    private String ruta;
-
-    public RespuestaErrorDTO() {}
-
-    public String getMensaje() { return mensaje; }
-    public int getStatus() { return status; }
-    public String getTimestamp() { return timestamp; }
-    public String getRuta() { return ruta; }
-
-    public void setMensaje(String mensaje) { this.mensaje = mensaje; }
-    public void setStatus(int status) { this.status = status; }
-    public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
-    public void setRuta(String ruta) { this.ruta = ruta; }
-}
+public record RespuestaErrorDTO(
+        @SerializedName("message") String mensaje,
+        int status,
+        String timestamp,
+        String ruta
+) {}

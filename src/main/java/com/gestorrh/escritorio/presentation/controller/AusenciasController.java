@@ -61,6 +61,9 @@ public class AusenciasController implements Limpiable {
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colPendDescripcion;
     @FXML private ProgressIndicator indicadorPendientes;
     @FXML private Label lblErrorPendientes;
+    @FXML private Label lblPlaceholderPendientes;
+    @FXML private Label lblPlaceholderAprobadas;
+    @FXML private Label lblPlaceholderRechazadas;
 
     @FXML private TableView<RespuestaAusenciaDTO> tablaAprobadas;
     @FXML private TableColumn<RespuestaAusenciaDTO, String> colAprEmpleado;
@@ -400,6 +403,7 @@ public class AusenciasController implements Limpiable {
             controller.setOnRevisionExitosa(() -> {
                 aprobadasCargadas  = false;
                 rechazadasCargadas = false;
+                recargarPestanaActivaSiNecesario();
             });
 
             Stage modal = new Stage();
@@ -531,6 +535,24 @@ public class AusenciasController implements Limpiable {
     }
 
     /**
+     * Recarga la pestaña actualmente visible si sus datos han quedado obsoletos
+     * tras una revisión de ausencia. Necesario cuando el usuario está en la
+     * pestaña Aprobadas o Rechazadas en el momento de la revisión, ya que el
+     * listener de selección de pestaña no se vuelve a disparar.
+     */
+    private void recargarPestanaActivaSiNecesario() {
+        Tab pestanaActiva = tabPane.getSelectionModel().getSelectedItem();
+
+        if (pestanaActiva == tabAprobadas && !aprobadasCargadas) {
+            aprobadasCargadas = true;
+            viewModel.cargarAprobadas();
+        } else if (pestanaActiva == tabRechazadas && !rechazadasCargadas) {
+            rechazadasCargadas = true;
+            viewModel.cargarRechazadas();
+        }
+    }
+
+    /**
      * Atajo para obtener un texto localizado del LanguageManager.
      *
      * @param clave Clave i18n.
@@ -578,6 +600,10 @@ public class AusenciasController implements Limpiable {
         colPendDescripcion.setText(lang.getString("ausencias.col.descripcion"));
         colAprDescripcion.setText(lang.getString("ausencias.col.descripcion"));
         colRecDescripcion.setText(lang.getString("ausencias.col.descripcion"));
+
+        lblPlaceholderPendientes.setText(lang.getString("ausencias.tabla.pendientes.vacia"));
+        lblPlaceholderAprobadas.setText(lang.getString("ausencias.tabla.aprobadas.vacia"));
+        lblPlaceholderRechazadas.setText(lang.getString("ausencias.tabla.rechazadas.vacia"));
 
         tablaPendientes.refresh();
         tablaAprobadas.refresh();

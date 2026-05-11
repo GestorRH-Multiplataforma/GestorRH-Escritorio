@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio;
 
+import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.core.security.SessionManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -73,10 +74,11 @@ public class GestorRhApp extends Application {
 
     /**
      * Método llamado automáticamente por JavaFX al cerrar la aplicación.
-     * Limpia la sesión en memoria y libera recursos.
+     * Limpia la sesión en memoria, el controlador activo y libera recursos.
      */
     @Override
     public void stop() {
-        SessionManager.getInstance().clearSession();
+        NavigationManager.getInstance().limpiarControladorActual();
+        SessionManager.getInstance().clearSessionSilencioso();
     }
 }

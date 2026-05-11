@@ -61,24 +61,19 @@ public class EmpleadosController implements Limpiable {
     @FXML private ProgressIndicator indicadorCarga;
     @FXML private Label labelError;
 
-    private final EmpleadoViewModel viewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
     private int paginaActual = 0;
     private FilteredList<RespuestaEmpleadoDTO> empleadosFiltrados;
 
-    /**
-     * Constructor del controlador. Obtiene el ViewModel desde la fábrica.
-     */
-    public EmpleadosController() {
-        this.viewModel = ViewModelFactory.getInstance().createEmpleadoViewModel();
-    }
+    private EmpleadoViewModel viewModel;
 
     /**
      * Inicializa los bindings, configura la tabla y lanza la carga de datos.
      */
     @FXML
     public void initialize() {
+        viewModel = ViewModelFactory.getInstance().createEmpleadoViewModel();
         configurarColumnas();
         configurarSelectorFiltro();
         configurarBindings();

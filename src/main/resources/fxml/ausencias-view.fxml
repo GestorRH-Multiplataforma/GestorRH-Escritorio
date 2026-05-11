@@ -41,8 +41,8 @@
                         <TableColumn fx:id="colPendAcciones"     prefWidth="160"/>
                     </columns>
                     <placeholder>
-                        <Label styleClass="empleados-tabla-placeholder"
-                               text="No hay ausencias pendientes"/>
+                        <Label fx:id="lblPlaceholderPendientes"
+                               styleClass="empleados-tabla-placeholder"/>
                     </placeholder>
                 </TableView>
 
@@ -85,8 +85,8 @@
                         <TableColumn fx:id="colAprObservaciones" prefWidth="200"/>
                     </columns>
                     <placeholder>
-                        <Label styleClass="empleados-tabla-placeholder"
-                               text="No hay ausencias aprobadas"/>
+                        <Label fx:id="lblPlaceholderAprobadas"
+                               styleClass="empleados-tabla-placeholder"/>
                     </placeholder>
                 </TableView>
 
@@ -129,8 +129,8 @@
                         <TableColumn fx:id="colRecObservaciones" prefWidth="200"/>
                     </columns>
                     <placeholder>
-                        <Label styleClass="empleados-tabla-placeholder"
-                               text="No hay ausencias rechazadas"/>
+                        <Label fx:id="lblPlaceholderRechazadas"
+                               styleClass="empleados-tabla-placeholder"/>
                     </placeholder>
                 </TableView>
 

@@ -17,6 +17,8 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.util.Duration;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Controlador para la vista de configuración de empresa.
@@ -84,6 +86,7 @@ public class ConfiguracionController implements Limpiable {
     @FXML private ProgressIndicator indicadorCarga;
 
     private ConfiguracionViewModel viewModel;
+    private final Set<javafx.scene.control.TextField> camposTocados = new HashSet<>();
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
     /**
@@ -119,7 +122,10 @@ public class ConfiguracionController implements Limpiable {
      */
     private void configurarSpinner() {
         SpinnerValueFactory<Integer> factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(
-                25, 500, 50, 25
+                ConfiguracionViewModel.getRadioMin(),
+                ConfiguracionViewModel.getRadioMax(),
+                ConfiguracionViewModel.getRadioDefault(),
+                25
         );
         spinnerRadio.setValueFactory(factory);
 
@@ -221,6 +227,12 @@ public class ConfiguracionController implements Limpiable {
             errorCoordenadasManuales.setVisible(hayError);
             errorCoordenadasManuales.setManaged(hayError);
         });
+
+        registrarListenerFoco(fieldNombre);
+        registrarListenerFoco(fieldDireccion);
+        registrarListenerFoco(fieldTelefono);
+        registrarListenerFoco(fieldLatitudManual);
+        registrarListenerFoco(fieldLongitudManual);
     }
 
     // Handlers FXML
@@ -432,6 +444,14 @@ public class ConfiguracionController implements Limpiable {
         }
     }
 
+    private void registrarListenerFoco(TextField field) {
+        field.focusedProperty().addListener((obs, tenieFoco, tieneFoco) -> {
+            if (!tieneFoco) {
+                camposTocados.add(field);
+            }
+        });
+    }
+
     /**
      * Indica si el usuario ha interactuado con un campo de texto.
      *
@@ -439,7 +459,7 @@ public class ConfiguracionController implements Limpiable {
      * @return true si el campo tiene contenido o está enfocado.
      */
     private boolean campoTocado(TextField field) {
-        return field.isFocused() || !field.getText().isEmpty();
+        return camposTocados.contains(field) || !field.getText().isEmpty();
     }
 
     /**

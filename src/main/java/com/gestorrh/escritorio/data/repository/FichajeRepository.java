@@ -5,11 +5,14 @@ import com.gestorrh.escritorio.data.network.FichajeService;
 /**
  * Repositorio encargado de la gestión de datos de Fichajes.
  * Actúa como mediador entre la capa de red y la lógica de negocio.
+ * Los métodos se implementarán conforme se desarrollen los endpoints
+ * de la Épica correspondiente.
  *
  * @author Fco Javier García Cañero
- * @version 1.0
+ * @version 1.1
  */
-public class FichajeRepository {
+public class FichajeRepository extends BaseRepository {
+
     private final FichajeService service;
 
     /**
@@ -21,5 +24,6 @@ public class FichajeRepository {
         this.service = service;
     }
 
-    // Los métodos para obtener/enviar datos se implementarán aquí.
+    // Los métodos para obtener/enviar datos se implementarán aquí
+    // usando executeAsync() y executeAsyncVoid() de BaseRepository.
 }

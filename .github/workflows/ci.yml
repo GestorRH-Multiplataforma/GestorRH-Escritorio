@@ -22,6 +22,3 @@ jobs:
 
       - name: Build and Compile (Perfil DEV)
         run: mvn -B clean verify -P dev
-
-      - name: Run Unit Tests
-        run: mvn -B test

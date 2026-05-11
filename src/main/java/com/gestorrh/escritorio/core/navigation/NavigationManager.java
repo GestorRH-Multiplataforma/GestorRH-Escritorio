@@ -88,6 +88,12 @@ public class NavigationManager {
 
             controladorActual = loader.getController();
 
+            if (controladorActual != null && !(controladorActual instanceof Limpiable)) {
+                LOGGER.warning("NavigationManager: el controlador '"
+                        + controladorActual.getClass().getSimpleName()
+                        + "' no implementa Limpiable. Sus listeners no se limpiarán al navegar.");
+            }
+
             if (callbackControlador != null) {
                 callbackControlador.accept(controladorActual);
             }

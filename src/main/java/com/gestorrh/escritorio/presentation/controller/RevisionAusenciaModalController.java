@@ -35,6 +35,10 @@ public class RevisionAusenciaModalController {
     @FXML private Label lblError;
     @FXML private Button btnConfirmar;
     @FXML private Button btnCancelar;
+    @FXML private Label lblEtiquetaEmpleado;
+    @FXML private Label lblEtiquetaTipo;
+    @FXML private Label lblEtiquetaFechas;
+    @FXML private Label lblEtiquetaDias;
 
     private AusenciasViewModel viewModel;
     private RespuestaAusenciaDTO ausencia;
@@ -190,6 +194,11 @@ public class RevisionAusenciaModalController {
         LanguageManager lang = LanguageManager.getInstance();
 
         if (ausencia == null) return;
+
+        lblEtiquetaEmpleado.setText(lang.getString("ausencias.modal.etiqueta.empleado"));
+        lblEtiquetaTipo.setText(lang.getString("ausencias.modal.etiqueta.tipo"));
+        lblEtiquetaFechas.setText(lang.getString("ausencias.modal.etiqueta.fechas"));
+        lblEtiquetaDias.setText(lang.getString("ausencias.modal.etiqueta.dias"));
 
         boolean aprobando = "APROBADA".equals(estadoDestino);
 
