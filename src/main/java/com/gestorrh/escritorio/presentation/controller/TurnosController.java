@@ -97,25 +97,20 @@ public class TurnosController implements Limpiable {
 
     @FXML private VBox panelTips;
 
-    private final TurnoViewModel turnoViewModel;
-    private final AsignacionTurnosViewModel asignacionViewModel;
+    private TurnoViewModel turnoViewModel;
+    private AsignacionTurnosViewModel asignacionViewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
     private final Runnable actualizadorMarcas =
             () -> Platform.runLater(this::actualizarMarcasCalendario);
 
-    /**
-     * Constructor del controlador. Obtiene ambos ViewModels desde la fábrica.
-     */
-    public TurnosController() {
-        this.turnoViewModel = ViewModelFactory.getInstance().createTurnoViewModel();
-        this.asignacionViewModel = ViewModelFactory.getInstance().createAsignacionTurnosViewModel();
-    }
 
     /**
      * Inicializa los bindings, configura ambas pestañas y lanza la carga de datos.
      */
     @FXML
     public void initialize() {
+        turnoViewModel = ViewModelFactory.getInstance().createTurnoViewModel();
+        asignacionViewModel = ViewModelFactory.getInstance().createAsignacionTurnosViewModel();
         configurarPestanaCatalogo();
         configurarPestanaAsignaciones();
 

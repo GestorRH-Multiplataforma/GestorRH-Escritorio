@@ -80,15 +80,8 @@ public class DashboardController implements Limpiable {
     @FXML private StackPane contenedorGraficaDepartamento;
 
     private java.util.function.Consumer<String> onNavegar;
-    private final DashboardViewModel viewModel;
+    private DashboardViewModel viewModel;
     private final Runnable actualizadorTextos = this::actualizarTextos;
-
-    /**
-     * Constructor del controlador. Obtiene el ViewModel desde la fábrica.
-     */
-    public DashboardController() {
-        this.viewModel = ViewModelFactory.getInstance().createDashboardViewModel();
-    }
 
     /**
      * Registra el callback que se ejecutará cuando el usuario pulse una tarjeta KPI.
@@ -105,6 +98,7 @@ public class DashboardController implements Limpiable {
      */
     @FXML
     public void initialize() {
+        viewModel = ViewModelFactory.getInstance().createDashboardViewModel();
         configurarBindings();
         configurarListenerKpis();
         configurarNavegacion();
