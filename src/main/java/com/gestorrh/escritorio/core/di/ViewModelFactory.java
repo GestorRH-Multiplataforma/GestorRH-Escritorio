@@ -139,4 +139,17 @@ public class ViewModelFactory {
                 RepositoryFactory.getInstance().getAuthRepository()
         );
     }
+
+    /**
+     * Crea un ViewModel para la pantalla de Análisis y Reportes.
+     * Se genera una nueva instancia por cada apertura de la vista para
+     * garantizar un estado limpio e independiente.
+     *
+     * @return Nueva instancia de AnalisisReportesViewModel.
+     */
+    public AnalisisReportesViewModel createAnalisisReportesViewModel() {
+        return new AnalisisReportesViewModel(
+                RepositoryFactory.getInstance().getFichajeRepository()
+        );
+    }
 }
