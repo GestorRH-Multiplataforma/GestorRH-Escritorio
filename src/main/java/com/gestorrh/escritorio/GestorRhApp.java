@@ -73,10 +73,12 @@ public class GestorRhApp extends Application {
 
     /**
      * Método llamado automáticamente por JavaFX al cerrar la aplicación.
-     * Limpia la sesión en memoria y libera recursos.
+     * Limpia la sesión en memoria, el controlador activo y libera recursos.
      */
     @Override
     public void stop() {
+        com.gestorrh.escritorio.core.navigation.NavigationManager.getInstance()
+                .limpiarControladorActual();
         SessionManager.getInstance().clearSession();
     }
 }
