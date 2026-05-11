@@ -48,6 +48,8 @@
                               legendVisible="false"
                               styleClass="fichajes-barchart"
                               prefHeight="280.0"
+                              barGap="0"
+                              categoryGap="2"
                               VBox.vgrow="ALWAYS">
                         <xAxis>
                             <CategoryAxis side="BOTTOM"/>

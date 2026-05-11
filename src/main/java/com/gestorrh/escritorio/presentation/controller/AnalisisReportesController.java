@@ -100,6 +100,10 @@ public class AnalisisReportesController implements Limpiable {
      * Reconstruye las series del gráfico de fichajes desde cero con los
      * datos actuales del ViewModel e instala tooltips sobre cada barra.
      */
+    /**
+     * Reconstruye las series del gráfico de fichajes desde cero con los
+     * datos actuales del ViewModel e instala tooltips sobre cada barra.
+     */
     private void actualizarGraficaFichajes() {
         graficaFichajes.getData().clear();
 
@@ -122,7 +126,7 @@ public class AnalisisReportesController implements Limpiable {
 
             barra.nodeProperty().addListener((obs, oldNode, node) -> {
                 if (node != null) {
-                    node.getStyleClass().add("chart-bar--primary");
+                    node.setStyle("-fx-bar-fill: #1A365D;");
                     instalarTooltipBarra(node, dato.getXValue(), dato.getYValue().intValue());
                 }
             });
@@ -131,6 +135,8 @@ public class AnalisisReportesController implements Limpiable {
         }
 
         graficaFichajes.getData().add(serie);
+        graficaFichajes.setBarGap(0);
+        graficaFichajes.setCategoryGap(2);
     }
 
     /**
