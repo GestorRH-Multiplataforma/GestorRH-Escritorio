@@ -1,7 +1,7 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.FichajeService;
-import com.gestorrh.escritorio.data.network.dto.RespuestaFichajeDTO;
+import com.gestorrh.escritorio.data.network.service.FichajeService;
+import com.gestorrh.escritorio.data.network.dto.fichaje.RespuestaFichajeDTO;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

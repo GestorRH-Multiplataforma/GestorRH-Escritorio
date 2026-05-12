@@ -1,10 +1,10 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.EmpresaService;
-import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpresaDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionCambiarPasswordEmpresaDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionRegistroEmpresaDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpresaDTO;
+import com.gestorrh.escritorio.data.network.service.EmpresaService;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionActualizarEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionCambiarPasswordEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionRegistroEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.RespuestaEmpresaDTO;
 
 import java.util.concurrent.CompletableFuture;
 

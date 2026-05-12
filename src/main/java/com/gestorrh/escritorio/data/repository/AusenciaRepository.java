@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.AusenciaService;
-import com.gestorrh.escritorio.data.network.dto.PeticionRevisionAusenciaDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaAusenciaDTO;
+import com.gestorrh.escritorio.data.network.service.AusenciaService;
+import com.gestorrh.escritorio.data.network.dto.ausencia.PeticionRevisionAusenciaDTO;
+import com.gestorrh.escritorio.data.network.dto.ausencia.RespuestaAusenciaDTO;
 import com.gestorrh.escritorio.core.exception.ApiException;
 import okhttp3.ResponseBody;
 import retrofit2.Response;

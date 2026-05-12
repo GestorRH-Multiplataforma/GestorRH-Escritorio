@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionBajaEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.PeticionBajaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaCrearEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaEmpleadoDTO;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -15,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**

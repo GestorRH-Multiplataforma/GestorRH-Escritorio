@@ -1,9 +1,9 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionAsignacionTurnoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaAsignacionTurnoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.PeticionAsignacionTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.RespuestaAsignacionTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.RespuestaTurnoDTO;
 import com.gestorrh.escritorio.data.repository.AsignacionTurnoRepository;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 import com.gestorrh.escritorio.data.repository.EmpresaRepository;

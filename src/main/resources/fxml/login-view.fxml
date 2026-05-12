@@ -8,7 +8,7 @@
 
 <HBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.LoginController"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.auth.LoginController"
       stylesheets="@../css/styles.css"
       prefWidth="1100.0"
       prefHeight="660.0"

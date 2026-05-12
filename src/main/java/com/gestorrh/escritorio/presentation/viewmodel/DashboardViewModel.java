@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
-import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
-import com.gestorrh.escritorio.data.network.dto.KpisDTO;
+import com.gestorrh.escritorio.data.network.dto.estadisticas.DatoGraficoDTO;
+import com.gestorrh.escritorio.data.network.dto.estadisticas.KpisDTO;
 import com.gestorrh.escritorio.data.repository.EstadisticasRepository;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;

@@ -1,9 +1,9 @@
 package com.gestorrh.escritorio.core.di;
 
 import com.gestorrh.escritorio.config.ConfigManager;
-import com.gestorrh.escritorio.data.network.*;
 import com.gestorrh.escritorio.data.network.interceptor.AuthInterceptor;
 import com.gestorrh.escritorio.data.network.interceptor.ErrorInterceptor;
+import com.gestorrh.escritorio.data.network.service.*;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

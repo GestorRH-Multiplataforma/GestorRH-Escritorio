@@ -12,7 +12,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController">
+           fx:controller="com.gestorrh.escritorio.presentation.controller.dashboard.DashboardController">
 
     <!-- Contenido principal del dashboard -->
     <VBox styleClass="dashboard-content" spacing="24.0">
