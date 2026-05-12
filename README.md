@@ -39,8 +39,8 @@ Panel de control administrativo del ecosistema **GestorRH**. Desarrollado en **J
 
 | Plataforma | Instalador | Requisitos |
 |---|---|---|
-| 🍎 macOS | `GestorRH-1.0.0.dmg` | macOS 11 o superior |
-| 🪟 Windows | `GestorRH-1.0.0.msi` | Windows 10 o superior |
+| macOS | `GestorRH-1.0.0.dmg` | macOS 11 o superior |
+| Windows | `GestorRH-1.0.0.msi` | Windows 10 o superior |
 
 Descarga el instalador desde la [página de releases](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/latest).
 
