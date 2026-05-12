@@ -129,7 +129,9 @@ jobs:
   attach-installers:
     name: Adjuntar instaladores a la Release
     runs-on: ubuntu-latest
-    needs: [build-macos, build-windows]
+    needs: [ build-macos, build-windows ]
+    permissions:
+      contents: write
 
     steps:
       - name: Descargar artefacto macOS
