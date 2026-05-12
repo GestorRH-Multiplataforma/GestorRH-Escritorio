@@ -2,7 +2,7 @@ module com.gestorrh.escritorio {
 
     // --- JDK ---
     requires java.base;
-    requires java.desktop;       // java.awt.Taskbar, javax.imageio.ImageIO
+    requires java.desktop;       // java.awt.Desktop (apertura de PDFs en el visor del sistema)
     requires java.logging;       // java.util.logging.Logger
     requires java.net.http;      // HttpClient en GeocodingService
     requires java.prefs;         // java.util.prefs.Preferences en LanguageManager

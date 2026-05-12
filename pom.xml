@@ -64,6 +64,8 @@
 
     <build>
         <plugins>
+
+            <!-- 1. Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -72,6 +74,8 @@
                     <release>${maven.compiler.release}</release>
                 </configuration>
             </plugin>
+
+            <!-- 2. Ejecución en desarrollo (sin cambios) -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -83,6 +87,67 @@
                     </options>
                 </configuration>
             </plugin>
+
+            <!-- 3. Copia todas las dependencias a target/lib/ -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 4. Configura el JAR principal con el manifest correcto -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.gestorrh.escritorio.GestorRhApp</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- 5. jpackage — configurado para Opción 5 (input dir, no module) -->
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.6.5</version>
+                <configuration>
+                    <name>GestorRH</name>
+                    <appVersion>${project.version}</appVersion>
+                    <vendor>GestorRH Multiplataforma</vendor>
+                    <destination>${project.build.directory}/installer</destination>
+                    <!-- Carpeta que contiene el jar principal y la subcarpeta lib/ -->
+                    <input>${project.build.directory}</input>
+                    <mainJar>gestorrh-escritorio-${project.version}.jar</mainJar>
+                    <javaOptions>
+                        <javaOption>-Denv=prod</javaOption>
+                        <javaOption>-Dfile.encoding=UTF-8</javaOption>
+                    </javaOptions>
+                    <!-- El tipo (dmg/msi) NO se define aquí, se pasa por línea de comandos -->
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

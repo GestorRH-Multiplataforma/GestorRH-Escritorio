@@ -23,8 +23,15 @@ jobs:
       - name: Build and Compile (Perfil DEV)
         run: mvn -B clean verify -P dev
 
-      - name: Verify compilation (Perfil PROD)
+      - name: Crear application-prod.properties
         env:
-          GESTORRH_ENV: prod
-          GESTORRH_API_URL: https://placeholder.gestorrh.com/api
+          GESTORRH_API_URL: ${{ secrets.GESTORRH_API_URL }}
+        run: |
+          cat > src/main/resources/config/application-prod.properties << EOF
+          gestorrh.api.url=${GESTORRH_API_URL}
+          log.level=WARN
+          pdf.output.dir=reportes_pdf
+          EOF
+
+      - name: Verify compilation (Perfil PROD)
         run: mvn -B clean verify -P prod

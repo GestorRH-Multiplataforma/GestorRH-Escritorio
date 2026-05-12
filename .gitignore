@@ -39,3 +39,8 @@ CLAUDE.md
 
 # Directorio de reportes PDF generados
 reportes_pdf/
+
+# Configuración de producción (contiene URLs y secrets)
+src/main/resources/config/application-prod.properties
+
+src/main/resources/images/icon.iconset/
