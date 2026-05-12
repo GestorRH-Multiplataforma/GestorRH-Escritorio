@@ -1,7 +1,8 @@
 # GestorRH - Cliente de Escritorio (Administración)
 
 [![CI Escritorio](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/ci.yml/badge.svg)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/ci.yml)
-[![Version](https://img.shields.io/badge/version-en%20desarrollo-orange)](https://github.com/GestorRH-Multiplataforma/gestorrh-desktop)
+[![Release](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/release.yml/badge.svg)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/release.yml)
+[![Version](https://img.shields.io/badge/version-v1.0.0-brightgreen)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/tag/v1.0.0)
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://openjdk.org/projects/jdk/21/)
 [![JavaFX](https://img.shields.io/badge/JavaFX-21.0.1-blue)](https://openjfx.io/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -16,21 +17,40 @@ Panel de control administrativo del ecosistema **GestorRH**. Desarrollado en **J
 
 - **Lenguaje:** Java 21 (LTS)
 - **Framework UI:** JavaFX 21.0.1 con FXML y estilos CSS personalizados
-- **Arquitectura:** MVVM (Model-View-ViewModel) con inyección manual de dependencias
-- **Gestor de dependencias:** Maven con perfiles `dev` / `prod`
-- **Red:** Retrofit 2 & OkHttp 4 con interceptores JWT y gestión global de errores
-- **Iconografía:** Ikonli + Material Design 2 Icon Pack
-- **Reportes:** OpenPDF (generación y descarga de PDFs)
-- **Internacionalización:** `ResourceBundle` para Español (ES) e Inglés (EN) con cambio dinámico en tiempo de ejecución
-- **Tests:** JUnit 5 & Mockito
+- **Arquitectura:** MVVM (Model-View-ViewModel)
+- **Gestor de Dependencias:** Maven con perfiles `dev` / `prod`
+- **Red:** Retrofit 2 & OkHttp 4
 - **CI/CD:** GitHub Actions
+- **Internacionalización:** `ResourceBundle` para Español (ES) e Inglés (EN)
 ---
 
 ## Requisitos Previos
 
+### Para usar la aplicación
+- Descarga el instalador para tu plataforma desde la [última release](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/latest).
+- El instalador incluye su propio JRE. **No necesitas instalar Java.**
+### Para desarrollo
 - **JDK 21** instalado en el sistema
 - **Maven** para la gestión de dependencias y compilación
 - **[GestorRH-API](https://github.com/GestorRH-Multiplataforma/GestorRH-API)** en ejecución para el consumo de datos
+---
+
+## Descarga e Instalación
+
+| Plataforma | Instalador | Requisitos |
+|---|---|---|
+| 🍎 macOS | `GestorRH-1.0.0.dmg` | macOS 11 o superior |
+| 🪟 Windows | `GestorRH-1.0.0.msi` | Windows 10 o superior |
+
+Descarga el instalador desde la [página de releases](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/latest).
+
+### macOS
+1. Abre el `.dmg` descargado
+2. Arrastra **GestorRH** a la carpeta Aplicaciones
+3. Click derecho → Abrir (la primera vez, por seguridad de Gatekeeper)
+### Windows
+1. Ejecuta el `.msi` descargado
+2. Sigue el asistente de instalación
 ---
 
 ## Estructura del Proyecto
@@ -84,18 +104,9 @@ src/main/java/com/gestorrh/escritorio/
  
 ---
 
-## Configuración del Entorno
+## Configuración del Entorno de Desarrollo
 
-La aplicación utiliza perfiles Maven (`dev` / `prod`) para separar la configuración por entorno. El perfil `dev` está activo por defecto y apunta a `http://localhost:8080/api`.
-
-Los archivos de propiedades se cargan desde `src/main/resources/config/`:
-
-| Archivo | Entorno | URL base por defecto |
-|---|---|---|
-| `application-dev.properties` | Desarrollo | `http://localhost:8080/api` |
-| `application-prod.properties` | Producción | Variable de entorno `GESTORRH_API_URL` |
-
-En producción, la URL del backend se inyecta mediante la variable de entorno `GESTORRH_API_URL`. El entorno activo se resuelve leyendo primero `GESTORRH_ENV` y, si no está definida, la propiedad de sistema `env`.
+La aplicación usa el perfil Maven `dev` por defecto, que conecta contra `http://localhost:8080/`. No se requiere ningún archivo de configuración adicional para arrancar en desarrollo.
 
 ### Instalación y Ejecución
 
@@ -103,15 +114,19 @@ En producción, la URL del backend se inyecta mediante la variable de entorno `G
 ```bash
 git clone https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio.git
 ```
-
 2. Compila y ejecuta con el perfil de desarrollo:
 ```bash
 mvn javafx:run
 ```
 
-3. Para compilar con el perfil de producción (requiere `GESTORRH_API_URL` definida):
-```bash
-mvn clean verify -P prod
+### Configuración de producción
+
+El perfil `prod` requiere un archivo `src/main/resources/config/application-prod.properties` (no incluido en el repositorio, ver `application-prod.properties.example`):
+
+```properties
+gestorrh.api.url=https://tu-dominio-o-ip.com/
+log.level=WARN
+pdf.output.dir=reportes_pdf
 ```
  
 ---
@@ -156,61 +171,56 @@ API REST
 
 ## CI/CD
 
-El proyecto dispone de un pipeline de integración continua definido en `.github/workflows/ci.yml` que se ejecuta automáticamente en cada push a `main` y en cada Pull Request a `main`.
+El proyecto dispone de dos pipelines:
 
-El pipeline realiza las siguientes etapas en orden:
+**Integración continua** (`.github/workflows/ci.yml`): se ejecuta en cada push a `main` y en cada Pull Request. Compila y verifica el proyecto en perfiles `dev` y `prod`.
 
-1. **Configuración del entorno:** Prepara JDK 21 con caché de Maven para acelerar builds sucesivos.
-2. **Compilación y verificación:** Compila y verifica el proyecto con `mvn clean verify` bajo el perfil `dev`.
-3. **Tests:** Ejecuta la suite de tests unitarios con JUnit 5 y Mockito.
+**Release** (`.github/workflows/release.yml`): se ejecuta al publicar una release en GitHub. Genera automáticamente los instaladores nativos para macOS (`.dmg`) y Windows (`.msi`) y los adjunta a la release.
+ 
 ---
 
-## Roadmap
+## Versionado
 
-El desarrollo se organiza en épicas funcionales. Las marcadas como *(completada)* están disponibles en la rama `main`.
+Este proyecto utiliza **Git tags anotados** para marcar hitos funcionales, siguiendo **Semantic Versioning** (`MAJOR.MINOR.PATCH`):
 
-### Épica E0 — Infraestructura Base *(completada)*
-Cimientos técnicos del proyecto sobre los que se construye el resto de épicas.
+- **MAJOR**: cambios incompatibles o nuevos roles funcionales completos.
+- **MINOR**: nuevas funcionalidades compatibles (épicas cerradas).
+- **PATCH**: correcciones compatibles sin ruptura de funcionalidad.
+### Hitos publicados
 
-- Arquitectura MVVM e inyección manual de dependencias
-- Capa de red (Retrofit + interceptores de autenticación JWT y errores HTTP)
-- Internacionalización dinámica (i18n)
-- Pantalla de Login con validación inline y toggle de idioma
-- Pantalla de Registro de empresa con auto-login encadenado
-- Shell UI con sidebar colapsable, header, footer con reloj y navegación reactiva
-### Épica E1 — Dashboard y Estadísticas *(completada)*
+- **`v0.1.0`** → infraestructura base y autenticación.
+  Arquitectura MVVM lista, Retrofit + OkHttp configurados con interceptores JWT
+  y de errores, `NavigationManager` implementado, `LanguageManager` con soporte
+  ES/EN, `SessionManager` en memoria, pipeline CI con GitHub Actions y flujo
+  completo de login y registro de empresa funcional.
+- **`v0.5.0`** → gestión de empleados y turnos operativa.
+  CRUD completo de empleados con paginación, filtros por estado y búsqueda en
+  tiempo real, flujo de baja/readmisión con contraseña generada, catálogo de
+  turnos con validación de horario nocturno, calendario mensual reutilizable y
+  asignación de turnos por día con verificación de sede GPS.
+- **`v0.9.0-beta`** → versión beta.
+  Buzón de ausencias con aprobación/rechazo y descarga de justificantes en
+  streaming, configuración de empresa con geocodificación Nominatim y coordenadas
+  manuales, dashboard con KPIs reactivos, gráficos de distribución por
+  departamento y top retrasos.
+- **`v1.0.0`** → primera versión estable. *(latest)*
+  Informes de control horario con previsualización en tabla y descarga de PDF
+  en streaming, soporte multilingüe completo ES/EN en todos los módulos, gestión
+  automática de sesión expirada con redirección al login, instaladores nativos
+  para macOS y Windows generados automáticamente via CI/CD.
+### Criterio de uso
 
-- Tarjetas KPI (total empleados, planificados hoy, ausentes hoy)
-- Gráfico de ausencias por estado (BarChart)
-- Gráfico de distribución por departamento (PieChart)
-- Widget de top retrasos con alerta visual
-- Overlay de carga global y botón de actualización manual
-### Épica E2 — Gestión de Empleados *(completada)*
-
-- Directorio con paginación, búsqueda en tiempo real y filtro por estado
-- Alta con contraseña generada automáticamente por la API
-- Edición de datos y restablecimiento de contraseña
-- Baja programada con fecha de contrato y readmisión con nueva contraseña
-### Épica E3 — Planificación de Turnos *(completada)*
-
-- Catálogo de turnos con CRUD completo y soporte de turnos nocturnos
-- Componente `CalendarioMensual` reutilizable con marcas visuales por modalidad
-- Asignador de turnos en calendario con validación de sede configurada
-- Edición con registro de motivo de cambio obligatorio
-- Buzón de ausencias con pestañas por estado, revisión con observaciones y descarga de justificantes
-### Épica E4 — Reportes PDF *(completada)*
-
-- Gráfico de fichajes del mes actual
-- Previsualización de informes en tabla (detallado y resumido)
-- Descarga de PDF con FileChooser y apertura automática en el visor del sistema
+Para integración con el backend y despliegue, la referencia será siempre la
+**última versión estable aprobada**, no necesariamente el último commit de la
+rama `main`.
+ 
 ---
 
 ## Estándares de Calidad
 
 - **Documentación:** Javadoc obligatorio en todas las clases y métodos públicos.
-- **UI/UX:** Diseño basado en Material Design con paleta corporativa Deep Navy / Electric Cyan, soporte para tipografía corporativa y modo no bloqueante en todas las operaciones de red.
-- **Concurrencia:** Uso de `Task`/`CompletableFuture` para garantizar que el hilo de UI de JavaFX nunca se bloquea. Vuelta al hilo de UI siempre mediante `Platform.runLater`.
-- **Gestión de memoria:** Todos los controllers implementan `Limpiable` y desregistran sus listeners al ser sustituidos por navegación, evitando memory leaks en sesiones largas.
+- **UI/UX:** Diseño basado en Material Design con paleta corporativa Deep Navy / Electric Cyan.
+- **Concurrencia:** Uso de `CompletableFuture` para garantizar que el hilo de UI de JavaFX nunca se bloquea.
 - **Tests:** Cobertura de la capa de servicios con JUnit 5 y Mockito.
 ---
 

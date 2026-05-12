@@ -121,6 +121,7 @@
                             <mainClass>com.gestorrh.escritorio.GestorRhApp</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
                 </configuration>
