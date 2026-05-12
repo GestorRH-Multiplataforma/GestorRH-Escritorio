@@ -1,0 +1,152 @@
+name: Build & Release Desktop App
+
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  build-macos:
+    name: Build macOS (.dmg)
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Crear application-prod.properties
+        run: |
+          cat > src/main/resources/config/application-prod.properties << EOF
+          gestorrh.api.url=${{ secrets.GESTORRH_API_URL }}
+          log.level=WARN
+          pdf.output.dir=reportes_pdf
+          EOF
+
+      - name: Compilar con Maven
+        run: mvn clean package -P prod -DskipTests
+
+      - name: Crear staging
+        run: |
+          mkdir -p target/staging
+          cp target/gestorrh-escritorio-1.0.0.jar target/staging/
+          cp -r target/lib target/staging/lib
+
+      - name: Generar .dmg
+        run: |
+          jpackage \
+            --type dmg \
+            --name "GestorRH" \
+            --app-version "${{ github.event.release.tag_name }}" \
+            --vendor "GestorRH Multiplataforma" \
+            --input target/staging \
+            --main-jar gestorrh-escritorio-1.0.0.jar \
+            --dest target/installer \
+            --java-options "-Denv=prod" \
+            --java-options "-Dfile.encoding=UTF-8" \
+            --java-options "--module-path \$APPDIR/lib" \
+            --java-options "--add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base" \
+            --icon src/main/resources/images/icon.icns
+
+      - name: Subir .dmg como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: GestorRH-macOS
+          path: target/installer/*.dmg
+          retention-days: 1
+
+  build-windows:
+    name: Build Windows (.msi)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Crear application-prod.properties
+        shell: pwsh
+        run: |
+          $content = @"
+          gestorrh.api.url=${{ secrets.GESTORRH_API_URL }}
+          log.level=WARN
+          pdf.output.dir=reportes_pdf
+          "@
+          Set-Content -Path "src/main/resources/config/application-prod.properties" -Value $content
+
+      - name: Compilar con Maven
+        run: mvn clean package -P prod -DskipTests
+
+      - name: Crear staging
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path target/staging
+          Copy-Item target/gestorrh-escritorio-1.0.0.jar target/staging/
+          Copy-Item -Recurse target/lib target/staging/lib
+
+      - name: Instalar WiX Toolset
+        run: choco install wixtoolset -y
+
+      - name: Generar .msi
+        shell: pwsh
+        run: |
+          jpackage `
+            --type msi `
+            --name "GestorRH" `
+            --app-version "1.0.0" `
+            --vendor "GestorRH Multiplataforma" `
+            --input target/staging `
+            --main-jar gestorrh-escritorio-1.0.0.jar `
+            --dest target/installer `
+            --java-options "-Denv=prod" `
+            --java-options "-Dfile.encoding=UTF-8" `
+            --java-options "--module-path `$APPDIR/lib" `
+            --java-options "--add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base" `
+            --icon src/main/resources/images/icon.ico `
+            --win-menu `
+            --win-shortcut `
+            --win-dir-chooser
+
+      - name: Subir .msi como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: GestorRH-Windows
+          path: target/installer/*.msi
+          retention-days: 1
+
+  attach-installers:
+    name: Adjuntar instaladores a la Release
+    runs-on: ubuntu-latest
+    needs: [build-macos, build-windows]
+
+    steps:
+      - name: Descargar artefacto macOS
+        uses: actions/download-artifact@v4
+        with:
+          name: GestorRH-macOS
+          path: installers/
+
+      - name: Descargar artefacto Windows
+        uses: actions/download-artifact@v4
+        with:
+          name: GestorRH-Windows
+          path: installers/
+
+      - name: Adjuntar instaladores a la release existente
+        uses: softprops/action-gh-release@v2
+        with:
+          files: installers/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

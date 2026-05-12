@@ -74,12 +74,18 @@ public class ConfigManager {
      */
     public String getBaseUrl() {
         if (!isDev()) {
-            String envUrl = System.getenv("GESTORRH_API_URL");
-            if (envUrl == null || envUrl.isBlank()) {
-                throw new IllegalStateException(
-                        "CRÍTICO: La variable de entorno 'GESTORRH_API_URL' es obligatoria en producción y no está definida.");
+            String propUrl = properties.getProperty("gestorrh.api.url");
+            if (propUrl != null && !propUrl.isBlank()) {
+                return propUrl;
             }
-            return envUrl;
+            String envUrl = System.getenv("GESTORRH_API_URL");
+            if (envUrl != null && !envUrl.isBlank()) {
+                return envUrl;
+            }
+            throw new IllegalStateException(
+                    "CRÍTICO: La URL de la API no está definida. " +
+                            "Configura 'gestorrh.api.url' en application-prod.properties " +
+                            "o define la variable de entorno 'GESTORRH_API_URL'.");
         }
         return properties.getProperty("gestorrh.api.url");
     }

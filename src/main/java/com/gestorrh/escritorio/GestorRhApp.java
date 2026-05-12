@@ -39,28 +39,10 @@ public class GestorRhApp extends Application {
                 new Image(Objects.requireNonNull(GestorRhApp.class.getResourceAsStream("/images/icon-256.png")))
         );
 
-        configurarIconoDock();
-
         stage.setTitle("GestorRH - Panel de Administración");
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-    }
-
-    /**
-     * Configura el icono del Dock en macOS usando la API de Taskbar de Java.
-     * En otras plataformas la llamada se ignora silenciosamente.
-     */
-    private void configurarIconoDock() {
-        try {
-            var taskbar = java.awt.Taskbar.getTaskbar();
-            if (taskbar.isSupported(java.awt.Taskbar.Feature.ICON_IMAGE)) {
-                var url = Objects.requireNonNull(GestorRhApp.class.getResource("/images/icon-512.png"));
-                var awtImage = javax.imageio.ImageIO.read(url);
-                taskbar.setIconImage(awtImage);
-            }
-        } catch (UnsupportedOperationException | SecurityException | java.io.IOException e) {
-        }
     }
 
     /**
