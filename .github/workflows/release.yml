@@ -43,7 +43,7 @@ jobs:
           jpackage \
             --type dmg \
             --name "GestorRH" \
-            --app-version "${{ github.event.release.tag_name }}" \
+            --app-version "$(echo ${{ github.event.release.tag_name }} | sed 's/^v//')" \
             --vendor "GestorRH Multiplataforma" \
             --input target/staging \
             --main-jar gestorrh-escritorio-1.0.0.jar \
@@ -105,7 +105,7 @@ jobs:
           jpackage `
             --type msi `
             --name "GestorRH" `
-            --app-version "1.0.0" `
+            --app-version "$(echo ${{ github.event.release.tag_name }} | sed 's/^v//')" `
             --vendor "GestorRH Multiplataforma" `
             --input target/staging `
             --main-jar gestorrh-escritorio-1.0.0.jar `
