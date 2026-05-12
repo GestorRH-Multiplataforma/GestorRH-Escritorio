@@ -1,10 +1,10 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionResetPasswordDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaCrearEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.PeticionActualizarEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.PeticionCrearEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.PeticionResetPasswordDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaCrearEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaEmpleadoDTO;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 
 import javafx.beans.property.BooleanProperty;

@@ -1,10 +1,10 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpleadoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaFichajeDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaReporteDetalleDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaReporteResumenDTO;
+import com.gestorrh.escritorio.data.network.dto.empleado.RespuestaEmpleadoDTO;
+import com.gestorrh.escritorio.data.network.dto.fichaje.RespuestaFichajeDTO;
+import com.gestorrh.escritorio.data.network.dto.reporte.RespuestaReporteDetalleDTO;
+import com.gestorrh.escritorio.data.network.dto.reporte.RespuestaReporteResumenDTO;
 import com.gestorrh.escritorio.data.repository.EmpleadoRepository;
 import com.gestorrh.escritorio.data.repository.FichajeRepository;
 import com.gestorrh.escritorio.data.repository.ReporteRepository;

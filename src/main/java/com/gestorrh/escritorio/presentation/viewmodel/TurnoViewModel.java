@@ -1,7 +1,7 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionTurnoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.PeticionTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.RespuestaTurnoDTO;
 import com.gestorrh.escritorio.data.repository.TurnoRepository;
 
 import javafx.application.Platform;

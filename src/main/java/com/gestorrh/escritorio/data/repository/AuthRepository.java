@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.AutenticacionService;
-import com.gestorrh.escritorio.data.network.dto.PeticionLoginDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaLoginDTO;
+import com.gestorrh.escritorio.data.network.service.AutenticacionService;
+import com.gestorrh.escritorio.data.network.dto.auth.PeticionLoginDTO;
+import com.gestorrh.escritorio.data.network.dto.auth.RespuestaLoginDTO;
 import java.util.concurrent.CompletableFuture;
 
 /**

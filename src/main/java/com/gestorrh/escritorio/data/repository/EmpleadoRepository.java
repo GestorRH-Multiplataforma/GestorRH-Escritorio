@@ -1,7 +1,7 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.EmpleadoService;
-import com.gestorrh.escritorio.data.network.dto.*;
+import com.gestorrh.escritorio.data.network.dto.empleado.*;
+import com.gestorrh.escritorio.data.network.service.EmpleadoService;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

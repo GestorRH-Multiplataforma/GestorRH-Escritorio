@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.EstadisticasService;
-import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
-import com.gestorrh.escritorio.data.network.dto.KpisDTO;
+import com.gestorrh.escritorio.data.network.service.EstadisticasService;
+import com.gestorrh.escritorio.data.network.dto.estadisticas.DatoGraficoDTO;
+import com.gestorrh.escritorio.data.network.dto.estadisticas.KpisDTO;
 
 import java.util.List;
 import java.util.Map;

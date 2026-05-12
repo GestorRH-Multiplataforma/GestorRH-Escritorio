@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.AnalisisReportesController"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.analisis.AnalisisReportesController"
       styleClass="empleados-content"
       spacing="0.0">
 

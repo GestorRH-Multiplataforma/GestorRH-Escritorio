@@ -1,9 +1,9 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.GeocodingService;
-import com.gestorrh.escritorio.data.network.dto.PeticionActualizarEmpresaDTO;
-import com.gestorrh.escritorio.data.network.dto.PeticionCambiarPasswordEmpresaDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaEmpresaDTO;
+import com.gestorrh.escritorio.data.network.service.GeocodingService;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionActualizarEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionCambiarPasswordEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.RespuestaEmpresaDTO;
 import com.gestorrh.escritorio.data.repository.EmpresaRepository;
 
 import javafx.application.Platform;

@@ -146,4 +146,18 @@ public class ConfigManager {
     public String getDevLoginPassword() {
         return properties.getProperty("dev.login.password", "");
     }
+
+    /**
+     * Obtiene la versión de la aplicación desde el manifiesto del JAR,
+     * donde Maven escribe automáticamente el valor de {@code project.version}
+     * al empaquetar. En entorno de desarrollo, donde no existe JAR empaquetado,
+     * devuelve {@code "dev"}.
+     *
+     * @return Versión de la aplicación (ej. "1.0.0-SNAPSHOT") o "dev" si no
+     *         está disponible.
+     */
+    public String getAppVersion() {
+        String version = getClass().getPackage().getImplementationVersion();
+        return version != null ? version : "dev";
+    }
 }

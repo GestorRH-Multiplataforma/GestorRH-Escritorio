@@ -6,7 +6,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.ErrorViewController"
+      fx:controller="com.gestorrh.escritorio.presentation.controller.shell.ErrorViewController"
       styleClass="placeholder-content"
       alignment="CENTER"
       spacing="16.0">

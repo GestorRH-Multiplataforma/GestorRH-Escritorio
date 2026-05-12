@@ -3,7 +3,7 @@ package com.gestorrh.escritorio.presentation.viewmodel;
 import com.gestorrh.escritorio.core.exception.ApiException;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.security.SessionManager;
-import com.gestorrh.escritorio.data.network.dto.PeticionRegistroEmpresaDTO;
+import com.gestorrh.escritorio.data.network.dto.empresa.PeticionRegistroEmpresaDTO;
 import com.gestorrh.escritorio.data.repository.AuthRepository;
 import com.gestorrh.escritorio.data.repository.EmpresaRepository;
 import javafx.application.Platform;

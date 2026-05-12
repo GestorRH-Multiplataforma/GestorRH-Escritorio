@@ -2,7 +2,7 @@ package com.gestorrh.escritorio.data.network.interceptor;
 
 import com.gestorrh.escritorio.core.exception.ApiException;
 import com.gestorrh.escritorio.core.security.SessionManager;
-import com.gestorrh.escritorio.data.network.dto.RespuestaErrorDTO;
+import com.gestorrh.escritorio.data.network.dto.shared.RespuestaErrorDTO;
 import com.google.gson.Gson;
 import okhttp3.Interceptor;
 import okhttp3.Response;

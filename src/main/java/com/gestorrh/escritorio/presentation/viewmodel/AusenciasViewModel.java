@@ -1,7 +1,7 @@
 package com.gestorrh.escritorio.presentation.viewmodel;
 
-import com.gestorrh.escritorio.data.network.dto.PeticionRevisionAusenciaDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaAusenciaDTO;
+import com.gestorrh.escritorio.data.network.dto.ausencia.PeticionRevisionAusenciaDTO;
+import com.gestorrh.escritorio.data.network.dto.ausencia.RespuestaAusenciaDTO;
 import com.gestorrh.escritorio.data.repository.AusenciaRepository;
 
 import javafx.application.Platform;
@@ -14,7 +14,6 @@ import javafx.collections.ObservableList;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 
 /**

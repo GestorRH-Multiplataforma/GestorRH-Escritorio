@@ -1,8 +1,8 @@
 package com.gestorrh.escritorio.data.repository;
 
-import com.gestorrh.escritorio.data.network.AsignacionTurnoService;
-import com.gestorrh.escritorio.data.network.dto.PeticionAsignacionTurnoDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaAsignacionTurnoDTO;
+import com.gestorrh.escritorio.data.network.service.AsignacionTurnoService;
+import com.gestorrh.escritorio.data.network.dto.turno.PeticionAsignacionTurnoDTO;
+import com.gestorrh.escritorio.data.network.dto.turno.RespuestaAsignacionTurnoDTO;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

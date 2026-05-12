@@ -1,9 +1,9 @@
 package com.gestorrh.escritorio.data.repository;
 
 import com.gestorrh.escritorio.core.exception.ApiException;
-import com.gestorrh.escritorio.data.network.ReporteService;
-import com.gestorrh.escritorio.data.network.dto.RespuestaReporteDetalleDTO;
-import com.gestorrh.escritorio.data.network.dto.RespuestaReporteResumenDTO;
+import com.gestorrh.escritorio.data.network.service.ReporteService;
+import com.gestorrh.escritorio.data.network.dto.reporte.RespuestaReporteDetalleDTO;
+import com.gestorrh.escritorio.data.network.dto.reporte.RespuestaReporteResumenDTO;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
