@@ -9,40 +9,41 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
-<VBox xmlns="http://javafx.com/javafx/21"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController"
-      styleClass="dashboard-content"
-      spacing="24.0">
 
-    <padding>
-        <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
-    </padding>
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.gestorrh.escritorio.presentation.controller.DashboardController">
 
-    <HBox alignment="CENTER_LEFT" spacing="12.0">
-        <Label fx:id="subtituloLabel" styleClass="dashboard-subtitulo"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Button fx:id="btnActualizar"
-                styleClass="dashboard-btn-actualizar"
-                onAction="#handleActualizar">
-            <graphic>
-                <HBox spacing="6.0" alignment="CENTER">
-                    <FontIcon iconLiteral="mdi2r-refresh"
-                              iconSize="15"
-                              styleClass="kpi-icon--primary"/>
-                    <Label fx:id="btnActualizarLabel" styleClass="dashboard-saludo"/>
-                </HBox>
-            </graphic>
-        </Button>
-    </HBox>
+    <!-- Contenido principal del dashboard -->
+    <VBox styleClass="dashboard-content" spacing="24.0">
 
-    <Label fx:id="errorLabel"
-           styleClass="dashboard-error-label"
-           wrapText="true"
-           visible="false"
-           managed="false"/>
+        <padding>
+            <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
+        </padding>
 
-    <StackPane>
+        <HBox alignment="CENTER_LEFT" spacing="12.0">
+            <Label fx:id="subtituloLabel" styleClass="dashboard-subtitulo"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnActualizar"
+                    styleClass="dashboard-btn-actualizar"
+                    onAction="#handleActualizar">
+                <graphic>
+                    <HBox spacing="6.0" alignment="CENTER">
+                        <FontIcon iconLiteral="mdi2r-refresh"
+                                  iconSize="15"
+                                  styleClass="kpi-icon--primary"/>
+                        <Label fx:id="btnActualizarLabel" styleClass="dashboard-saludo"/>
+                    </HBox>
+                </graphic>
+            </Button>
+        </HBox>
+
+        <Label fx:id="errorLabel"
+               styleClass="dashboard-error-label"
+               wrapText="true"
+               visible="false"
+               managed="false"/>
+
         <HBox fx:id="kpiContainer" spacing="16.0">
 
             <VBox fx:id="cardTotalEmpleados" styleClass="kpi-card, kpi-card--primary" HBox.hgrow="ALWAYS">
@@ -122,134 +123,138 @@
 
         </HBox>
 
-        <ProgressIndicator fx:id="indicadorCarga"
-                           maxWidth="48.0"
-                           maxHeight="48.0"
-                           visible="false"
-                           managed="false"/>
+        <HBox spacing="16.0" VBox.vgrow="ALWAYS">
+
+            <VBox styleClass="content-placeholder"
+                  spacing="12.0"
+                  HBox.hgrow="ALWAYS"
+                  VBox.vgrow="NEVER"
+                  alignment="CENTER_LEFT">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblEmpleadosDepartamentoTitulo" styleClass="section-title"/>
+
+                <Separator/>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorEmpleadosDepartamento"
+                                       maxWidth="32.0"
+                                       maxHeight="32.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+                <StackPane fx:id="contenedorGraficaDepartamento"
+                           VBox.vgrow="ALWAYS"
+                           prefHeight="220.0"/>
+
+                <Label fx:id="lblEmpleadosDepartamentoVacio"
+                       styleClass="empleados-tabla-placeholder"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+            </VBox>
+
+            <VBox styleClass="content-placeholder"
+                  spacing="12.0"
+                  HBox.hgrow="ALWAYS"
+                  VBox.vgrow="NEVER">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblAusenciasEstadoTitulo" styleClass="section-title"/>
+
+                <Separator/>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorAusenciasEstado"
+                                       maxWidth="32.0"
+                                       maxHeight="32.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+                <BarChart fx:id="graficaAusenciasEstado"
+                          animated="false"
+                          legendVisible="false"
+                          styleClass="ausencias-barchart"
+                          VBox.vgrow="NEVER">
+                    <xAxis>
+                        <CategoryAxis side="BOTTOM"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="ejeYEstado"
+                                    side="LEFT"
+                                    minorTickVisible="false"
+                                    tickUnit="1"/>
+                    </yAxis>
+                </BarChart>
+
+                <Label fx:id="lblAusenciasEstadoVacio"
+                       styleClass="empleados-tabla-placeholder"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+            </VBox>
+
+            <VBox styleClass="content-placeholder"
+                  spacing="12.0"
+                  minWidth="300.0"
+                  maxWidth="340.0"
+                  VBox.vgrow="NEVER">
+                <padding>
+                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                </padding>
+
+                <Label fx:id="lblTopRetrasosTitulo" styleClass="section-title"/>
+
+                <Separator/>
+
+                <StackPane VBox.vgrow="NEVER">
+                    <ProgressIndicator fx:id="indicadorTopRetrasos"
+                                       maxWidth="32.0"
+                                       maxHeight="32.0"
+                                       visible="false"
+                                       managed="false"/>
+                </StackPane>
+
+                <TableView fx:id="tablaTopRetrasos"
+                           styleClass="empleados-table"
+                           VBox.vgrow="NEVER">
+                    <columns>
+                        <TableColumn fx:id="colPosicion" prefWidth="40.0" maxWidth="40.0"/>
+                        <TableColumn fx:id="colEmpleado" prefWidth="160.0"/>
+                        <TableColumn fx:id="colTotal"    prefWidth="90.0"/>
+                    </columns>
+                    <placeholder>
+                        <Label styleClass="empleados-tabla-placeholder"/>
+                    </placeholder>
+                </TableView>
+
+                <Label fx:id="lblTopRetrasosVacio"
+                       styleClass="empleados-tabla-placeholder"
+                       wrapText="true"
+                       visible="false"
+                       managed="false"/>
+
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+    <!-- Overlay de carga global: cubre todo el panel de contenido mientras
+         se lanzan las peticiones iniciales o al pulsar Actualizar -->
+    <StackPane fx:id="overlayDashboard"
+               visible="false"
+               managed="false"
+               styleClass="dashboard-overlay">
+        <ProgressIndicator maxWidth="52.0" maxHeight="52.0"/>
     </StackPane>
 
-    <HBox spacing="16.0" VBox.vgrow="ALWAYS">
-
-        <VBox styleClass="content-placeholder"
-              spacing="12.0"
-              HBox.hgrow="ALWAYS"
-              VBox.vgrow="NEVER"
-              alignment="CENTER_LEFT">
-            <padding>
-                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-            </padding>
-
-            <Label fx:id="lblEmpleadosDepartamentoTitulo" styleClass="section-title"/>
-
-            <Separator/>
-
-            <StackPane VBox.vgrow="NEVER">
-                <ProgressIndicator fx:id="indicadorEmpleadosDepartamento"
-                                   maxWidth="32.0"
-                                   maxHeight="32.0"
-                                   visible="false"
-                                   managed="false"/>
-            </StackPane>
-
-            <StackPane fx:id="contenedorGraficaDepartamento"
-                       VBox.vgrow="ALWAYS"
-                       prefHeight="220.0"/>
-
-            <Label fx:id="lblEmpleadosDepartamentoVacio"
-                   styleClass="empleados-tabla-placeholder"
-                   wrapText="true"
-                   visible="false"
-                   managed="false"/>
-
-        </VBox>
-
-        <VBox styleClass="content-placeholder"
-              spacing="12.0"
-              HBox.hgrow="ALWAYS"
-              VBox.vgrow="NEVER">
-            <padding>
-                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-            </padding>
-
-            <Label fx:id="lblAusenciasEstadoTitulo" styleClass="section-title"/>
-
-            <Separator/>
-
-            <StackPane VBox.vgrow="NEVER">
-                <ProgressIndicator fx:id="indicadorAusenciasEstado"
-                                   maxWidth="32.0"
-                                   maxHeight="32.0"
-                                   visible="false"
-                                   managed="false"/>
-            </StackPane>
-
-            <BarChart fx:id="graficaAusenciasEstado"
-                      animated="false"
-                      legendVisible="false"
-                      styleClass="ausencias-barchart"
-                      VBox.vgrow="NEVER">
-                <xAxis>
-                    <CategoryAxis side="BOTTOM"/>
-                </xAxis>
-                <yAxis>
-                    <NumberAxis fx:id="ejeYEstado"
-                                side="LEFT"
-                                minorTickVisible="false"
-                                tickUnit="1"/>
-                </yAxis>
-            </BarChart>
-
-            <Label fx:id="lblAusenciasEstadoVacio"
-                   styleClass="empleados-tabla-placeholder"
-                   wrapText="true"
-                   visible="false"
-                   managed="false"/>
-
-        </VBox>
-
-        <VBox styleClass="content-placeholder"
-              spacing="12.0"
-              minWidth="300.0"
-              maxWidth="340.0"
-              VBox.vgrow="NEVER">
-            <padding>
-                <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
-            </padding>
-
-            <Label fx:id="lblTopRetrasosTitulo" styleClass="section-title"/>
-
-            <Separator/>
-
-            <StackPane VBox.vgrow="NEVER">
-                <ProgressIndicator fx:id="indicadorTopRetrasos"
-                                   maxWidth="32.0"
-                                   maxHeight="32.0"
-                                   visible="false"
-                                   managed="false"/>
-            </StackPane>
-
-            <TableView fx:id="tablaTopRetrasos"
-                       styleClass="empleados-table"
-                       VBox.vgrow="NEVER">
-                <columns>
-                    <TableColumn fx:id="colPosicion" prefWidth="40.0" maxWidth="40.0"/>
-                    <TableColumn fx:id="colEmpleado" prefWidth="160.0"/>
-                    <TableColumn fx:id="colTotal"    prefWidth="90.0"/>
-                </columns>
-                <placeholder>
-                    <Label styleClass="empleados-tabla-placeholder"/>
-                </placeholder>
-            </TableView>
-
-            <Label fx:id="lblTopRetrasosVacio"
-                   styleClass="empleados-tabla-placeholder"
-                   wrapText="true"
-                   visible="false"
-                   managed="false"/>
-
-        </VBox>
-
-    </HBox>
-
-</VBox>
+</StackPane>

@@ -3,13 +3,10 @@ package com.gestorrh.escritorio.presentation.controller;
 import com.gestorrh.escritorio.core.di.ViewModelFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.navigation.Limpiable;
-import com.gestorrh.escritorio.core.navigation.NavigationManager;
 import com.gestorrh.escritorio.data.network.dto.DatoGraficoDTO;
 import com.gestorrh.escritorio.data.network.dto.KpisDTO;
 import com.gestorrh.escritorio.presentation.viewmodel.DashboardViewModel;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.chart.BarChart;
@@ -28,13 +25,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Controlador para la vista del panel central del Dashboard.
  * Gestiona las tarjetas KPI, el widget de top retrasos, el indicador de carga,
  * el panel de error y el botón de actualización manual.
  *
  * @author Fco Javier García Cañero
- * @version 2.2
+ * @version 2.3
  */
 public class DashboardController implements Limpiable {
 
@@ -43,7 +42,7 @@ public class DashboardController implements Limpiable {
     @FXML private Label btnActualizarLabel;
     @FXML private Label errorLabel;
     @FXML private HBox kpiContainer;
-    @FXML private ProgressIndicator indicadorCarga;
+    @FXML private StackPane overlayDashboard;
 
     @FXML private VBox cardTotalEmpleados;
     @FXML private Label kpiTotalEmpleadosTitulo;
@@ -128,13 +127,32 @@ public class DashboardController implements Limpiable {
     }
 
     /**
-     * Lanza en paralelo la carga de KPIs y el ranking de retrasos.
+     * Lanza en paralelo las 4 cargas del Dashboard.
+     * Activa el overlay global antes de comenzar y lo desactiva cuando
+     * todas las cargas han finalizado, con éxito o con error.
      */
     private void cargarDashboard() {
-        viewModel.cargarKpis();
-        viewModel.cargarTopRetrasos();
-        viewModel.cargarEmpleadosPorDepartamento();
-        viewModel.cargarAusenciasPorEstado();
+        viewModel.cargandoTodoProperty().set(true);
+
+        CompletableFuture<Void> cargaDatos = CompletableFuture.allOf(
+                viewModel.cargarKpis(),
+                viewModel.cargarTopRetrasos(),
+                viewModel.cargarEmpleadosPorDepartamento(),
+                viewModel.cargarAusenciasPorEstado()
+        );
+
+        CompletableFuture<Void> tiempoMinimo = CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+
+        CompletableFuture.allOf(cargaDatos, tiempoMinimo)
+                .whenComplete((res, ex) ->
+                        Platform.runLater(() -> viewModel.cargandoTodoProperty().set(false))
+                );
     }
 
     /**
@@ -142,17 +160,17 @@ public class DashboardController implements Limpiable {
      * y las Properties del ViewModel.
      */
     private void configurarBindings() {
-        indicadorCarga.visibleProperty().bind(viewModel.cargandoProperty());
-        indicadorCarga.managedProperty().bind(viewModel.cargandoProperty());
+        overlayDashboard.visibleProperty().bind(viewModel.cargandoTodoProperty());
+        overlayDashboard.managedProperty().bind(viewModel.cargandoTodoProperty());
 
-        kpiContainer.visibleProperty().bind(viewModel.cargandoProperty().not());
-        kpiContainer.managedProperty().bind(viewModel.cargandoProperty().not());
+        kpiContainer.visibleProperty().bind(viewModel.cargandoTodoProperty().not());
+        kpiContainer.managedProperty().bind(viewModel.cargandoTodoProperty().not());
 
         errorLabel.textProperty().bind(viewModel.mensajeErrorProperty());
         errorLabel.visibleProperty().bind(viewModel.errorVisibleProperty());
         errorLabel.managedProperty().bind(viewModel.errorVisibleProperty());
 
-        btnActualizar.disableProperty().bind(viewModel.cargandoProperty());
+        btnActualizar.disableProperty().bind(viewModel.cargandoTodoProperty());
 
         indicadorTopRetrasos.visibleProperty().bind(viewModel.topRetrasosCargandoProperty());
         indicadorTopRetrasos.managedProperty().bind(viewModel.topRetrasosCargandoProperty());

@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * ViewModel encargado de gestionar el estado y la lógica de la vista del Dashboard.
@@ -22,7 +23,7 @@ import java.util.List;
  * con el controlador.
  *
  * @author Fco Javier García Cañero
- * @version 1.2
+ * @version 1.3
  */
 public class DashboardViewModel {
 
@@ -44,6 +45,7 @@ public class DashboardViewModel {
     private final ObservableList<DatoGraficoDTO> empleadosPorDepartamento = FXCollections.observableArrayList();
     private final BooleanProperty empleadosDepartamentoCargando = new SimpleBooleanProperty(false);
     private final BooleanProperty empleadosDepartamentoVacio = new SimpleBooleanProperty(false);
+    private final BooleanProperty cargandoTodo = new SimpleBooleanProperty(false);
 
     /**
      * Constructor con inyección de dependencias.
@@ -57,13 +59,16 @@ public class DashboardViewModel {
     /**
      * Solicita los KPIs a la API de forma asíncrona y actualiza las Properties
      * reactivas con el resultado.
+     *
+     * @return CompletableFuture que se completa cuando la carga finaliza,
+     *         con éxito o con error.
      */
-    public void cargarKpis() {
+    public CompletableFuture<Void> cargarKpis() {
         cargando.set(true);
         errorVisible.set(false);
         mensajeError.set("");
 
-        estadisticasRepository.getKpis()
+        return estadisticasRepository.getKpis()
                 .thenAccept(resultado -> Platform.runLater(() -> {
                     kpis.set(resultado);
                     cargando.set(false);
@@ -83,11 +88,14 @@ public class DashboardViewModel {
     /**
      * Solicita el ranking de retrasos a la API de forma asíncrona y actualiza
      * la lista observable. Limita los resultados a {@value MAX_TOP_RETRASOS} elementos.
+     *
+     * @return CompletableFuture que se completa cuando la carga finaliza,
+     *         con éxito o con error.
      */
-    public void cargarTopRetrasos() {
+    public CompletableFuture<Void> cargarTopRetrasos() {
         topRetrasosCargando.set(true);
 
-        estadisticasRepository.getTopRetrasos()
+        return estadisticasRepository.getTopRetrasos()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     List<DatoGraficoDTO> truncada = lista.subList(0, Math.min(lista.size(), MAX_TOP_RETRASOS));
                     List<DatoGraficoDTO> rellena = new java.util.ArrayList<>(truncada);
@@ -111,11 +119,14 @@ public class DashboardViewModel {
     /**
      * Solicita la distribución de empleados por departamento a la API de forma asíncrona.
      * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     *
+     * @return CompletableFuture que se completa cuando la carga finaliza,
+     *         con éxito o con error.
      */
-    public void cargarEmpleadosPorDepartamento() {
+    public CompletableFuture<Void> cargarEmpleadosPorDepartamento() {
         empleadosDepartamentoCargando.set(true);
 
-        estadisticasRepository.getEmpleadosPorDepartamento()
+        return estadisticasRepository.getEmpleadosPorDepartamento()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     empleadosPorDepartamento.setAll(lista);
                     empleadosDepartamentoVacio.set(lista.isEmpty());
@@ -134,11 +145,14 @@ public class DashboardViewModel {
     /**
      * Solicita las ausencias por estado a la API de forma asíncrona.
      * Un fallo en este método no afecta a las demás cargas del Dashboard.
+     *
+     * @return CompletableFuture que se completa cuando la carga finaliza,
+     *         con éxito o con error.
      */
-    public void cargarAusenciasPorEstado() {
+    public CompletableFuture<Void> cargarAusenciasPorEstado() {
         ausenciasEstadoCargando.set(true);
 
-        estadisticasRepository.getAusenciasPorEstado()
+        return estadisticasRepository.getAusenciasPorEstado()
                 .thenAccept(lista -> Platform.runLater(() -> {
                     ausenciasPorEstado.setAll(lista);
                     ausenciasEstadoVacio.set(lista.isEmpty());
@@ -203,4 +217,7 @@ public class DashboardViewModel {
 
     /** @return Property que indica si la lista de empleados por departamento está vacía. */
     public BooleanProperty empleadosDepartamentoVacioProperty() { return empleadosDepartamentoVacio; }
+
+    /** @return Property que indica si alguna carga del dashboard está en curso. */
+    public BooleanProperty cargandoTodoProperty() { return cargandoTodo; }
 }

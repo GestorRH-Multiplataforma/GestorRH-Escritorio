@@ -467,6 +467,11 @@
     -fx-text-fill: #1A365D;
 }
 
+/* DASHBOARD — Overlay de carga global */
+.dashboard-overlay {
+    -fx-background-color: rgba(248, 250, 252, 0.80);
+}
+
 /* SHELL — Layout principal (Header + Sidebar + ContentPane + Footer)
    Paleta: Deep Navy #1A365D / Electric Cyan #00A8E8 / Surface #F8FAFC */
 
