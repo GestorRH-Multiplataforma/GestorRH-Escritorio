@@ -254,86 +254,8 @@
 
 /* DASHBOARD */
 
-.dashboard-root {
+.dashboard-content {
     -fx-background-color: #F8FAFC;
-}
-
-.sidebar {
-    -fx-background-color: #1A365D;
-    -fx-padding: 24 16 24 16;
-    -fx-pref-width: 220px;
-    -fx-spacing: 8;
-}
-
-.sidebar-title {
-    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #FFFFFF;
-    -fx-padding: 0 0 16 0;
-}
-
-.sidebar-menu {
-    -fx-spacing: 4;
-}
-
-.sidebar-btn {
-    -fx-background-color: transparent;
-    -fx-text-fill: rgba(255, 255, 255, 0.75);
-    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
-    -fx-font-size: 13px;
-    -fx-alignment: CENTER-LEFT;
-    -fx-padding: 10 16 10 16;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-cursor: hand;
-}
-
-.sidebar-btn:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.10);
-    -fx-text-fill: #FFFFFF;
-}
-
-.sidebar-btn-active {
-    -fx-background-color: rgba(0, 168, 232, 0.20);
-    -fx-text-fill: #00A8E8;
-}
-
-.sidebar-btn-logout {
-    -fx-text-fill: rgba(255, 255, 255, 0.55);
-}
-
-.sidebar-btn-logout:hover {
-    -fx-background-color: rgba(211, 47, 47, 0.15);
-    -fx-text-fill: #EF5350;
-}
-
-.content-area {
-    -fx-background-color: #F8FAFC;
-    -fx-padding: 32;
-    -fx-spacing: 24;
-}
-
-.content-header {
-    -fx-alignment: CENTER-LEFT;
-    -fx-spacing: 8;
-}
-
-.welcome-label {
-    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
-    -fx-font-size: 14px;
-    -fx-text-fill: #64748B;
-}
-
-.company-name-label {
-    -fx-font-family: "Montserrat", "Segoe UI Semibold", sans-serif;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #1A365D;
-}
-
-.kpi-container {
-    -fx-padding: 0;
 }
 
 .kpi-card {
@@ -532,11 +454,6 @@
 .chart-legend-item-symbol.default-color6 { -fx-background-color: #042C53; }
 .chart-legend-item-symbol.default-color7 { -fx-background-color: #1A365D; }
 
-/* Barras verticales ausencias por estado */
-.ausencias-barra-solicitada .bar { -fx-background-color: #5BC4F5; }
-.ausencias-barra-aprobada .bar   { -fx-background-color: #1A365D; }
-.ausencias-barra-rechazada .bar  { -fx-background-color: #B5D4F4; }
-
 .content-placeholder {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
@@ -548,13 +465,6 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: #1A365D;
-}
-
-.language-selector {
-    -fx-background-radius: 6;
-    -fx-border-radius: 6;
-    -fx-font-size: 12px;
-    -fx-pref-width: 80px;
 }
 
 /* SHELL — Layout principal (Header + Sidebar + ContentPane + Footer)
@@ -766,10 +676,6 @@
     -fx-background-color: #F8FAFC;
     -fx-background-radius: 12 0 0 0;
     -fx-border-radius: 12 0 0 0;
-}
-
-.dashboard-content {
-    -fx-background-color: #F8FAFC;
 }
 
 /* FOOTER */
@@ -1858,7 +1764,7 @@
     -fx-font-weight: bold;
 }
 
-/* Marcas de contenido (usadas por consumidores) */
+/* Marcas de contenido */
 .calendario-dia--con-asignacion {
     -fx-background-color: rgba(0, 120, 200, 0.25);
     -fx-background-radius: 8;
@@ -1876,20 +1782,6 @@
 
 .calendario-dia--con-ausencia .calendario-dia-numero {
     -fx-font-weight: bold;
-}
-
-/* Punto indicador inferior (decoración opcional del renderizador) */
-.calendario-dia-dot {
-    -fx-background-color: #00A8E8;
-    -fx-background-radius: 3;
-    -fx-pref-width: 6px;
-    -fx-pref-height: 6px;
-    -fx-max-width: 6px;
-    -fx-max-height: 6px;
-}
-
-.calendario-dia--con-ausencia .calendario-dia-dot {
-    -fx-background-color: #F59E0B;
 }
 
 /* VISTA: Asignación de Turnos */
@@ -2011,18 +1903,6 @@
     -fx-padding: 3 10 3 10;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-}
-
-/* Marca de teletrabajo en el calendario */
-
-.calendario-dia--teletrabajo {
-    -fx-background-color: rgba(0, 120, 200, 0.25);
-    -fx-background-radius: 8;
-}
-
-.calendario-dia--teletrabajo .calendario-dia-numero {
-    -fx-font-weight: bold;
-    -fx-text-fill: #1A365D;
 }
 
 /* Panel de tips */
@@ -2174,13 +2054,4 @@
 .fichajes-barchart .tick-label {
     -fx-font-size: 10px;
     -fx-text-fill: #94A3B8;
-}
-
-.chart-bar--primary .bar {
-    -fx-background-color: #1A365D;
-    -fx-background-radius: 3 3 0 0;
-}
-
-.chart-bar--primary .bar:hover {
-    -fx-background-color: #00A8E8;
 }
