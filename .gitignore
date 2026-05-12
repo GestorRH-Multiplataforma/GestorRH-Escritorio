@@ -32,3 +32,10 @@ hs_err_pid*
 replay_pid*
 .claude/
 CLAUDE.md
+
+# Variables de entorno (nunca subir al repo)
+.env
+*.env
+
+# Directorio de reportes PDF generados
+reportes_pdf/

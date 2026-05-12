@@ -28,7 +28,7 @@ public class ConfigManager {
 
         String propFileName = "config/application-" + env + ".properties";
 
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream(propFileName)) {
+        try (InputStream input = getClass().getResourceAsStream("/" + propFileName)) {
             if (input == null) {
                 throw new IllegalStateException("CRÍTICO: No se encontró el archivo de configuración: " + propFileName);
             }

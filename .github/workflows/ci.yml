@@ -22,3 +22,9 @@ jobs:
 
       - name: Build and Compile (Perfil DEV)
         run: mvn -B clean verify -P dev
+
+      - name: Verify compilation (Perfil PROD)
+        env:
+          GESTORRH_ENV: prod
+          GESTORRH_API_URL: https://placeholder.gestorrh.com/api
+        run: mvn -B clean verify -P prod
