@@ -1,5 +1,6 @@
 package com.gestorrh.escritorio.presentation.controller;
 
+import com.gestorrh.escritorio.config.ConfigManager;
 import com.gestorrh.escritorio.core.di.RepositoryFactory;
 import com.gestorrh.escritorio.core.i18n.LanguageManager;
 import com.gestorrh.escritorio.core.navigation.NavigationManager;
@@ -420,7 +421,9 @@ public class ShellController {
         menuConfiguracionLabel.setText(lang.getString("menu.settings"));
         menuCerrarSesionLabel.setText(lang.getString("menu.logout"));
 
-        footerVersionLabel.setText(lang.getString("shell.footer.version"));
+        footerVersionLabel.setText(
+                "GestorRH v" + ConfigManager.getInstance().getAppVersion()
+        );
         headerSeccionLabel.setText(LanguageManager.getInstance().getString(claveSeccionActual));
 
         actualizarToggleIdioma();
