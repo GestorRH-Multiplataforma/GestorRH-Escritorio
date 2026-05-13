@@ -117,7 +117,10 @@ jobs:
             --icon src/main/resources/images/icon.ico `
             --win-menu `
             --win-shortcut `
-            --win-dir-chooser
+            --win-dir-chooser `
+            --win-menu-group "GestorRH" `
+            --win-upgrade-uuid "6F107C8B-56FB-4EE1-83D4-FB575535A45E" `
+            --description "Panel de administración de recursos humanos"
 
       - name: Subir .msi como artefacto
         uses: actions/upload-artifact@v4
