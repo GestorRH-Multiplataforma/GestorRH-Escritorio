@@ -47,10 +47,21 @@ Descarga el instalador desde la [página de releases](https://github.com/GestorR
 ### macOS
 1. Abre el `.dmg` descargado
 2. Arrastra **GestorRH** a la carpeta Aplicaciones
-3. Click derecho → Abrir (la primera vez, por seguridad de Gatekeeper)
+3. Click derecho → **Abrir** para intentar abrirla
+
+> **Si macOS bloquea la app** con el mensaje "Apple no puede verificar que no contenga malware", abre Terminal y ejecuta:
+> ```bash
+> xattr -cr /Applications/GestorRH.app
+> ```
+> Esto ocurre porque la app no está firmada con un certificado de Apple. Una vez ejecutado el comando, ábrela normalmente.
+
 ### Windows
-1. Ejecuta el `.msi` descargado
-2. Sigue el asistente de instalación
+1. Descarga el archivo `.msi`
+2. Ejecuta el instalador
+3. Si Windows SmartScreen muestra un aviso, pulsa **Más información → Ejecutar de todas formas**
+4. Sigue el asistente de instalación
+
+> **Si el antivirus bloquea la instalación**, añade una excepción para el archivo `.msi` o deshabilita temporalmente la protección en tiempo real durante la instalación. Esto ocurre porque el instalador no está firmado con un certificado de desarrollador.
 ---
 
 ## Estructura del Proyecto
