@@ -30,14 +30,24 @@ import java.util.logging.Logger;
  * Controlador para la vista del directorio de empleados.
  * Gestiona la tabla paginada, los filtros, la barra de búsqueda
  * y la apertura del modal de alta y edición de empleados.
+ * La paginación se calcula dinámicamente según la altura disponible
+ * de la tabla para evitar scroll interno y filas cortadas.
  *
  * @author Fco Javier García Cañero
- * @version 1.1
+ * @version 1.2
  */
 public class EmpleadosController implements Limpiable {
 
     private static final Logger LOGGER = Logger.getLogger(EmpleadosController.class.getName());
-    private static final int FILAS_POR_PAGINA = 25;
+
+    /** Altura fija de cada fila, debe coincidir con fixedCellSize en el FXML. */
+    private static final double ALTURA_CELDA = 52.0;
+
+    /** Altura de la cabecera de columnas de la tabla. */
+    private static final double ALTURA_CABECERA = 42.0;
+
+    /** Mínimo de filas a mostrar aunque la pantalla sea muy pequeña. */
+    private static final int FILAS_MINIMAS = 3;
 
     @FXML private TextField campoBusqueda;
     @FXML private Button btnNuevoEmpleado;
@@ -62,8 +72,11 @@ public class EmpleadosController implements Limpiable {
     private final Runnable actualizadorTextos = this::actualizarTextos;
 
     private int paginaActual = 0;
-    private FilteredList<RespuestaEmpleadoDTO> empleadosFiltrados;
 
+    /** Número de filas por página — se recalcula dinámicamente. */
+    private int filasPorPagina = 10;
+
+    private FilteredList<RespuestaEmpleadoDTO> empleadosFiltrados;
     private EmpleadoViewModel viewModel;
 
     /**
@@ -76,6 +89,7 @@ public class EmpleadosController implements Limpiable {
         configurarSelectorFiltro();
         configurarBindings();
         configurarPaginacion();
+        configurarPaginacionDinamica();
 
         actualizarTextos();
         LanguageManager.getInstance().addListener(actualizadorTextos);
@@ -88,6 +102,34 @@ public class EmpleadosController implements Limpiable {
      */
     public void limpiar() {
         LanguageManager.getInstance().removeListener(actualizadorTextos);
+    }
+
+    /**
+     * Configura el listener sobre la altura de la tabla para recalcular
+     * cuántas filas caben y actualizar la paginación dinámicamente.
+     * Se dispara al redimensionar la ventana o al cambiar el layout.
+     */
+    private void configurarPaginacionDinamica() {
+        tablaEmpleados.heightProperty().addListener((obs, oldH, newH) -> {
+            int nuevasFilas = calcularFilasPorPagina(newH.doubleValue());
+            if (nuevasFilas != filasPorPagina) {
+                filasPorPagina = nuevasFilas;
+                paginaActual = 0;
+                actualizarPagina();
+            }
+        });
+    }
+
+    /**
+     * Calcula cuántas filas enteras caben en la altura disponible de la tabla.
+     *
+     * @param alturaTabla Altura actual en píxeles del componente TableView.
+     * @return Número de filas enteras que caben, mínimo {@value FILAS_MINIMAS}.
+     */
+    private int calcularFilasPorPagina(double alturaTabla) {
+        double alturaDisponible = alturaTabla - ALTURA_CABECERA;
+        int filas = (int) Math.floor(alturaDisponible / ALTURA_CELDA);
+        return Math.max(filas + 1, FILAS_MINIMAS);
     }
 
     /**
@@ -160,11 +202,8 @@ public class EmpleadosController implements Limpiable {
                 setGraphic(null);
                 setText(null);
 
-                if (empty) {
-                    setText(null);
-                    setGraphic(null);
-                    return;
-                }
+                if (empty) return;
+
                 if (fechaStr == null) {
                     setText("—");
                     setAlignment(javafx.geometry.Pos.CENTER);
@@ -172,13 +211,12 @@ public class EmpleadosController implements Limpiable {
                 }
 
                 try {
-                    LocalDate fecha    = LocalDate.parse(fechaStr, formatterEntrada);
-                    String fechaLegible = fecha.format(formatterSalida);
-                    LanguageManager lang = LanguageManager.getInstance();
-
-                    boolean esFutura = fecha.isAfter(LocalDate.now());
-                    String estilo = esFutura ? "badge-baja-programada" : "badge-inactivo";
-                    String texto  = esFutura
+                    LocalDate fecha       = LocalDate.parse(fechaStr, formatterEntrada);
+                    String fechaLegible   = fecha.format(formatterSalida);
+                    LanguageManager lang  = LanguageManager.getInstance();
+                    boolean esFutura      = fecha.isAfter(LocalDate.now());
+                    String estilo         = esFutura ? "badge-baja-programada" : "badge-inactivo";
+                    String texto          = esFutura
                             ? lang.getString("empleados.badge.baja.programada") + " · " + fechaLegible
                             : lang.getString("empleados.badge.inactivo") + " · " + fechaLegible;
 
@@ -249,12 +287,11 @@ public class EmpleadosController implements Limpiable {
                 btnBaja.setText(lang.getString("empleados.btn.baja"));
                 btnReadmitir.setText(lang.getString("empleados.btn.readmitir"));
 
-                String fechaBajaStr = empleado.fechaBajaContrato();
+                String fechaBajaStr   = empleado.fechaBajaContrato();
                 boolean tieneFechaBaja = fechaBajaStr != null;
-                boolean estaActivo = empleado.activo();
+                boolean estaActivo    = empleado.activo();
 
                 if (estaActivo && !tieneFechaBaja) {
-                    // Activo sin baja programada: Editar + Baja habilitado
                     btnBaja.setDisable(false);
                     btnBaja.setTooltip(null);
                     btnBaja.setVisible(true);
@@ -263,7 +300,6 @@ public class EmpleadosController implements Limpiable {
                     btnReadmitir.setManaged(false);
 
                 } else if (estaActivo && tieneFechaBaja) {
-                    // Activo con baja programada: Editar + Baja deshabilitado con tooltip
                     try {
                         LocalDate fecha = LocalDate.parse(fechaBajaStr,
                                 DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -281,7 +317,6 @@ public class EmpleadosController implements Limpiable {
                     btnReadmitir.setManaged(false);
 
                 } else {
-                    // Inactivo: Editar + Readmitir
                     btnBaja.setVisible(false);
                     btnBaja.setManaged(false);
                     btnReadmitir.setVisible(true);
@@ -351,7 +386,7 @@ public class EmpleadosController implements Limpiable {
             }
         });
         btnSiguiente.setOnAction(e -> {
-            if ((paginaActual + 1) * FILAS_POR_PAGINA < empleadosFiltrados.size()) {
+            if ((paginaActual + 1) * filasPorPagina < empleadosFiltrados.size()) {
                 paginaActual++;
                 actualizarPagina();
             }
@@ -365,17 +400,23 @@ public class EmpleadosController implements Limpiable {
     private void actualizarPagina() {
         if (empleadosFiltrados == null) return;
 
-        int total  = empleadosFiltrados.size();
-        int desde  = paginaActual * FILAS_POR_PAGINA;
-        int hasta  = Math.min(desde + FILAS_POR_PAGINA, total);
+        int total = empleadosFiltrados.size();
+        int desde = paginaActual * filasPorPagina;
+        int hasta = Math.min(desde + filasPorPagina, total);
 
         List<RespuestaEmpleadoDTO> pagina = desde < total
                 ? empleadosFiltrados.subList(desde, hasta)
                 : List.of();
 
         tablaEmpleados.getItems().setAll(pagina);
+        tablaEmpleados.setFixedCellSize(ALTURA_CELDA);
+        tablaEmpleados.prefHeightProperty().bind(
+                javafx.beans.binding.Bindings.size(tablaEmpleados.getItems())
+                        .multiply(ALTURA_CELDA)
+                        .add(ALTURA_CABECERA + 2)
+        );
 
-        boolean hayVariasPaginas = total > FILAS_POR_PAGINA;
+        boolean hayVariasPaginas = total > filasPorPagina;
         btnAnterior.setVisible(hayVariasPaginas);
         btnAnterior.setManaged(hayVariasPaginas);
         btnSiguiente.setVisible(hayVariasPaginas);
@@ -521,8 +562,7 @@ public class EmpleadosController implements Limpiable {
     }
 
     /**
-     * Abre el modal de confirmación de readmisión, ejecuta la operación si el usuario
-     * confirma y muestra la nueva contraseña generada por la API.
+     * Abre el modal de confirmación de readmisión y muestra la nueva contraseña generada.
      *
      * @param empleado Empleado a readmitir.
      */
@@ -567,7 +607,6 @@ public class EmpleadosController implements Limpiable {
 
     /**
      * Abre el modal que muestra la contraseña generada tras readmitir un empleado.
-     * Reutiliza el mismo modal que se usa al dar de alta.
      *
      * @param password Contraseña generada por la API.
      */
