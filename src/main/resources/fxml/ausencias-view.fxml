@@ -16,9 +16,9 @@
 
         <!-- PESTAÑA PENDIENTES -->
         <Tab fx:id="tabPendientes">
-            <VBox spacing="12.0">
+            <VBox spacing="8.0" VBox.vgrow="ALWAYS">
                 <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    <Insets top="20.0" right="20.0" bottom="12.0" left="20.0"/>
                 </padding>
 
                 <Label fx:id="lblErrorPendientes"
@@ -29,11 +29,12 @@
 
                 <TableView fx:id="tablaPendientes"
                            styleClass="empleados-table"
+                           fixedCellSize="52"
                            VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="colPendEmpleado"     prefWidth="180"/>
                         <TableColumn fx:id="colPendTipo"         prefWidth="110"/>
-                        <TableColumn fx:id="colPendDescripcion" prefWidth="160"/>
+                        <TableColumn fx:id="colPendDescripcion"  prefWidth="160"/>
                         <TableColumn fx:id="colPendFechas"       prefWidth="180"/>
                         <TableColumn fx:id="colPendDias"         prefWidth="50"/>
                         <TableColumn fx:id="colPendJustificante" prefWidth="60"/>
@@ -54,14 +55,21 @@
                                        managed="false"/>
                 </StackPane>
 
+                <HBox styleClass="empleados-footer" spacing="12.0" alignment="CENTER">
+                    <Button fx:id="btnAnteriorPendientes" styleClass="empleados-btn-paginacion"/>
+                    <Label  fx:id="labelPaginacionPendientes" styleClass="empleados-paginacion-label"
+                            HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnSiguientePendientes" styleClass="empleados-btn-paginacion"/>
+                </HBox>
+
             </VBox>
         </Tab>
 
         <!-- PESTAÑA APROBADAS -->
         <Tab fx:id="tabAprobadas">
-            <VBox spacing="12.0">
+            <VBox spacing="8.0" VBox.vgrow="ALWAYS">
                 <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    <Insets top="20.0" right="20.0" bottom="12.0" left="20.0"/>
                 </padding>
 
                 <Label fx:id="lblErrorAprobadas"
@@ -72,16 +80,17 @@
 
                 <TableView fx:id="tablaAprobadas"
                            styleClass="empleados-table"
+                           fixedCellSize="52"
                            VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colAprEmpleado"     prefWidth="150"/>
-                        <TableColumn fx:id="colAprTipo"         prefWidth="100"/>
-                        <TableColumn fx:id="colAprDescripcion"  prefWidth="160"/>
-                        <TableColumn fx:id="colAprFechas"       prefWidth="160"/>
-                        <TableColumn fx:id="colAprDias"         prefWidth="50"/>
-                        <TableColumn fx:id="colAprJustificante" prefWidth="60"/>
-                        <TableColumn fx:id="colAprEstado"       prefWidth="90"/>
-                        <TableColumn fx:id="colAprResponsable"  prefWidth="130"/>
+                        <TableColumn fx:id="colAprEmpleado"      prefWidth="150"/>
+                        <TableColumn fx:id="colAprTipo"          prefWidth="100"/>
+                        <TableColumn fx:id="colAprDescripcion"   prefWidth="160"/>
+                        <TableColumn fx:id="colAprFechas"        prefWidth="160"/>
+                        <TableColumn fx:id="colAprDias"          prefWidth="50"/>
+                        <TableColumn fx:id="colAprJustificante"  prefWidth="60"/>
+                        <TableColumn fx:id="colAprEstado"        prefWidth="90"/>
+                        <TableColumn fx:id="colAprResponsable"   prefWidth="130"/>
                         <TableColumn fx:id="colAprObservaciones" prefWidth="200"/>
                     </columns>
                     <placeholder>
@@ -98,14 +107,21 @@
                                        managed="false"/>
                 </StackPane>
 
+                <HBox styleClass="empleados-footer" spacing="12.0" alignment="CENTER">
+                    <Button fx:id="btnAnteriorAprobadas" styleClass="empleados-btn-paginacion"/>
+                    <Label  fx:id="labelPaginacionAprobadas" styleClass="empleados-paginacion-label"
+                            HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnSiguienteAprobadas" styleClass="empleados-btn-paginacion"/>
+                </HBox>
+
             </VBox>
         </Tab>
 
         <!-- PESTAÑA RECHAZADAS -->
         <Tab fx:id="tabRechazadas">
-            <VBox spacing="12.0">
+            <VBox spacing="8.0" VBox.vgrow="ALWAYS">
                 <padding>
-                    <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
+                    <Insets top="20.0" right="20.0" bottom="12.0" left="20.0"/>
                 </padding>
 
                 <Label fx:id="lblErrorRechazadas"
@@ -116,16 +132,17 @@
 
                 <TableView fx:id="tablaRechazadas"
                            styleClass="empleados-table"
+                           fixedCellSize="52"
                            VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colRecEmpleado"     prefWidth="150"/>
-                        <TableColumn fx:id="colRecTipo"         prefWidth="100"/>
-                        <TableColumn fx:id="colRecDescripcion"  prefWidth="160"/>
-                        <TableColumn fx:id="colRecFechas"       prefWidth="160"/>
-                        <TableColumn fx:id="colRecDias"         prefWidth="50"/>
-                        <TableColumn fx:id="colRecJustificante" prefWidth="60"/>
-                        <TableColumn fx:id="colRecEstado"       prefWidth="90"/>
-                        <TableColumn fx:id="colRecResponsable"  prefWidth="130"/>
+                        <TableColumn fx:id="colRecEmpleado"      prefWidth="150"/>
+                        <TableColumn fx:id="colRecTipo"          prefWidth="100"/>
+                        <TableColumn fx:id="colRecDescripcion"   prefWidth="160"/>
+                        <TableColumn fx:id="colRecFechas"        prefWidth="160"/>
+                        <TableColumn fx:id="colRecDias"          prefWidth="50"/>
+                        <TableColumn fx:id="colRecJustificante"  prefWidth="60"/>
+                        <TableColumn fx:id="colRecEstado"        prefWidth="90"/>
+                        <TableColumn fx:id="colRecResponsable"   prefWidth="130"/>
                         <TableColumn fx:id="colRecObservaciones" prefWidth="200"/>
                     </columns>
                     <placeholder>
@@ -141,6 +158,13 @@
                                        visible="false"
                                        managed="false"/>
                 </StackPane>
+
+                <HBox styleClass="empleados-footer" spacing="12.0" alignment="CENTER">
+                    <Button fx:id="btnAnteriorRechazadas" styleClass="empleados-btn-paginacion"/>
+                    <Label  fx:id="labelPaginacionRechazadas" styleClass="empleados-paginacion-label"
+                            HBox.hgrow="ALWAYS"/>
+                    <Button fx:id="btnSiguienteRechazadas" styleClass="empleados-btn-paginacion"/>
+                </HBox>
 
             </VBox>
         </Tab>

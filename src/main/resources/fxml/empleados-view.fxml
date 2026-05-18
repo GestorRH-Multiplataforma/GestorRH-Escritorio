@@ -10,7 +10,7 @@
       spacing="16.0">
 
     <padding>
-        <Insets top="28.0" right="28.0" bottom="28.0" left="28.0"/>
+        <Insets top="20.0" right="28.0" bottom="16.0" left="28.0"/>
     </padding>
 
     <HBox styleClass="empleados-toolbar" spacing="12.0" alignment="CENTER_LEFT">
@@ -32,6 +32,7 @@
 
     <TableView fx:id="tablaEmpleados"
                styleClass="empleados-table"
+               fixedCellSize="52"
                VBox.vgrow="ALWAYS">
 
         <columns>
@@ -51,6 +52,9 @@
     </TableView>
 
     <HBox styleClass="empleados-footer" spacing="12.0" alignment="CENTER">
+        <VBox.margin>
+            <Insets top="8.0"/>
+        </VBox.margin>
         <Button fx:id="btnAnterior" styleClass="empleados-btn-paginacion"/>
         <Label  fx:id="labelPaginacion" styleClass="empleados-paginacion-label"
                 HBox.hgrow="ALWAYS"/>

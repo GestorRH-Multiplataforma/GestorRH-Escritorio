@@ -2060,3 +2060,97 @@
     -fx-font-size: 10px;
     -fx-text-fill: #94A3B8;
 }
+
+/* ASIGNACIONES — Scroll interno del panel resumen del día */
+.asignaciones-resumen-scroll {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.asignaciones-resumen-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* SCROLLBARS GLOBALES */
+
+/* Track (carril): fondo neutro sobre el que se desliza el thumb */
+.scroll-bar {
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 8;
+}
+
+/* Eliminar los botones de flecha (incremento/decremento) */
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+    -fx-min-width: 0;
+    -fx-min-height: 0;
+    -fx-max-width: 0;
+    -fx-max-height: 0;
+    -fx-padding: 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+/* Track (zona de fondo del scroll) */
+.scroll-bar .track {
+    -fx-background-color: #F1F5F9;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+}
+
+/* Thumb (pastilla deslizante) — estado normal */
+.scroll-bar .thumb {
+    -fx-background-color: #CBD5E1;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+}
+
+/* Thumb — hover */
+.scroll-bar .thumb:hover {
+    -fx-background-color: #94A3B8;
+}
+
+/* Thumb — pressed */
+.scroll-bar .thumb:pressed {
+    -fx-background-color: #00A8E8;
+}
+
+/* Scrollbar vertical: ancho compacto */
+.scroll-bar:vertical {
+    -fx-pref-width: 8px;
+    -fx-min-width: 8px;
+    -fx-max-width: 8px;
+}
+
+/* Scrollbar horizontal: alto compacto */
+.scroll-bar:horizontal {
+    -fx-pref-height: 8px;
+    -fx-min-height: 8px;
+    -fx-max-height: 8px;
+}
+
+/* Thumb vertical: sin sobresalir lateralmente */
+.scroll-bar:vertical .thumb {
+    -fx-pref-width: 6px;
+    -fx-min-width: 6px;
+}
+
+/* Thumb horizontal: sin sobresalir verticalmente */
+.scroll-bar:horizontal .thumb {
+    -fx-pref-height: 6px;
+    -fx-min-height: 6px;
+}
+
+/* Corner (esquina donde se cruzan vertical y horizontal) */
+.scroll-pane .corner {
+    -fx-background-color: #F1F5F9;
+}

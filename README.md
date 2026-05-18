@@ -2,7 +2,7 @@
 
 [![CI Escritorio](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/ci.yml/badge.svg)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/ci.yml)
 [![Release](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/release.yml/badge.svg)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/actions/workflows/release.yml)
-[![Version](https://img.shields.io/badge/version-v1.0.0-brightgreen)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/tag/v1.0.0)
+[![Version](https://img.shields.io/badge/version-v1.0.1-brightgreen)](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/tag/v1.0.1)
 [![Java](https://img.shields.io/badge/Java-21-orange?logo=openjdk)](https://openjdk.org/projects/jdk/21/)
 [![JavaFX](https://img.shields.io/badge/JavaFX-21.0.1-blue)](https://openjfx.io/)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
@@ -37,10 +37,10 @@ Panel de control administrativo del ecosistema **GestorRH**. Desarrollado en **J
 
 ## Descarga e Instalación
 
-| Plataforma | Instalador | Requisitos |
-|---|---|---|
-| macOS | `GestorRH-1.0.0.dmg` | macOS 11 o superior |
-| Windows | `GestorRH-1.0.0.msi` | Windows 10 o superior |
+| Plataforma | Instalador           | Requisitos |
+|---|----------------------|---|
+| macOS | `GestorRH-1.0.1.dmg` | macOS 11 o superior |
+| Windows | `GestorRH-1.0.1.msi` | Windows 10 o superior |
 
 Descarga el instalador desde la [página de releases](https://github.com/GestorRH-Multiplataforma/GestorRH-Escritorio/releases/latest).
 
@@ -214,11 +214,14 @@ Este proyecto utiliza **Git tags anotados** para marcar hitos funcionales, sigui
   streaming, configuración de empresa con geocodificación Nominatim y coordenadas
   manuales, dashboard con KPIs reactivos, gráficos de distribución por
   departamento y top retrasos.
-- **`v1.0.0`** → primera versión estable. *(latest)*
+- **`v1.0.0`** → primera versión estable. 
   Informes de control horario con previsualización en tabla y descarga de PDF
   en streaming, soporte multilingüe completo ES/EN en todos los módulos, gestión
   automática de sesión expirada con redirección al login, instaladores nativos
   para macOS y Windows generados automáticamente via CI/CD.
+- **`v1.0.1`** → correcciones visuales de UI. *(latest)*
+  Scrollbars globales estilizados con paleta corporativa, paginación
+  dinámica en tablas de empleados y ausencias sin scroll interno.
 ### Criterio de uso
 
 Para integración con el backend y despliegue, la referencia será siempre la
