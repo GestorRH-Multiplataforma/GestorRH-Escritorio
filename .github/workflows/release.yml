@@ -95,7 +95,7 @@ jobs:
       - name: Obtener versión del proyecto
         shell: pwsh
         run: |
-            $version = mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+            $version = mvn help:evaluate -Dexpression=project.version -DforceStdout
             echo "PROJECT_VERSION=$version" >> $env:GITHUB_ENV
 
       - name: Crear staging
