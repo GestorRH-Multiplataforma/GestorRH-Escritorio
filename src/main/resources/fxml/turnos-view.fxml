@@ -16,7 +16,7 @@
              VBox.vgrow="ALWAYS">
 
         <Tab fx:id="tabAsignaciones">
-            <ScrollPane fitToWidth="true" fitToHeight="false"
+            <ScrollPane fitToWidth="true" fitToHeight="true"
                         styleClass="configuracion-scroll">
             <VBox spacing="0.0">
 
@@ -38,7 +38,7 @@
                                onAction="#handleIrAConfiguracion"/>
                 </HBox>
 
-                <HBox spacing="16.0" VBox.vgrow="ALWAYS" fillHeight="true" minHeight="500.0">
+                <HBox spacing="16.0" VBox.vgrow="ALWAYS" fillHeight="true" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
                     <padding>
                         <Insets top="20.0" right="20.0" bottom="20.0" left="20.0"/>
                     </padding>
@@ -107,7 +107,9 @@
                     <VBox styleClass="config-section-card"
                           spacing="12.0"
                           minWidth="300.0"
-                          maxWidth="300.0">
+                          maxWidth="300.0"
+                          VBox.vgrow="ALWAYS"
+                          maxHeight="Infinity">
                         <padding>
                             <Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/>
                         </padding>
@@ -128,9 +130,13 @@
                                visible="false"
                                managed="false"/>
 
-                        <VBox fx:id="listaAsignacionesDia"
-                              spacing="8.0"
-                              VBox.vgrow="ALWAYS"/>
+                        <ScrollPane fitToWidth="true"
+                                    VBox.vgrow="ALWAYS"
+                                    hbarPolicy="NEVER"
+                                    vbarPolicy="AS_NEEDED"
+                                    styleClass="asignaciones-resumen-scroll">
+                            <VBox fx:id="listaAsignacionesDia" spacing="8.0"/>
+                        </ScrollPane>
 
                         <Separator/>
 
